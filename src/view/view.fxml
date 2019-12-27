@@ -1,42 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane layoutX="8.0" layoutY="6.0" prefHeight="384.0" prefWidth="469.0">
+      <HBox spacing="20.0" style="-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: black;">
          <children>
-            <Circle fill="DODGERBLUE" layoutX="346.0" layoutY="87.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="346.0" layoutY="35.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="421.0" layoutY="35.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="346.0" layoutY="143.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="346.0" layoutY="194.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="346.0" layoutY="244.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="346.0" layoutY="296.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="293.0" layoutY="349.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="241.0" layoutY="349.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="188.0" layoutY="349.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="136.0" layoutY="349.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="85.0" layoutY="349.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="35.0" layoutY="349.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="346.0" layoutY="349.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-            <Pane layoutX="11.0" layoutY="17.0" prefHeight="297.0" prefWidth="299.0">
+            <Pane fx:id="gameBoard">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1477d3" height="297.0" stroke="BLACK" strokeType="INSIDE" width="299.0" />
-                  <Circle fill="DODGERBLUE" layoutX="150.0" layoutY="149.0" radius="125.0" stroke="BLACK" strokeType="INSIDE" />
-                  <GridPane gridLinesVisible="true" layoutX="74.0" layoutY="93.0" prefHeight="112.0" prefWidth="153.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.0" minWidth="10.0" prefWidth="76.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="77.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
-               </children></Pane>
+                  <Pane fx:id="blueRegion" layoutY="350.0">
+                     <children>
+                        <Pane layoutY="210.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="GOLD" height="250.0" stroke="BLACK" strokeType="INSIDE" width="250.0" />
+                              <Circle fill="GOLD" layoutX="125.0" layoutY="125.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                              <GridPane fx:id="yellowNest" gridLinesVisible="true" layoutX="50.0" layoutY="90.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.0" minWidth="10.0" prefWidth="76.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="77.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </Pane>
+                        <Circle fx:id="yellowPos11" fill="GOLD" layoutX="300.0" layoutY="435.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos10" fill="GOLD" layoutX="300.0" layoutY="380.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos9" fill="GOLD" layoutX="300.0" layoutY="325.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos8" fill="GOLD" layoutX="300.0" layoutY="270.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos7" fill="GOLD" layoutX="300.0" layoutY="215.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos6" fill="GOLD" layoutX="300.0" layoutY="160.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos5" fill="GOLD" layoutX="245.0" layoutY="160.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos4" fill="GOLD" layoutX="190.0" layoutY="160.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos3" fill="GOLD" layoutX="135.0" layoutY="160.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos2" fill="GOLD" layoutX="80.0" layoutY="160.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowPos1" fill="GOLD" layoutX="25.0" layoutY="160.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="yellowArrival" fill="GOLD" layoutX="25.0" layoutY="55.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle fx:id="yellowHome1" arcHeight="5.0" arcWidth="5.0" fill="GOLD" height="100.0" layoutX="55.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="yellowHome2" arcHeight="5.0" arcWidth="5.0" fill="GOLD" height="100.0" layoutX="105.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="yellowHome3" arcHeight="5.0" arcWidth="5.0" fill="GOLD" height="100.0" layoutX="155.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="yellowHome4" arcHeight="5.0" arcWidth="5.0" fill="GOLD" height="100.0" layoutX="205.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="yellowHome5" arcHeight="5.0" arcWidth="5.0" fill="GOLD" height="100.0" layoutX="255.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="yellowHome6" arcHeight="5.0" arcWidth="5.0" fill="GOLD" height="100.0" layoutX="305.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="redRegion">
+                     <children>
+                        <Pane>
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1477d3" height="250.0" stroke="BLACK" strokeType="INSIDE" width="250.0" />
+                              <Circle fill="DODGERBLUE" layoutX="125.0" layoutY="125.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                              <GridPane fx:id="blueNest" gridLinesVisible="true" layoutX="50.0" layoutY="90.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.0" minWidth="10.0" prefWidth="76.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="77.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </Pane>
+                        <Circle fx:id="bluePos11" fill="DODGERBLUE" layoutX="25.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos10" fill="DODGERBLUE" layoutX="80.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos9" fill="DODGERBLUE" layoutX="135.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos8" fill="DODGERBLUE" layoutX="190.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos7" fill="DODGERBLUE" layoutX="245.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos6" fill="DODGERBLUE" layoutX="300.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos5" fill="DODGERBLUE" layoutX="300.0" layoutY="240.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos4" fill="DODGERBLUE" layoutX="300.0" layoutY="185.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos3" fill="DODGERBLUE" layoutX="300.0" layoutY="130.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos2" fill="DODGERBLUE" layoutX="300.0" layoutY="75.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="bluePos1" fill="DODGERBLUE" layoutX="300.0" layoutY="20.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="blueArrival" fill="DODGERBLUE" layoutX="400.0" layoutY="20.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle fx:id="blueHome1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" layoutX="350.0" layoutY="50.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="blueHome2" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" layoutX="350.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="blueHome3" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" layoutX="350.0" layoutY="150.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="blueHome4" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" layoutX="350.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="blueHome5" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" layoutX="350.0" layoutY="250.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="blueHome6" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" layoutX="350.0" layoutY="300.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="greenRegion" layoutX="450.0">
+                     <children>
+                        <Pane layoutX="100.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="TOMATO" height="250.0" stroke="BLACK" strokeType="INSIDE" width="250.0" />
+                              <Circle fill="TOMATO" layoutX="125.0" layoutY="125.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                              <GridPane fx:id="redNest" gridLinesVisible="true" layoutX="50.0" layoutY="90.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.0" minWidth="10.0" prefWidth="76.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="77.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </Pane>
+                        <Circle fx:id="redPos11" fill="TOMATO" layoutX="50.0" layoutY="20.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos10" fill="TOMATO" layoutX="50.0" layoutY="75.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos9" fill="TOMATO" layoutX="50.0" layoutY="130.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos8" fill="TOMATO" layoutX="50.0" layoutY="185.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos7" fill="TOMATO" layoutX="50.0" layoutY="240.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos6" fill="TOMATO" layoutX="50.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos5" fill="TOMATO" layoutX="105.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos4" fill="TOMATO" layoutX="160.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos3" fill="TOMATO" layoutX="215.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos2" fill="TOMATO" layoutX="270.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redPos1" fill="TOMATO" layoutX="325.0" layoutY="295.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="redArrival" fill="TOMATO" layoutX="325.0" layoutY="400.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle fx:id="redHome1" arcHeight="5.0" arcWidth="5.0" fill="TOMATO" height="100.0" layoutX="250.0" layoutY="355.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="redHome2" arcHeight="5.0" arcWidth="5.0" fill="TOMATO" height="100.0" layoutX="200.0" layoutY="355.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="redHome3" arcHeight="5.0" arcWidth="5.0" fill="TOMATO" height="100.0" layoutX="150.0" layoutY="355.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="redHome4" arcHeight="5.0" arcWidth="5.0" fill="TOMATO" height="100.0" layoutX="100.0" layoutY="355.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="redHome5" arcHeight="5.0" arcWidth="5.0" fill="TOMATO" height="100.0" layoutX="50.0" layoutY="355.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                        <Rectangle fx:id="redHome6" arcHeight="5.0" arcWidth="5.0" fill="TOMATO" height="100.0" layoutY="355.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="yellowRegion" layoutX="350.0" layoutY="460.0">
+                     <children>
+                        <Pane layoutX="200.0" layoutY="100.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="MEDIUMSEAGREEN" height="250.0" stroke="BLACK" strokeType="INSIDE" width="250.0" />
+                              <Circle fill="MEDIUMSEAGREEN" layoutX="125.0" layoutY="125.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                              <GridPane fx:id="greenNest" gridLinesVisible="true" layoutX="50.0" layoutY="90.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.0" minWidth="10.0" prefWidth="76.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="77.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </Pane>
+                        <Circle fx:id="greenPos11" fill="MEDIUMSEAGREEN" layoutX="425.0" layoutY="50.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos10" fill="MEDIUMSEAGREEN" layoutX="370.0" layoutY="50.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos9" fill="MEDIUMSEAGREEN" layoutX="315.0" layoutY="50.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos8" fill="MEDIUMSEAGREEN" layoutX="260.0" layoutY="50.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos7" fill="MEDIUMSEAGREEN" layoutX="205.0" layoutY="50.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos6" fill="MEDIUMSEAGREEN" layoutX="150.0" layoutY="50.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos5" fill="MEDIUMSEAGREEN" layoutX="150.0" layoutY="105.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos4" fill="MEDIUMSEAGREEN" layoutX="150.0" layoutY="160.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos3" fill="MEDIUMSEAGREEN" layoutX="150.0" layoutY="215.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos2" fill="MEDIUMSEAGREEN" layoutX="150.0" layoutY="270.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenPos1" fill="MEDIUMSEAGREEN" layoutX="150.0" layoutY="325.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fx:id="greenArrival" fill="MEDIUMSEAGREEN" layoutX="50.0" layoutY="325.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle fx:id="greenHome1" arcHeight="5.0" arcWidth="5.0" fill="MEDIUMSEAGREEN" height="45.0" layoutY="250.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="greenHome2" arcHeight="5.0" arcWidth="5.0" fill="MEDIUMSEAGREEN" height="45.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="greenHome3" arcHeight="5.0" arcWidth="5.0" fill="MEDIUMSEAGREEN" height="45.0" layoutY="150.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="greenHome4" arcHeight="5.0" arcWidth="5.0" fill="MEDIUMSEAGREEN" height="45.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="greenHome5" arcHeight="5.0" arcWidth="5.0" fill="MEDIUMSEAGREEN" height="45.0" layoutY="50.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                        <Rectangle fx:id="greenHome6" arcHeight="5.0" arcWidth="5.0" fill="MEDIUMSEAGREEN" height="45.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                     </children>
+                  </Pane>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Pane>
          </children>
-      </Pane>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </HBox>
    </children>
 </Pane>
