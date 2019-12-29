@@ -90,20 +90,22 @@ public class Piece {
         boolean switchX = true;
         boolean switchY = false;
         int temp;
-        int prevPositionX = currentPosition.getX();
-        int prevPositionY = currentPosition.getY();
+        int x = currentPosition.getX();
+        int y = currentPosition.getY();
         if (switchX && !switchY){
             //X moves, Y stays still
-            if (currentPosition.isLargerX(moveAmount)){
+            if (currentPosition.ToSwitch(moveAmount,x,0)){
                 //if it does not exceed boundary
                 switchX = false;
                 switchY = true;
             }
         }
-        else
-            //Y moves, X stays still
-            currentPosition.setY(prevPositionY + moveAmount);
-
+        else{
+            if (currentPosition.ToSwitch(moveAmount,0,y)){
+                switchX = true;
+                switchY = false;
+            }
+        }
     }
 
     public void kick (Piece piece) {
