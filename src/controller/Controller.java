@@ -2,13 +2,14 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import model.Map;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import model.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static helper.Helper.*;
 
 /**
  * Input listeners
@@ -16,21 +17,44 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     @FXML
-    public Label playerNameLb;
-    @FXML
-    public Button rollDiceBtn;
-    @FXML
-    private BorderPane container;
+    private Pane container;
 
-    Map map;
-    StateManager playerStates;
+    Board board;
+
+    int NUM_OF_PLAYER = 4;
+    Player[] players = new Player[NUM_OF_PLAYER];
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        map = new Map();  // Draw map
-        container.setCenter(map);
+        // draw board
+        board = new Board ();
+        container.getChildren().addAll(board);
 
-        // Handle players logic
-        playerStates = new StateManager();
+        createPlayers(NUM_OF_PLAYER);
+
+//        /**Test code goes here*/
+//
+//        for (int i = 0; i < players.length; i++) {
+//            System.out.println(players[i].getName());
+//        }
+//
+//        /***/
+
+
+    }
+
+
+
+    /**
+     * Input listener for dice rolling button
+     * @param mouseEvent
+     */
+    @FXML
+    private int rollDice(MouseEvent mouseEvent) {
+        //Roll dice here, wilasdasd
+        int ret = 0;
+
+        return ret;
     }
 }

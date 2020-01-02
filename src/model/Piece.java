@@ -1,16 +1,19 @@
 package model;
 
+import java.awt.*;
+
 public class Piece {
-    private String nestId;
+    private int nestId;
     private int currentPosition;
     private boolean isDeployed;
     private boolean isBlocked;
     private boolean isHome;
+    private Color color;
 
     //=================================[]=====================================
 
 
-    public Piece(String nestId, int currentPosition, boolean isDeployed, boolean isBlocked, boolean isHome) {
+    public Piece(int nestId, int currentPosition, boolean isDeployed, boolean isBlocked, boolean isHome) {
         this.nestId = nestId;
         this.currentPosition = currentPosition;
         this.isDeployed = isDeployed;
@@ -18,11 +21,11 @@ public class Piece {
         this.isHome = isHome;
     }
 
-    public String getNestId() {
+    public int getNestId() {
         return nestId;
     }
 
-    public void setNestId(String nestId) {
+    public void setNestId(int nestId) {
         this.nestId = nestId;
     }
 

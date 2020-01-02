@@ -12,6 +12,11 @@ public class Main extends Application {
         Parent root = game.load(); // load main game
         primaryStage.setTitle("Co Ca Ngua");
 
+        /**Test code goes here*/
+
+        /***/
+
+
         primaryStage.setScene(new Scene(root, 800 , 800));
         primaryStage.show();
     }

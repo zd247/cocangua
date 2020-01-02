@@ -3,8 +3,8 @@ package model;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class pieceView extends Circle {
-    pieceView(Color color){
+public class PieceView extends Circle {
+    PieceView(Color color){
         setRadius(10);
         setFill(color);
     }
