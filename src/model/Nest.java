@@ -25,10 +25,10 @@ public class Nest {
     public Nest(String id, Color color) {
         this.id = id;
         this.color = color;
-        pieces = new ArrayList<>(List.of(new Piece(id, -1 ),
-                                    new Piece(id, -1),
-                                    new Piece(id, -1 ),
-                                    new Piece(id, -1 )));
+        pieces = new ArrayList<>(List.of(new Piece(id, -1, Color.DODGERBLUE ),
+                                    new Piece(id, -1, Color.DODGERBLUE),
+                                    new Piece(id, -1, Color.DODGERBLUE),
+                                    new Piece(id, -1, Color.DODGERBLUE)));
     }
 
     //getter

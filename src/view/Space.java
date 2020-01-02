@@ -1,7 +1,8 @@
-package model;
+package view;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import model.Piece;
 
 // The circle that a Piece will travel through
 public class Space extends Circle {
@@ -21,5 +22,12 @@ public class Space extends Circle {
     }
     public double getY() {
         return this.getLayoutY();
+    }
+
+    // Get occupancy state
+    public boolean getOccupancy() { return this.isOccupied; }
+
+    public void setOccupancy(boolean isOccupied) {
+        this.isOccupied = isOccupied;
     }
 }
