@@ -1,7 +1,8 @@
-package view;
+package model;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import view.NestView;
 
 import java.util.HashMap;
 
@@ -29,7 +30,7 @@ public class Map extends Pane {
     HashMap<Integer, Space> spaceMap = new HashMap<>();
 
     // A map to store all nests with colors as their key
-    HashMap<Color, MyNest> nestMap = new HashMap<>();
+    HashMap<Color, NestView> nestViewMap = new HashMap<>();
 
     // Map's width and height
     public static double MAP_WIDTH;
@@ -77,19 +78,19 @@ public class Map extends Pane {
     /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */
     void drawNests() {
         drawNestByCoordinates(MAP_PADDING, MAP_PADDING, DODGERBLUE);
-        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - MyNest.NEST_SIZE, GOLD);
-        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - MyNest.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - MyNest.NEST_SIZE, SEAGREEN);
-        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - MyNest.NEST_SIZE, MAP_PADDING, TOMATO);
+        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, GOLD);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, SEAGREEN);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_PADDING, TOMATO);
     }
 
     // Draw a single nest based on position and color
     void drawNestByCoordinates(double x, double y, Color color) {
-        MyNest nest = new MyNest(color);
+        NestView nest = new NestView(color);
         nest.setLayoutX(x);
         nest.setLayoutY(y);
 
         this.getChildren().add(nest);
-        this.nestMap.put(color, nest);
+        this.nestViewMap.put(color, nest);
     }
 
     // Set map size based on drawn Spaces
@@ -184,7 +185,7 @@ public class Map extends Pane {
     public HashMap<Integer, Space> getSpaceMap() {
         return spaceMap;
     }
-    public HashMap<Color, MyNest> getNestMap() { return nestMap; }
+    public HashMap<Color, NestView> getNestViewMap() { return nestViewMap; }
     public static double getMapWidth() {
         return MAP_WIDTH;
     }

@@ -5,9 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import model.*;
-import view.Map;
+import model.Map;
 
 import java.net.URL;
 import java.util.ResourceBundle;
