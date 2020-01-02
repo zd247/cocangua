@@ -5,7 +5,7 @@
 
 <Pane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <children>
-      <Button fx:id="rollDiceBtn" layoutX="111.0" layoutY="14.0" mnemonicParsing="false" text="Roll" />
+      <Button fx:id="rollDiceBtn" layoutX="111.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#rollDice" text="Roll" />
       <Label layoutX="14.0" layoutY="10.0" prefHeight="35.0" prefWidth="94.0" text="player name" />
    </children>
 </Pane>

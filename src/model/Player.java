@@ -2,71 +2,43 @@ package model;
 
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
+import static helper.Helper.*;
 
 public class Player {
-    private int id;
+
     private String name;
-    private int point;
     private int nestId;
-    private Dice dice = new Dice();
-    private int dice1 = 0;
-    private int dice2 = 0;
-    private boolean[] connect = {false,false,false,false};
+    private Color color;
+
+    private int point = 0;
+
+    public Dice[] dices = new Dice[2];
     private boolean rolled;
-    private ArrayList<Nest> nest;
-    Player(){
-    }
-    Player(int id, String name, int point, int nestId){
-        this.id = id;
+
+
+    public Player(String name){
         this.name = name;
-        if (!connect[id]) {
-            connect[id] = true;
-        }
-        this.point = point;
-        this.nestId = nestId;
+        this.color = getNestById(nestId).getColor(); // set players color
     }
 
-    void setNestId(int id){
+    public void setNestId(int id){
         nestId = id;
     }
-    int getNestId(){
+
+    public int getNestId(){
         return nestId;
     }
 
-    void set_id(int id){
-        this.id = id;
-    }
-    int getId(){
-        return id;
-    }
-
-    void set_name(String name){
+    public void setName(String name){
         this.name = name;
     }
 
-    String getName(){
+    public String getName(){
         return name;
     }
 
-    boolean setConnected(){
-        if (connect[id]) {
-            return false;
-        }
-        else {
-            connect[id] = true;
-            return true;
-        }
-    }
 
-    boolean setDisconnected(){
-        connect[id] = false;
-        return true;
-    }
 
-    boolean getConnection(){
-        return connect[id];
-    }
 
     void setPoint(int point){
         this.point = point;
@@ -76,11 +48,11 @@ public class Player {
         return point;
     }
 
-    void createNest(Color color){
-        Nest newNest = new Nest(Integer.toString(nestId), color);
-        nest.add(newNest);
-    }
+    void resetPoint () {this.point = 0;}
 
+    /** REDO THIS
+     *
+     *
     void makeMove(int id){
         Piece piece = pick(id);
         int destination;
@@ -92,8 +64,7 @@ public class Player {
     }
 
     void roll(){
-        dice1 = dice.roll();
-        dice2 = dice.roll();
+
         isRolled(true);
     }
     void takeTurn(){
@@ -144,4 +115,8 @@ public class Player {
             }
         }
     }
+
+     */
+
+
 }

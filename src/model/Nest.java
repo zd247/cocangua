@@ -1,14 +1,10 @@
 package model;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
@@ -18,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Nest {
-    private String id;
+    private int id;
     private Color color;
     private ArrayList<Piece> pieces;
 
-    public Nest(String id, Color color) {
+    public Nest(int id) {
         this.id = id;
-        this.color = color;
+        this.color = Color.BLUE;
         pieces = new ArrayList<>(List.of(new Piece(id, -1, false, false, true ),
                                     new Piece(id, -1, false, false, true ),
                                     new Piece(id, -1, false, false, true ),
@@ -40,12 +36,12 @@ public class Nest {
         return color;
     }
 
-    public String getNestById() {
-        return id;
+    public int getNestId() {
+        return this.id;
     }
 
     //Setter
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
