@@ -11,7 +11,7 @@ public class Board extends Pane {
     final static double POS_GAP = 5;
     final static double ARRIVAL_GAP = 45;
 
-    // A map to store all circle positions
+    // A map to store all circle positions (tuple)
     static HashMap<Integer, Space> map = new HashMap<>();
 
     // Create a board (currently only have circles)
