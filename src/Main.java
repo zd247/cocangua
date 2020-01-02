@@ -24,7 +24,7 @@ public class Main extends Application {
         HBox hb = new HBox();
         Map map = new Map();
         Pane pane = new Pane();
-        hb.getChildren().addAll(map, pane);
+        //hb.getChildren().addAll(map, pane);
 
         // Test move + occupied
         Circle c = new Circle(20);
@@ -32,23 +32,23 @@ public class Main extends Application {
         map.getChildren().add(c);
 
         // Move c from BLUE_START 3 steps
-        movePiece(Map.BLUE_START, 3, c);
+        movePiece(Map.BLUE_START, 3, c, map);
 
         // Test move new circle to same space
-        Circle c2 = new Circle(20);
-        c2.setFill(BLUE);
-        map.getChildren().add(c2);
+//        Circle c2 = new Circle(20);
+//        c2.setFill(BLUE);
+//        map.getChildren().add(c2);
         // Move will fail, circle remains at 0,0
-        movePiece(Map.BLUE_START + 1, 2, c2);
+        //movePiece(Map.BLUE_START + 1, 2, c2, map);
 
         // Scene stuff
-        primaryStage.setScene(new Scene(hb, 800, 800));
+        primaryStage.setScene(new Scene(map, map.getPrefWidth(), map.getPrefHeight()));
         primaryStage.show();
     }
 
     // Move a specified circle a certain amount
-    public void movePiece(int startIndex, int moveAmount, Circle c) {
-        Space sp1 = Map.spaceMap.get(startIndex + moveAmount);
+    public void movePiece(int startIndex, int moveAmount, Circle c, Map map) {
+        Space sp1 = map.getSpaceMap().get(startIndex + moveAmount);
 
         double x = sp1.getLayoutX();
         double y = sp1.getLayoutY();
