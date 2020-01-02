@@ -27,6 +27,7 @@ public class Map extends Pane {
 
     // A map to store all circle positions
     HashMap<Integer, Space> spaceMap = new HashMap<>();
+
     // A map to store all nests with colors as their key
     HashMap<Color, MyNest> nestMap = new HashMap<>();
 
@@ -34,19 +35,17 @@ public class Map extends Pane {
     public static double MAP_WIDTH;
     public static double MAP_HEIGHT;
 
-    // Construct a board
+    /* FUNCTIONS BELOW */
+
+    // Construct a map with Spaces and Nests
     public Map() {
         // Draw all the GUI elements
         drawSpaces();
         defineMapSize();    // Vital for future draws
         drawNests();
-
-        // Print total of circles in HashMap (check if correct number of circles)
-        System.out.println(spaceMap.size());
-        System.out.println(nestMap.size());
     }
 
-    /* DRAW THE CIRCLE SPACES AND ADD THEM TO HASHMAP */
+    /* DRAW THE CIRCLE SPACES AND ADD THEM TO SPACEMAP */
     void drawSpaces() {
         // Draw Blue region
         drawArrivalSpace(0, 0, DODGERBLUE, spaceMap.size());
@@ -75,7 +74,7 @@ public class Map extends Pane {
         markSpace(spaceMap.get(RED_START));
     }
 
-    /* DRAW THE NESTS IN MAP's 4 CORNERS */
+    /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */
     void drawNests() {
         drawNestByCoordinates(MAP_PADDING, MAP_PADDING, DODGERBLUE);
         drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - MyNest.NEST_SIZE, GOLD);
@@ -104,8 +103,9 @@ public class Map extends Pane {
         MAP_HEIGHT = y + CIRCLE_RADIUS * 2 + MAP_PADDING * 2;
 
         // Wrap map around circles
-        setPrefWidth(MAP_WIDTH);
-        setPrefHeight(MAP_HEIGHT);
+        setPrefSize(MAP_WIDTH, MAP_HEIGHT);
+        setMinSize(MAP_WIDTH, MAP_HEIGHT);
+        setMaxSize(MAP_WIDTH, MAP_HEIGHT);
         setStyle("-fx-border-color: black");
     }
 
@@ -184,6 +184,7 @@ public class Map extends Pane {
     public HashMap<Integer, Space> getSpaceMap() {
         return spaceMap;
     }
+    public HashMap<Color, MyNest> getNestMap() { return nestMap; }
     public static double getMapWidth() {
         return MAP_WIDTH;
     }
