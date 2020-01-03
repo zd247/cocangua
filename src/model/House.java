@@ -1,19 +1,19 @@
 package model;
 
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
-// The circle that a Piece will travel through
-// Can be accessed via index at map.spaceMap
-// Get coordinates by space.getLayoutX() and space.getLayoutY()
-public class Space extends Circle implements Position {
+// Home rectangle (6 for each color)
+public class House extends Rectangle implements Position {
     boolean isOccupied;
     Piece piece;
 
-    public Space(Color color) {
-        setRadius(20);
+    // Construct a space bases on input
+    public House(Color color, double width, double height) {
+        setWidth(width);
+        setHeight(height);
         setFill(color);
-        this.piece = null;
+        piece = null;
     }
 
     @Override

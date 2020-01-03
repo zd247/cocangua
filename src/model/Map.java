@@ -12,6 +12,8 @@ import static javafx.scene.paint.Color.*;
 public class Map extends Pane {
     // Size constants for map drawing
     final static double CIRCLE_RADIUS = 20;
+    final static double HOUSE_LONG_SIDE = 86;
+    final static double HOUSE_SHORT_SIDE = 32;
     final static double POS_GAP = 5;
     final static double ARRIVAL_GAP = 45;
     final static double MAP_PADDING = 20;
@@ -32,6 +34,9 @@ public class Map extends Pane {
     // A map to store all nests with colors as their key
     HashMap<Color, NestView> nestViewMap = new HashMap<>();
 
+    // Maps to store all houses
+    HashMap<Integer, House> houseMap = new HashMap<>();
+
     // Map's width and height
     public static double MAP_WIDTH;
     public static double MAP_HEIGHT;
@@ -44,6 +49,7 @@ public class Map extends Pane {
         drawSpaces();
         defineMapSize();    // Vital for future draws
         drawNests();
+        drawHouses();
     }
 
     /* DRAW THE CIRCLE SPACES AND ADD THEM TO SPACEMAP */
@@ -81,6 +87,70 @@ public class Map extends Pane {
         drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, GOLD);
         drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, SEAGREEN);
         drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_PADDING, TOMATO);
+    }
+
+    /* DRAW THE HOME RECTANGLES AND ADD TO HOUSEMAP */
+    void drawHouses() {
+        double x, y;
+        Space space;
+
+        // Get coordinates of Blue arrival
+        space = spaceMap.get(BLUE_ARRIVAL);
+        x = space.getLayoutX();
+        y = space.getLayoutY();
+
+        // Draw blue houses based on arrival space's coordinates
+        drawHousesVertically(x - HOUSE_LONG_SIDE / 2, y + CIRCLE_RADIUS + 25, DODGERBLUE, 0, true);
+
+        // Same with Yellow houses
+        space = spaceMap.get(YELLOW_ARRIVAL);
+        x = space.getLayoutX();
+        y = space.getLayoutY();
+        drawHousesHorizontally(x + CIRCLE_RADIUS + 25, y - HOUSE_LONG_SIDE / 2, GOLD, 6, true);
+
+        // Green houses
+        space = spaceMap.get(GREEN_ARRIVAL);
+        x = space.getLayoutX();
+        y = space.getLayoutY();
+        drawHousesVertically(x - HOUSE_LONG_SIDE / 2, y - (CIRCLE_RADIUS + 25 + HOUSE_SHORT_SIDE), SEAGREEN, 12, false);
+
+        // Same with Red houses
+        space = spaceMap.get(RED_ARRIVAL);
+        x = space.getLayoutX();
+        y = space.getLayoutY();
+        drawHousesHorizontally(x - (CIRCLE_RADIUS + 25 + HOUSE_SHORT_SIDE), y - HOUSE_LONG_SIDE / 2, TOMATO, 18, false);
+    }
+
+    // Draw 6 rectangles of specified color horizontally
+    void drawHousesHorizontally(double x, double y, Color color, int startIndex, boolean isLtR) {
+        for (int i = 0; i < 6; i++) {
+            House house = new House(color, HOUSE_SHORT_SIDE, HOUSE_LONG_SIDE);
+            house.setLayoutY(y);
+
+            if (isLtR)
+                house.setLayoutX(x + i * (HOUSE_SHORT_SIDE + POS_GAP));
+            else
+                house.setLayoutX(x - i * (HOUSE_SHORT_SIDE + POS_GAP));
+
+            this.getChildren().add(house);
+            houseMap.put(i + startIndex, house);
+        }
+    }
+
+    // Draw 6 rectangles of specified color vertically
+    void drawHousesVertically(double x, double y, Color color, int startIndex, boolean isUtD) {
+        for (int i = 0; i < 6; i++) {
+            House house = new House(color, HOUSE_LONG_SIDE, HOUSE_SHORT_SIDE);
+            house.setLayoutX(x);
+
+            if (isUtD)
+                house.setLayoutY(y + i * (HOUSE_SHORT_SIDE + POS_GAP));
+            else
+                house.setLayoutY(y - i * (HOUSE_SHORT_SIDE + POS_GAP));
+
+            this.getChildren().add(house);
+            houseMap.put(i + startIndex, house);
+        }
     }
 
     // Draw a single nest based on position and color
@@ -185,10 +255,13 @@ public class Map extends Pane {
     public HashMap<Integer, Space> getSpaceMap() {
         return spaceMap;
     }
+
     public HashMap<Color, NestView> getNestViewMap() { return nestViewMap; }
+
     public static double getMapWidth() {
         return MAP_WIDTH;
     }
+
     public static double getMapHeight() {
         return MAP_HEIGHT;
     }
