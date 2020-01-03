@@ -2,121 +2,90 @@ package model;
 
 import javafx.scene.paint.Color;
 
-import static helper.Helper.*;
-
 public class Player {
-
     private String name;
     private int nestId;
     private Color color;
-
     private int point = 0;
+    private Dice[] dice = new Dice[2];
+    private boolean rolled;         // Check for the roll action
 
-    public Dice[] dices = new Dice[2];
-    private boolean rolled;
-
-
+    Player(){
+    }
     public Player(String name){
-        this.name = name;
+        this.name = name;           // set name
         this.color = getNestById(nestId).getColor(); // set players color
     }
-
-    public void setNestId(int id){
+    private static Nest getNestById(int id) {           // get the nest by id
+        return new Nest(id);
+    }
+    void setNestId(int id){
         nestId = id;
     }
-
-    public int getNestId(){
+    int getNestId(){
         return nestId;
     }
 
-    public void setName(String name){
+    void set_name(String name){
         this.name = name;
     }
-
-    public String getName(){
+    String getName(){
         return name;
     }
 
 
-
-
-    void setPoint(int point){
+    void storePoints(int point){
         this.point = point;
     }
-
     int getPoint(){
         return point;
     }
 
-    void resetPoint () {this.point = 0;}
-
-    /** REDO THIS
-     *
-     *
-    void makeMove(int id){
-        Piece piece = pick(id);
+    int movePosition(Piece piece){          // return the next position the piece has to travel
         int destination;
-        destination = piece.getCurrentPosition() + dice1 + dice2;
-        if (destination > 47){
+        destination = piece.getCurrentPosition() + dice[0].getFace() + dice[1].getFace();
+        if (destination > 47){              // keep moving without crashing, there are only 47 steps, so the step which is next to 47 is 0
             destination = destination - 47;
         }
-        piece.setCurrentPosition(destination);
+        return destination;
     }
+    void resetPoint () {this.point = 0;}        // reset the point
 
-    void roll(){
-
-        isRolled(true);
-    }
-    void takeTurn(){
-        isRolled(false);
-    }
-    void isRolled(boolean roll){
-        this.rolled = roll;
+    void roll(){                //roll
+        dice[0].roll();
+        dice[1].roll();
+        rolled = true;          // this player has rolled
     }
     boolean checkRoll(){
         return rolled;
     }
-    int[] getDices(){
-        return new int[]{dice1,dice2};
-    }
 
     void stop(){
-        setDisconnected();
+        ;
     }
 
-    Piece pick(int id) {
+    Piece pick(int id){                 // Pick the piece with its id in the nest
         if (rolled) {
-            for (int i = 0; i < 4; i++) {
-                if (nest.get(i).getNestById().equals(Integer.toString(nestId))) {
-
-                    return nest.get(nestId).getPieces().get(id);
-                }
-            }
+            Nest nest = getNestById(nestId);
+            rolled = false;             // whenever there is a pick, the checker will reset to continuously check the next turn
+            return nest.getPieces().get(id);
         }
-        return null;
+        return null;                    // If the player does not roll yet, there is no piece is picked
     }
 
-    void deploy(int id){
-        Piece piece = pick(id);
-        for (int i = 0; i < 4; i++) {
-            if (nest.get(i).getNestById().equals(Integer.toString(nestId))) {
-                if (nest.get(i).getColor() == Color.BLUE){
-                    piece.setCurrentPosition(1);
-                }
-                else if(nest.get(i).getColor() == Color.YELLOW) {
-                    piece.setCurrentPosition(13);
-                }
-                else if(nest.get(i).getColor() == Color.GREEN) {
-                    piece.setCurrentPosition(25);
-                }
-                else if(nest.get(i).getColor() == Color.RED) {
-                    piece.setCurrentPosition(37);
-                }
-            }
+    void deploy(Piece piece){           // Get out the nest
+        if (color == Color.BLUE){
+            piece.setCurrentPosition(1);
+        }
+        else if(color == Color.YELLOW) {
+            piece.setCurrentPosition(13);
+        }
+        else if(color == Color.GREEN) {
+            piece.setCurrentPosition(25);
+        }
+        else if(color == Color.RED) {
+            piece.setCurrentPosition(37);
         }
     }
-
-     */
-
-
 }
+
