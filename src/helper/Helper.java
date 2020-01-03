@@ -27,7 +27,7 @@ public class Helper {
             //create 2 dices
             for (int k = 0; k < NUM_OF_DICES; k++) {
                 Dice dice = new Dice();
-                player.dices[k] = dice;
+                player.getDices()[k] = dice;
             }
         }
         return rets;

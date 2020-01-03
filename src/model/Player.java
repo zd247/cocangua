@@ -7,7 +7,13 @@ public class Player {
     private int nestId;
     private Color color;
     private int point = 0;
-    private Dice[] dice = new Dice[2];
+
+    // Get array of Dice
+    public Dice[] getDices() {
+        return dices;
+    }
+
+    private Dice[] dices = new Dice[2];
     private boolean rolled;         // Check for the roll action
 
     Player(){
@@ -19,7 +25,7 @@ public class Player {
     private static Nest getNestById(int id) {           // get the nest by id
         return new Nest(id);
     }
-    void setNestId(int id){
+    public void setNestId(int id){
         nestId = id;
     }
     int getNestId(){
@@ -43,7 +49,7 @@ public class Player {
 
     int movePosition(Piece piece){          // return the next position the piece has to travel
         int destination;
-        destination = piece.getCurrentPosition() + dice[0].getFace() + dice[1].getFace();
+        destination = piece.getCurrentPosition() + dices[0].getFace() + dices[1].getFace();
         if (destination > 47){              // keep moving without crashing, there are only 47 steps, so the step which is next to 47 is 0
             destination = destination - 47;
         }
@@ -52,8 +58,8 @@ public class Player {
     void resetPoint () {this.point = 0;}        // reset the point
 
     void roll(){                //roll
-        dice[0].roll();
-        dice[1].roll();
+        dices[0].roll();
+        dices[1].roll();
         rolled = true;          // this player has rolled
     }
     boolean checkRoll(){
