@@ -3,6 +3,7 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -19,11 +20,13 @@ import static helper.Helper.*;
  */
 
 public class Controller implements Initializable {
+    public Label faceDice;
     @FXML
     private BorderPane container;
     @FXML
     private Button rollDiceBtn;
 
+    private int moveAmount;
     Map map;
 
     int NUM_OF_PLAYER = 4;
@@ -50,7 +53,7 @@ public class Controller implements Initializable {
 //        }
 
         //Move the piece with move amount 3
-        int moveAmount = 3;
+
         //Run through nest color and create piece
         for (int i = 0; i < Map.REGION_COLOR.length; i++){
             int finalI = i;
@@ -79,12 +82,17 @@ public class Controller implements Initializable {
     /**
      * Input listener for dice rolling button
      * @param mouseEvent
+     * @return void;
      */
     @FXML
-    private int rollDice(MouseEvent mouseEvent) {
+    private void rollDice(MouseEvent mouseEvent) {
         //Roll dice here, wilasdasd
-        int ret = 0;
 
-        return ret;
+        Dice dice = new Dice();
+        rollDiceBtn.setOnMouseClicked(event -> {
+            dice.roll();
+            moveAmount = dice.getFace();
+            faceDice.setText(""+moveAmount);
+        });
     }
 }

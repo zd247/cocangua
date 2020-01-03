@@ -13,7 +13,7 @@ public class Dice {
         Random random = new Random();
         this.face = random.nextInt(6) + 1;
     }
-    int getFace(){
+    public int getFace(){
         return face;
     }
 }
