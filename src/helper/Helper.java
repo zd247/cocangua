@@ -1,11 +1,13 @@
 package helper;
 
+import javafx.scene.paint.Color;
 import model.*;
+import view.PieceView;
 
 public class Helper {
     public static final int NUM_OF_DICES = 2;
     public static final int NUM_OF_PIECES = 4;
-
+    final private static Color[] PIECE_COLOR = {Color.BEIGE, Color.BLUEVIOLET, Color.RED, Color.KHAKI};
 
     public static Player[] createPlayers(int numOfPlayer) {
         Player[] rets = new Player[numOfPlayer];
@@ -14,7 +16,7 @@ public class Helper {
             Nest nest = new Nest (i); // change to enum cycle of 4
             //pieces
             for (int j = 0; j < NUM_OF_PIECES;j++) {
-                Piece piece = new Piece(i, -1, false, false, false);
+                Piece piece = new Piece(i, -1);
                 nest.addPiece(piece);
             }
 

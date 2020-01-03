@@ -13,12 +13,12 @@ public class Piece {
     //=================================[]=====================================
 
 
-    public Piece(int nestId, int currentPosition, boolean isDeployed, boolean isBlocked, boolean isHome) {
+    public Piece(int nestId, int currentPosition) {
         this.nestId = nestId;
         this.currentPosition = currentPosition;
-        this.isDeployed = isDeployed;
-        this.isBlocked = isBlocked;
-        this.isHome = isHome;
+        this.isDeployed = false;
+        this.isBlocked = true;
+        this.isHome = true;
     }
 
     public int getNestId() {
@@ -63,26 +63,11 @@ public class Piece {
 
     //=================================[]=====================================
 
-    public void setColor () {
-
-    }
-
-    public  boolean checkForBlock() {
-        return false;
-    }
-
-    public void move(int moveAmount) {
-
-    }
 
     public void kick (Piece piece) {
-
+        if (piece.getCurrentPosition() == this.currentPosition){
+            piece.setHome(true);
+        }
     }
-
-
-
-
-
-
 
 }
