@@ -56,7 +56,7 @@ public class Controller implements Initializable {
             int finalI = i;
             Piece piece = new Piece(i,-1);
             PieceView p = new PieceView(PIECE_COLOR[i]);
-            p.startPosition(map,Map.REGION_COLOR[i]);
+            p.startPosition(map, i);
             p.setOnMouseClicked(event -> {
                 //First set the piece block is false, should be deleted
                 piece.setBlocked(false);

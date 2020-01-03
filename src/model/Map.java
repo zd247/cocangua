@@ -32,7 +32,7 @@ public class Map extends Pane {
     HashMap<Integer, Space> spaceMap = new HashMap<>();
 
     // A map to store all nests with colors as their key
-    HashMap<Color, NestView> nestViewMap = new HashMap<>();
+    HashMap<Integer, NestView> nestViewMap = new HashMap<>();
 
     // Maps to store all houses
     HashMap<Integer, House> houseMap = new HashMap<>();
@@ -86,10 +86,10 @@ public class Map extends Pane {
 
     /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */
     void drawNests() {
-        drawNestByCoordinates(MAP_PADDING, MAP_PADDING, DODGERBLUE);
-        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, GOLD);
-        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, SEAGREEN);
-        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_PADDING, TOMATO);
+        drawNestByCoordinates(MAP_PADDING, MAP_PADDING, DODGERBLUE, 0);
+        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, GOLD, 1);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, SEAGREEN, 2);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_PADDING, TOMATO, 3);
     }
 
     /* DRAW THE HOME RECTANGLES AND ADD TO HOUSEMAP */
@@ -157,13 +157,13 @@ public class Map extends Pane {
     }
 
     // Draw a single nest based on position and color
-    void drawNestByCoordinates(double x, double y, Color color) {
+    void drawNestByCoordinates(double x, double y, Color color, int nestId) {
         NestView nest = new NestView(color);
         nest.setLayoutX(x);
         nest.setLayoutY(y);
 
         this.getChildren().add(nest);
-        this.nestViewMap.put(color, nest);
+        this.nestViewMap.put(nestId, nest);
     }
 
     // Set map size based on drawn Spaces
@@ -259,7 +259,7 @@ public class Map extends Pane {
         return spaceMap;
     }
 
-    public HashMap<Color, NestView> getNestViewMap() { return nestViewMap; }
+    public HashMap<Integer, NestView> getNestViewMap() { return nestViewMap; }
 
     public static double getMapWidth() {
         return MAP_WIDTH;

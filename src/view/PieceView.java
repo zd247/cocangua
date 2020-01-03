@@ -55,10 +55,10 @@ public class PieceView extends Circle {
         return currentIndex;
     }
 
-    public void startPosition(Map map,Color nestColor){
-        NestView nest = map.getNestViewMap().get(nestColor);
-        double x = nest.getLayoutX() + NestView.NEST_SIZE/2;
-        double y = nest.getLayoutY()+ NestView.NEST_SIZE/2;
+    public void startPosition(Map map, int nestId){
+        NestView nest = map.getNestViewMap().get(nestId);
+        double x = nest.getLayoutX() + NestView.NEST_SIZE / 2;
+        double y = nest.getLayoutY() + NestView.NEST_SIZE / 2;
         setLayoutX(x);
         setLayoutY(y);
     }
@@ -77,7 +77,7 @@ public class PieceView extends Circle {
     }
 
     public int checkOneRound(int currentIndex, int moveAmout){
-        if (currentIndex+moveAmout > Map.RED_ARRIVAL+10){
+        if (currentIndex+moveAmout > Map.RED_ARRIVAL + 10){
             return 0;
         }
         return 0;
