@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 // The circle that a Piece will travel through
+// Can be accessed via index at map.spaceMap
+// Get coordinates by space.getLayoutX() and space.getLayoutY()
 public class Space extends Circle {
     boolean isOccupied;
     private Piece piece;    // Piece currently on space
@@ -15,11 +17,15 @@ public class Space extends Circle {
         this.piece = null;
     }
 
-    // Get coordinates of this space
-    public double getX() {
-        return this.getLayoutX();
+    // Get and set occupancy state
+    public boolean getOccupancy() { return this.isOccupied; }
+    public void setOccupancy(boolean isOccupied) {
+        this.isOccupied = isOccupied;
     }
-    public double getY() {
-        return this.getLayoutY();
+
+    // Get and set Piece
+    public Piece getPiece() { return this.piece; }
+    public void setPiece(Piece piece) {
+        this.piece = piece;
     }
 }

@@ -2,7 +2,9 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import model.*;
 
@@ -17,9 +19,11 @@ import static helper.Helper.*;
 
 public class Controller implements Initializable {
     @FXML
-    private Pane container;
+    private BorderPane container;
+    @FXML
+    private Button rollDiceBtn;
 
-    Board board;
+    Map map;
 
     int NUM_OF_PLAYER = 4;
     Player[] players = new Player[NUM_OF_PLAYER];
@@ -28,8 +32,8 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // draw board
-        board = new Board ();
-        container.getChildren().addAll(board);
+        map = new Map ();
+        container.setCenter(map);
 
         createPlayers(NUM_OF_PLAYER);
 

@@ -1,51 +1,52 @@
-package view;
+package model;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import view.NestView;
 
 import java.util.HashMap;
 
 import static javafx.scene.paint.Color.*;
 
+/* MAP CLASS THAT CONTAINS ALL GUI ELEMENTS + HASHMAP FOR INDEX */
 public class Map extends Pane {
+    // Size constants for map drawing
     final static double CIRCLE_RADIUS = 20;
     final static double POS_GAP = 5;
     final static double ARRIVAL_GAP = 45;
     final static double MAP_PADDING = 20;
 
+    // Defined indexes for reference
+    final public static int BLUE_ARRIVAL = 0;
+    final public static int YELLOW_ARRIVAL = 12;
+    final public static int GREEN_ARRIVAL = 24;
+    final public static int RED_ARRIVAL = 36;
     final public static int BLUE_START = 1;
-    final static int YELLOW_START = 13;
-    final static int GREEN_START = 25;
-    final static int RED_START = 37;
+    final public static int YELLOW_START = 13;
+    final public static int GREEN_START = 25;
+    final public static int RED_START = 37;
 
     // A map to store all circle positions
-    public static HashMap<Integer, Space> spaceMap = new HashMap<>();
+    HashMap<Integer, Space> spaceMap = new HashMap<>();
 
-    // Create a board (currently only have circles)
+    // A map to store all nests with colors as their key
+    HashMap<Color, NestView> nestViewMap = new HashMap<>();
+
+    // Map's width and height
+    public static double MAP_WIDTH;
+    public static double MAP_HEIGHT;
+
+    /* FUNCTIONS BELOW */
+
+    // Construct a map with Spaces and Nests
     public Map() {
-        // Draw circle spaces
+        // Draw all the GUI elements
         drawSpaces();
-
-        MyNest blueNest = new MyNest(DODGERBLUE);
-        blueNest.setLayoutX(10);
-        blueNest.setLayoutY(10);
-        this.getChildren().add(blueNest);
-
-        // Mark starting positions
-        markSpace(spaceMap.get(BLUE_START));
-        markSpace(spaceMap.get(YELLOW_START));
-        markSpace(spaceMap.get(GREEN_START));
-        markSpace(spaceMap.get(RED_START));
-
-        // Wrap map around Spaces
-        wrapMap();
-
-        // Print total of circles in HashMap
-        System.out.println(spaceMap.size());
+        defineMapSize();    // Vital for future draws
+        drawNests();
     }
 
-    /* DRAW THE BOARD AND ADD CIRCLES TO HASHMAP */
+    /* DRAW THE CIRCLE SPACES AND ADD THEM TO SPACEMAP */
     void drawSpaces() {
         // Draw Blue region
         drawArrivalSpace(0, 0, DODGERBLUE, spaceMap.size());
@@ -66,17 +67,46 @@ public class Map extends Pane {
         drawArrivalSpace(0, -(CIRCLE_RADIUS * 2 + ARRIVAL_GAP), TOMATO, spaceMap.size());
         drawHorizontalSpaces(0, -(CIRCLE_RADIUS * 2 + ARRIVAL_GAP), TOMATO, spaceMap.size(), false);
         drawVerticalSpaces(-(CIRCLE_RADIUS * 2 + POS_GAP), TOMATO, spaceMap.size(), false);
+
+        // Mark starting positions
+        markSpace(spaceMap.get(BLUE_START));
+        markSpace(spaceMap.get(YELLOW_START));
+        markSpace(spaceMap.get(GREEN_START));
+        markSpace(spaceMap.get(RED_START));
+    }
+
+    /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */
+    void drawNests() {
+        drawNestByCoordinates(MAP_PADDING, MAP_PADDING, DODGERBLUE);
+        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, GOLD);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, SEAGREEN);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_PADDING, TOMATO);
+    }
+
+    // Draw a single nest based on position and color
+    void drawNestByCoordinates(double x, double y, Color color) {
+        NestView nest = new NestView(color);
+        nest.setLayoutX(x);
+        nest.setLayoutY(y);
+
+        this.getChildren().add(nest);
+        this.nestViewMap.put(color, nest);
     }
 
     // Set map size based on drawn Spaces
-    void wrapMap() {
+    void defineMapSize() {
         // Get distance between top & bottom arrival spaces (660 x 660)
         double x = spaceMap.get(RED_START - 1).getLayoutX() - spaceMap.get(YELLOW_START - 1).getLayoutX();
         double y = spaceMap.get(GREEN_START - 1).getLayoutY() - spaceMap.get(BLUE_START - 1).getLayoutY();
 
+        // Add padding to extracted width and height
+        MAP_WIDTH = x + CIRCLE_RADIUS * 2 + MAP_PADDING * 2;
+        MAP_HEIGHT = y + CIRCLE_RADIUS * 2 + MAP_PADDING * 2;
+
         // Wrap map around circles
-        setPrefWidth(x + CIRCLE_RADIUS * 2 + MAP_PADDING * 2);
-        setMaxHeight(y + CIRCLE_RADIUS * 2 + MAP_PADDING * 2);
+        setPrefSize(MAP_WIDTH, MAP_HEIGHT);
+        setMinSize(MAP_WIDTH, MAP_HEIGHT);
+        setMaxSize(MAP_WIDTH, MAP_HEIGHT);
         setStyle("-fx-border-color: black");
     }
 
@@ -149,5 +179,17 @@ public class Map extends Pane {
     void markSpace(Space space) {
         space.setStroke(BLACK);
         space.setStrokeWidth(2);
+    }
+
+    // Getters
+    public HashMap<Integer, Space> getSpaceMap() {
+        return spaceMap;
+    }
+    public HashMap<Color, NestView> getNestViewMap() { return nestViewMap; }
+    public static double getMapWidth() {
+        return MAP_WIDTH;
+    }
+    public static double getMapHeight() {
+        return MAP_HEIGHT;
     }
 }
