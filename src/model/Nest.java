@@ -21,10 +21,9 @@ public class Nest {
     public Nest(int id) {
         this.id = id;
         this.color = Color.BLUE;
-        pieces = new ArrayList<>(List.of(new Piece(id, -1, false, false, true ),
-                                    new Piece(id, -1, false, false, true ),
-                                    new Piece(id, -1, false, false, true ),
-                                    new Piece(id, -1, false, false, true )));
+
+        // CHANGED DUE TO CHANGES IN PIECE - HAN
+        pieces = new ArrayList<>();
     }
 
     //getter
