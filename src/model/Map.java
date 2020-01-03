@@ -41,6 +41,9 @@ public class Map extends Pane {
     public static double MAP_WIDTH;
     public static double MAP_HEIGHT;
 
+    //Set color of region
+    final public static Color[] REGION_COLOR = {Color.DODGERBLUE, Color.GOLD, Color.SEAGREEN,Color.TOMATO};
+
     /* FUNCTIONS BELOW */
 
     // Construct a map with Spaces and Nests
@@ -55,24 +58,24 @@ public class Map extends Pane {
     /* DRAW THE CIRCLE SPACES AND ADD THEM TO SPACEMAP */
     void drawSpaces() {
         // Draw Blue region
-        drawArrivalSpace(0, 0, DODGERBLUE, spaceMap.size());
-        drawVerticalSpaces(-(CIRCLE_RADIUS * 2 + ARRIVAL_GAP), DODGERBLUE, spaceMap.size(), true);
-        drawHorizontalSpaces(-(CIRCLE_RADIUS * 2 + POS_GAP), 0, DODGERBLUE, spaceMap.size(), false);
+        drawArrivalSpace(0, 0, REGION_COLOR[0], spaceMap.size());
+        drawVerticalSpaces(-(CIRCLE_RADIUS * 2 + ARRIVAL_GAP), REGION_COLOR[0], spaceMap.size(), true);
+        drawHorizontalSpaces(-(CIRCLE_RADIUS * 2 + POS_GAP), 0, REGION_COLOR[0], spaceMap.size(), false);
 
         // Draw Yellow region
-        drawArrivalSpace(0, CIRCLE_RADIUS * 2 + ARRIVAL_GAP, GOLD, spaceMap.size());
-        drawHorizontalSpaces(0, CIRCLE_RADIUS * 2 + ARRIVAL_GAP, GOLD, spaceMap.size(), true);
-        drawVerticalSpaces(CIRCLE_RADIUS * 2 + POS_GAP, GOLD, spaceMap.size(), true);
+        drawArrivalSpace(0, CIRCLE_RADIUS * 2 + ARRIVAL_GAP, REGION_COLOR[1], spaceMap.size());
+        drawHorizontalSpaces(0, CIRCLE_RADIUS * 2 + ARRIVAL_GAP, REGION_COLOR[1], spaceMap.size(), true);
+        drawVerticalSpaces(CIRCLE_RADIUS * 2 + POS_GAP,REGION_COLOR[1], spaceMap.size(), true);
 
         // Draw Green region
-        drawArrivalSpace(CIRCLE_RADIUS * 2 + ARRIVAL_GAP, 0, SEAGREEN, spaceMap.size());
-        drawVerticalSpaces(CIRCLE_RADIUS * 2 + ARRIVAL_GAP, SEAGREEN, spaceMap.size(), false);
-        drawHorizontalSpaces(CIRCLE_RADIUS * 2 + POS_GAP, 0, SEAGREEN, spaceMap.size(), true);
+        drawArrivalSpace(CIRCLE_RADIUS * 2 + ARRIVAL_GAP, 0, REGION_COLOR[2], spaceMap.size());
+        drawVerticalSpaces(CIRCLE_RADIUS * 2 + ARRIVAL_GAP, REGION_COLOR[2], spaceMap.size(), false);
+        drawHorizontalSpaces(CIRCLE_RADIUS * 2 + POS_GAP, 0, REGION_COLOR[2], spaceMap.size(), true);
 
         // Draw Red region
-        drawArrivalSpace(0, -(CIRCLE_RADIUS * 2 + ARRIVAL_GAP), TOMATO, spaceMap.size());
-        drawHorizontalSpaces(0, -(CIRCLE_RADIUS * 2 + ARRIVAL_GAP), TOMATO, spaceMap.size(), false);
-        drawVerticalSpaces(-(CIRCLE_RADIUS * 2 + POS_GAP), TOMATO, spaceMap.size(), false);
+        drawArrivalSpace(0, -(CIRCLE_RADIUS * 2 + ARRIVAL_GAP), REGION_COLOR[3], spaceMap.size());
+        drawHorizontalSpaces(0, -(CIRCLE_RADIUS * 2 + ARRIVAL_GAP), REGION_COLOR[3], spaceMap.size(), false);
+        drawVerticalSpaces(-(CIRCLE_RADIUS * 2 + POS_GAP), REGION_COLOR[3], spaceMap.size(), false);
 
         // Mark starting positions
         markSpace(spaceMap.get(BLUE_START));
