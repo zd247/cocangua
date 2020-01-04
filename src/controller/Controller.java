@@ -37,7 +37,7 @@ public class Controller implements Initializable {
     private int moveAmount;
 
     Map map;
-    private int check = 0;
+    private int check = -1;
     int NUM_OF_PLAYER = 4;
     Player[] players = new Player[NUM_OF_PLAYER];
 
