@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -38,10 +37,9 @@ public class Controller implements Initializable {
     private int moveAmount;
 
     Map map;
-    int check = 0;
+    private int check = -1;
     int NUM_OF_PLAYER = 4;
     Player[] players = new Player[NUM_OF_PLAYER];
-    Dice dice = new Dice();
 
     /**
      * Set color
@@ -76,7 +74,7 @@ public class Controller implements Initializable {
             p.setOnMouseClicked(event -> {
                 if(player.isRolled()) {
                     if (check == finalI) {
-                        if (piece.getCurrentPosition() != -1 || moveAmount == 6) {
+                        if (piece.getCurrentPosition() != -1 || player.getDices()[0].getFace() == 6 || player.getDices()[1].getFace() == 6) {
                             player.resetCheck();
                             //First set the piece block is false, should be deleted
                             piece.setBlocked(false);
@@ -101,18 +99,23 @@ public class Controller implements Initializable {
 
     /**
      * Input listener for dice rolling button
-     * @param
+     * @param mouseEvent
      * @return void;
      */
     @FXML
-    private void rollDice(ActionEvent eEvent) {
+    private void rollDice(MouseEvent mouseEvent) {
         //Roll dice here, wilasdasd
-        check++;
-        if (check == 4){
-            check = 0;
-        }
-        player.roll();
-        moveAmount = player.getDices()[0].getFace();
-        faceDice1.setText("" + moveAmount);
+
+        Dice dice = new Dice();
+        rollDiceBtn.setOnMouseClicked(event -> {
+            if (check == 4){
+                check = 0;
+            }
+            player.roll();
+            moveAmount = player.getDices()[0].getFace() + player.getDices()[1].getFace();
+            faceDice1.setText("" + player.getDices()[0].getFace());
+            faceDice2.setText("" + player.getDices()[1].getFace() );
+            check++;
+        });
     }
 }
