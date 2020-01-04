@@ -3,28 +3,39 @@ package model;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import static javafx.scene.paint.Color.WHITE;
+
 // The circle that a Piece will travel through
 // Can be accessed via index at map.spaceMap
 // Get coordinates by space.getLayoutX() and space.getLayoutY()
-public class Space extends Circle {
+public class Space extends Circle implements Position {
     boolean isOccupied;
-    private Piece piece;    // Piece currently on space
+    Piece piece;
 
-    // Construct a space bases on input
     public Space(Color color) {
         setRadius(20);
-        setFill(color);
+        setStroke(color);
+        setStrokeWidth(2);
+        setFill(WHITE);
         this.piece = null;
     }
 
-    // Get and set occupancy state
-    public boolean getOccupancy() { return this.isOccupied; }
+    @Override
+    public boolean getOccupancy() {
+        return isOccupied;
+    }
+
+    @Override
     public void setOccupancy(boolean isOccupied) {
         this.isOccupied = isOccupied;
     }
 
-    // Get and set Piece
-    public Piece getPiece() { return this.piece; }
+    @Override
+    public Piece getPiece() {
+        return piece;
+    }
+
+    @Override
     public void setPiece(Piece piece) {
         this.piece = piece;
     }

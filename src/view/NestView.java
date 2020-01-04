@@ -22,9 +22,7 @@ public class NestView extends StackPane {
 
         // Draw a circle
         Circle circle = new Circle(75);
-        circle.setStroke(WHITE);
-        circle.setStrokeWidth(1);
-        circle.setFill(color);
+        circle.setFill(WHITE);
 
         // Place circle on the square
         this.getChildren().addAll(rec, circle);

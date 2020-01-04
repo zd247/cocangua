@@ -8,9 +8,10 @@ public class Piece {
     private boolean isDeployed;
     private boolean isBlocked;
     private boolean isHome;
+    private boolean isFinished;
     private Color color;
-
-    //=================================[]=====================================
+    private int move;
+//=================================[]=====================================
 
 
     public Piece(int nestId, int currentPosition) {
@@ -19,6 +20,7 @@ public class Piece {
         this.isDeployed = false;
         this.isBlocked = true;
         this.isHome = true;
+        this.isFinished = false;
     }
 
     public int getNestId() {
@@ -61,8 +63,23 @@ public class Piece {
         isHome = home;
     }
 
-    //=================================[]=====================================
+    public int getMove() {
+        return move;
+    }
 
+    public void setMove(int move) {
+        this.move = move;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
+
+    //=================================[]=====================================
 
     public void kick (Piece piece) {
         if (piece.getCurrentPosition() == this.currentPosition){

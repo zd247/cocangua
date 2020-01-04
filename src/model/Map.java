@@ -25,12 +25,21 @@ public class Map extends Pane {
     final public static int YELLOW_START = 13;
     final public static int GREEN_START = 25;
     final public static int RED_START = 37;
+    final public static double HOUSE_LONG_SIDE = 86;
+    final public static double HOUSE_SHORT_SIDE = 32;
+    final public static int BLUE_HOUSE_1 = 0;
+    final public static int YELLOW_HOUSE_1 = 6;
+    final public static int GREEN_HOUSE_1 = 12;
+    final public static int RED_HOUSE_1 = 18;
 
     // A map to store all circle positions
     HashMap<Integer, Space> spaceMap = new HashMap<>();
 
     // A map to store all nests with colors as their key
-    HashMap<Color, NestView> nestViewMap = new HashMap<>();
+    HashMap<Integer, NestView> nestViewMap = new HashMap<>();
+
+    // Maps to store all houses
+    HashMap<Integer, House> houseMap = new HashMap<>();
 
     // Map's width and height
     public static double MAP_WIDTH;
@@ -47,6 +56,7 @@ public class Map extends Pane {
         drawSpaces();
         defineMapSize();    // Vital for future draws
         drawNests();
+        drawHouses();
     }
 
     /* DRAW THE CIRCLE SPACES AND ADD THEM TO SPACEMAP */
@@ -80,20 +90,84 @@ public class Map extends Pane {
 
     /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */
     void drawNests() {
-        drawNestByCoordinates(MAP_PADDING, MAP_PADDING, DODGERBLUE);
-        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, GOLD);
-        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, SEAGREEN);
-        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_PADDING, TOMATO);
+        drawNestByCoordinates(MAP_PADDING, MAP_PADDING, DODGERBLUE, 0);
+        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, GOLD, 1);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, SEAGREEN, 2);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_PADDING, TOMATO, 3);
+    }
+
+    /* DRAW THE HOME RECTANGLES AND ADD TO HOUSEMAP */
+    void drawHouses() {
+        double x, y;
+        Space space;
+
+        // Get coordinates of Blue arrival
+        space = spaceMap.get(BLUE_ARRIVAL);
+        x = space.getLayoutX();
+        y = space.getLayoutY();
+
+        // Draw blue houses based on arrival space's coordinates
+        drawHousesVertically(x - HOUSE_LONG_SIDE / 2, y + CIRCLE_RADIUS + 25, DODGERBLUE, BLUE_HOUSE_1, true);
+
+        // Same with Yellow houses
+        space = spaceMap.get(YELLOW_ARRIVAL);
+        x = space.getLayoutX();
+        y = space.getLayoutY();
+        drawHousesHorizontally(x + CIRCLE_RADIUS + 25, y - HOUSE_LONG_SIDE / 2, GOLD, YELLOW_HOUSE_1, true);
+
+        // Green houses
+        space = spaceMap.get(GREEN_ARRIVAL);
+        x = space.getLayoutX();
+        y = space.getLayoutY();
+        drawHousesVertically(x - HOUSE_LONG_SIDE / 2, y - (CIRCLE_RADIUS + 25 + HOUSE_SHORT_SIDE), SEAGREEN, GREEN_HOUSE_1, false);
+
+        // Same with Red houses
+        space = spaceMap.get(RED_ARRIVAL);
+        x = space.getLayoutX();
+        y = space.getLayoutY();
+        drawHousesHorizontally(x - (CIRCLE_RADIUS + 25 + HOUSE_SHORT_SIDE), y - HOUSE_LONG_SIDE / 2, TOMATO, RED_HOUSE_1, false);
+    }
+
+    // Draw 6 rectangles of specified color horizontally
+    void drawHousesHorizontally(double x, double y, Color color, int startIndex, boolean isLtR) {
+        for (int i = 0; i < 6; i++) {
+            House house = new House(color, HOUSE_SHORT_SIDE, HOUSE_LONG_SIDE, i + 1);
+            house.setLayoutY(y);
+
+            if (isLtR)
+                house.setLayoutX(x + i * (HOUSE_SHORT_SIDE + POS_GAP));
+            else
+                house.setLayoutX(x - i * (HOUSE_SHORT_SIDE + POS_GAP));
+
+            this.getChildren().add(house);
+            houseMap.put(i + startIndex, house);
+        }
+    }
+
+    // Draw 6 rectangles of specified color vertically
+    void drawHousesVertically(double x, double y, Color color, int startIndex, boolean isUtD) {
+        for (int i = 0; i < 6; i++) {
+            House house = new House(color, HOUSE_LONG_SIDE, HOUSE_SHORT_SIDE, i + 1);
+            house.setLayoutX(x);
+
+            if (isUtD)
+                house.setLayoutY(y + i * (HOUSE_SHORT_SIDE + POS_GAP));
+            else
+                house.setLayoutY(y - i * (HOUSE_SHORT_SIDE + POS_GAP));
+
+            this.getChildren().add(house);
+            houseMap.put(i + startIndex, house);
+        }
     }
 
     // Draw a single nest based on position and color
-    void drawNestByCoordinates(double x, double y, Color color) {
+    void drawNestByCoordinates(double x, double y, Color color, int nestId) {
         NestView nest = new NestView(color);
         nest.setLayoutX(x);
         nest.setLayoutY(y);
 
         this.getChildren().add(nest);
-        this.nestViewMap.put(color, nest);
+        this.nestViewMap.put(nestId, nest);
     }
 
     // Set map size based on drawn Spaces
@@ -180,18 +254,24 @@ public class Map extends Pane {
 
     // Change border of space to black
     void markSpace(Space space) {
-        space.setStroke(BLACK);
-        space.setStrokeWidth(2);
+        space.setStrokeWidth(4);
     }
 
     // Getters
     public HashMap<Integer, Space> getSpaceMap() {
         return spaceMap;
     }
-    public HashMap<Color, NestView> getNestViewMap() { return nestViewMap; }
+
+    public HashMap<Integer, NestView> getNestViewMap() { return nestViewMap; }
+
+    public HashMap<Integer, House> getHouseMap() {
+        return houseMap;
+    }
+
     public static double getMapWidth() {
         return MAP_WIDTH;
     }
+
     public static double getMapHeight() {
         return MAP_HEIGHT;
     }

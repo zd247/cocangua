@@ -9,9 +9,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import view.PieceView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Nest {
     private int id;
@@ -21,6 +21,8 @@ public class Nest {
     public Nest(int id) {
         this.id = id;
         this.color = Color.BLUE;
+
+        // CHANGED DUE TO CHANGES IN PIECE - HAN
         pieces = new ArrayList<>();
     }
 

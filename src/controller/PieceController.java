@@ -67,8 +67,8 @@ public class PieceController {
         });
     }
 
-    public void startPosition(Map map,Color nestColor){
-        view.startPosition(map,nestColor);
+    public void startPosition(Map map, int nestId, int pieceId){
+        view.startPosition(map, nestId, pieceId);
         piece.setBlocked(true);
         piece.setDeployed(false);
     }
