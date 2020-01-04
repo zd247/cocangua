@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -40,6 +41,7 @@ public class Controller implements Initializable {
     int check = 0;
     int NUM_OF_PLAYER = 4;
     Player[] players = new Player[NUM_OF_PLAYER];
+    Dice dice = new Dice();
 
     /**
      * Set color
@@ -99,22 +101,18 @@ public class Controller implements Initializable {
 
     /**
      * Input listener for dice rolling button
-     * @param mouseEvent
+     * @param
      * @return void;
      */
     @FXML
-    private void rollDice(MouseEvent mouseEvent) {
+    private void rollDice(ActionEvent eEvent) {
         //Roll dice here, wilasdasd
-
-        Dice dice = new Dice();
-        rollDiceBtn.setOnMouseClicked(event -> {
-            check++;
-            if (check == 4){
-                check = 0;
-            }
-            player.roll();
-            moveAmount = player.getDices()[0].getFace();
-            faceDice1.setText("" + moveAmount);
-        });
+        check++;
+        if (check == 4){
+            check = 0;
+        }
+        player.roll();
+        moveAmount = player.getDices()[0].getFace();
+        faceDice1.setText("" + moveAmount);
     }
 }
