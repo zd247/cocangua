@@ -1,10 +1,10 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import model.*;
@@ -37,9 +37,10 @@ public class Controller implements Initializable {
     private int moveAmount;
 
     Map map;
-    private int check = -1;
+    private int check = 0;
     int NUM_OF_PLAYER = 4;
     Player[] players = new Player[NUM_OF_PLAYER];
+
 
     /**
      * Set color
@@ -99,23 +100,19 @@ public class Controller implements Initializable {
 
     /**
      * Input listener for dice rolling button
-     * @param mouseEvent
+     * @param
      * @return void;
      */
     @FXML
-    private void rollDice(MouseEvent mouseEvent) {
+    private void rollDice(ActionEvent event) {
         //Roll dice here, wilasdasd
-
-        Dice dice = new Dice();
-        rollDiceBtn.setOnMouseClicked(event -> {
-            if (check == 4){
-                check = 0;
-            }
-            player.roll();
-            moveAmount = player.getDices()[0].getFace() + player.getDices()[1].getFace();
-            faceDice1.setText("" + player.getDices()[0].getFace());
-            faceDice2.setText("" + player.getDices()[1].getFace() );
-            check++;
-        });
+        if (check == 4){
+            check = 0;
+        }
+        player.roll();
+        moveAmount = player.getDices()[0].getFace() + player.getDices()[1].getFace();
+        faceDice1.setText("" + player.getDices()[0].getFace());
+        faceDice2.setText("" + player.getDices()[1].getFace());
+        check++;
     }
 }
