@@ -25,7 +25,7 @@ public class Controller implements Initializable {
     private BorderPane container;
     @FXML
     private Button rollDiceBtn;
-
+    Player player = new Player("Hello");
     private int moveAmount;
     Map map;
 
@@ -54,19 +54,35 @@ public class Controller implements Initializable {
 
         //Move the piece with move amount 3
 
+
+
         //Run through nest color and create piece
+        var ref = new Object() {
+            int check = 0;
+        };
         for (int i = 0; i < Map.REGION_COLOR.length; i++){
             int finalI = i;
             Piece piece = new Piece(i,-1);
             PieceView p = new PieceView(PIECE_COLOR[i]);
             p.startPosition(map, i);
             p.setOnMouseClicked(event -> {
-                //First set the piece block is false, should be deleted
-                piece.setBlocked(false);
-                int nextPosition = p.movePiece(piece.getCurrentPosition(),moveAmount,map,Map.REGION_COLOR[finalI],piece.isHome(),piece.isBlocked());
-                piece.setCurrentPosition(nextPosition);
-                if (piece.isHome()){
-                    piece.setHome(false);
+                if (ref.check == 4){
+                    ref.check = 0;
+                }
+                if(player.checkRoll()) {
+                    if (ref.check == finalI) {
+                        ref.check++;
+                        if (piece.getCurrentPosition() != -1 || moveAmount == 6) {
+                            player.resetCheck();
+                            //First set the piece block is false, should be deleted
+                            piece.setBlocked(false);
+                            int nextPosition = p.movePiece(piece.getCurrentPosition(), moveAmount, map, Map.REGION_COLOR[finalI], piece.isHome(), piece.isBlocked());
+                            piece.setCurrentPosition(nextPosition);
+                            if (piece.isHome()) {
+                                piece.setHome(false);
+                            }
+                        }
+                    }
                 }
             });
             map.getChildren().add(p);
@@ -90,8 +106,8 @@ public class Controller implements Initializable {
 
         Dice dice = new Dice();
         rollDiceBtn.setOnMouseClicked(event -> {
-            dice.roll();
-            moveAmount = dice.getFace();
+            player.roll();
+            moveAmount = player.getDices()[0].getFace();
             faceDice.setText(""+moveAmount);
         });
     }
