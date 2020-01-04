@@ -20,13 +20,22 @@ import static helper.Helper.*;
  */
 
 public class Controller implements Initializable {
-    public Label faceDice;
+    @FXML
+    public Label faceDice1; // Dice 1's rolled number
+
+    @FXML
+    public Label faceDice2; // Dice 2's rolled number
+
     @FXML
     private BorderPane container;
+
     @FXML
     private Button rollDiceBtn;
+
     Player player = new Player("Hello");
+
     private int moveAmount;
+
     Map map;
 
     int NUM_OF_PLAYER = 4;
@@ -35,7 +44,7 @@ public class Controller implements Initializable {
     /**
      * Set color
      */
-    final private static Color[] PIECE_COLOR = {Color.BEIGE, Color.BLUEVIOLET, Color.RED, Color.KHAKI};
+    final private static Color[] PIECE_COLOR = {Color.DODGERBLUE, Color.GOLD, Color.SEAGREEN, Color.TOMATO};
     //Piece color
 
     @Override
@@ -108,7 +117,7 @@ public class Controller implements Initializable {
         rollDiceBtn.setOnMouseClicked(event -> {
             player.roll();
             moveAmount = player.getDices()[0].getFace();
-            faceDice.setText("" + moveAmount);
+            faceDice1.setText("" + moveAmount);
         });
     }
 }
