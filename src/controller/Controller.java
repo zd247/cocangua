@@ -30,16 +30,18 @@ public class Controller implements Initializable {
     private BorderPane container;
 
     @FXML
+    private Label playerName;
+
+    @FXML
     private Button rollDiceBtn;
 
-    Player player = new Player("Hello");
 
     private int moveAmount;
 
     Map map;
-    private int check = -1;
+    private int id = -1;
     int NUM_OF_PLAYER = 4;
-    Player[] players = new Player[NUM_OF_PLAYER];
+    Player[] players = {new Player("Player 1"),new Player("Player 2"),new Player("Player 3"),new Player("Player 4"),};
 
 
     /**
@@ -73,10 +75,10 @@ public class Controller implements Initializable {
             PieceView p = new PieceView(PIECE_COLOR[i]);
             p.startPosition(map, i);
             p.setOnMouseClicked(event -> {
-                if(player.isRolled()) {
-                    if (check == finalI) {
-                        if (piece.getCurrentPosition() != -1 || player.getDices()[0].getFace() == 6 || player.getDices()[1].getFace() == 6) {
-                            player.resetCheck();
+                if(players[finalI].isRolled()) {
+                    if (id == finalI) {
+                        if (piece.getCurrentPosition() != -1 || players[finalI].getDices()[0].getFace() == 6 || players[finalI].getDices()[1].getFace() == 6) {
+                            players[finalI].resetCheck();
                             //First set the piece block is false, should be deleted
                             piece.setBlocked(false);
                             int nextPosition = p.movePiece(piece.getCurrentPosition(), moveAmount, map, Map.REGION_COLOR[finalI], piece.isHome(), piece.isBlocked());
@@ -105,14 +107,17 @@ public class Controller implements Initializable {
      */
     @FXML
     private void rollDice(ActionEvent event) {
-        //Roll dice here, wilasdasd
-        if (check == 4){
-            check = 0;
+        if (id == 3){
+            id = 0;
         }
-        player.roll();
-        moveAmount = player.getDices()[0].getFace() + player.getDices()[1].getFace();
-        faceDice1.setText("" + player.getDices()[0].getFace());
-        faceDice2.setText("" + player.getDices()[1].getFace());
-        check++;
+        else {
+            id++;
+        }
+        //Roll dice here, wilasdasd
+        players[id].roll();
+        moveAmount = players[id].getDices()[0].getFace() + players[id].getDices()[1].getFace();
+        faceDice1.setText("" + players[id].getDices()[0].getFace());
+        faceDice2.setText("" + players[id].getDices()[1].getFace());
+        playerName.setText("" + players[id].getName());
     }
 }
