@@ -2,29 +2,39 @@ package model;
 
 import javafx.scene.paint.Color;
 
+// Player class
 public class Player {
+    // Player attributes
     private String name;
     private int nestId;
     private Color color;
     private int point = 0;
+    private boolean rolled; // Check if the player has played their turn
+    private Dice[] dices = {new Dice(), new Dice()};    // Create 2 new dices for each player
 
-    // Get array of Dice
+    // Constructor based on given name
+    public Player(String name) {
+        this.name = name;
+        this.color = getNestById(nestId).getColor(); // Set player's color
+    }
+
+    // Player name getter and setter
+    String getName(){
+        return name;
+    }
+    void setName(String name){
+        this.name = name;
+    }
+
+    // Getter for array of Dice
     public Dice[] getDices() {
         return dices;
     }
 
-    private Dice[] dices = {new Dice(), new Dice()};
-    private boolean rolled;         // Check for the roll action
-
-    Player(){
-    }
-    public Player(String name) {
-        this.name = name;           // set name
-        this.color = getNestById(nestId).getColor(); // set players color
-    }
+    // Nest getter and setter
     private static Nest getNestById(int id) {           // get the nest by id
         return new Nest(id);
-    }
+    }   // Create new nest by id
     public void setNestId(int id){
         nestId = id;
     }
@@ -32,69 +42,71 @@ public class Player {
         return nestId;
     }
 
-    void set_name(String name){
-        this.name = name;
+    // Points getter and setter
+    int getPoints(){
+        return point;
     }
-    String getName(){
-        return name;
-    }
-
-
     void storePoints(int point){
         this.point = point;
     }
-    int getPoint(){
-        return point;
-    }
 
-    public int movePosition(Piece piece){          // return the next position the piece has to travel
+    // Reset player's point
+    void resetPoints() { this.point = 0; }
+
+    // Return the next position the piece has to travel to
+    public int getDestination(Piece piece){
         int destination;
         destination = piece.getCurrentPosition() + dices[0].getFace() + dices[1].getFace();
-        if (destination > 47){              // keep moving without crashing, there are only 47 steps, so the step which is next to 47 is 0
-            destination = destination - 47;
-        }
+
+        // There are 48 only spaces (0 - 47) to travel to
+        if (destination > 47)
+            destination = destination - 47; // In case destination index goes overboard, reset it (pass Blue arrival)
         return destination;
     }
-    void resetPoint () {this.point = 0;}        // reset the point
 
-    public void roll(){                //roll
+    // Roll both dices
+    public void roll() {
         dices[0].roll();
         dices[1].roll();
-        rolled = true;          // this player has rolled
-    }
-    public boolean checkRoll(){
-        return rolled;
+        rolled = true;          // This player has rolled
     }
 
-    void stop(){
-        ;
-    }
-    public void resetCheck(){
-        rolled = false;             // whenever there is a pick, the checker will reset to continuously check the next turn
+    // Check if player has rolled
+    public boolean isRolled() { return rolled; }
+
+    void stop() {
     }
 
+    // Whenever there is a pick, the checker will reset to continuously check the next turn
+    public void resetCheck() {
+        rolled = false;
+    }
 
-    Piece pick(int id){                 // Pick the piece with its id in the nest
+    // Pick a Piece based on its id int Nest
+    Piece pick(int id){
         if (rolled) {
             Nest nest = getNestById(nestId);
-            rolled = false;             // whenever there is a pick, the checker will reset to continuously check the next turn
+            // Whenever there is a pick, the checker will reset to continuously check the next turn
+            rolled = false;
             return nest.getPieces().get(id);
         }
-        return null;                    // If the player does not roll yet, there is no piece is picked
+        // If the player hasn't rolled yet, no piece is picked
+        return null;
     }
 
-    void deploy(Piece piece){           // Get out the nest
+    // Get pieces out out the Nest
+    void deploy(Piece piece){
         if (color == Color.BLUE){
-            piece.setCurrentPosition(1);
+            piece.setCurrentPosition(Map.BLUE_START);
         }
         else if(color == Color.YELLOW) {
-            piece.setCurrentPosition(13);
+            piece.setCurrentPosition(Map.YELLOW_START);
         }
         else if(color == Color.GREEN) {
-            piece.setCurrentPosition(25);
+            piece.setCurrentPosition(Map.GREEN_START);
         }
         else if(color == Color.RED) {
-            piece.setCurrentPosition(37);
+            piece.setCurrentPosition(Map.RED_START);
         }
     }
 }

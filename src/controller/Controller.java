@@ -69,7 +69,7 @@ public class Controller implements Initializable {
                 if (ref.check == 4){
                     ref.check = 0;
                 }
-                if(player.checkRoll()) {
+                if(player.isRolled()) {
                     if (ref.check == finalI) {
                         ref.check++;
                         if (piece.getCurrentPosition() != -1 || moveAmount == 6) {
@@ -108,7 +108,7 @@ public class Controller implements Initializable {
         rollDiceBtn.setOnMouseClicked(event -> {
             player.roll();
             moveAmount = player.getDices()[0].getFace();
-            faceDice.setText(""+moveAmount);
+            faceDice.setText("" + moveAmount);
         });
     }
 }
