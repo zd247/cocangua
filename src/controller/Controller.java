@@ -37,7 +37,7 @@ public class Controller implements Initializable {
     private int moveAmount;
 
     Map map;
-
+    int check = 0;
     int NUM_OF_PLAYER = 4;
     Player[] players = new Player[NUM_OF_PLAYER];
 
@@ -66,21 +66,14 @@ public class Controller implements Initializable {
 
 
         //Run through nest color and create piece
-        var ref = new Object() {
-            int check = 0;
-        };
         for (int i = 0; i < Map.REGION_COLOR.length; i++){
             int finalI = i;
             Piece piece = new Piece(i,-1);
             PieceView p = new PieceView(PIECE_COLOR[i]);
             p.startPosition(map, i);
             p.setOnMouseClicked(event -> {
-                if (ref.check == 4){
-                    ref.check = 0;
-                }
                 if(player.isRolled()) {
-                    if (ref.check == finalI) {
-                        ref.check++;
+                    if (check == finalI) {
                         if (piece.getCurrentPosition() != -1 || moveAmount == 6) {
                             player.resetCheck();
                             //First set the piece block is false, should be deleted
@@ -115,6 +108,10 @@ public class Controller implements Initializable {
 
         Dice dice = new Dice();
         rollDiceBtn.setOnMouseClicked(event -> {
+            check++;
+            if (check == 4){
+                check = 0;
+            }
             player.roll();
             moveAmount = player.getDices()[0].getFace();
             faceDice1.setText("" + moveAmount);
