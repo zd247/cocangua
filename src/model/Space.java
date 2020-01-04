@@ -3,6 +3,8 @@ package model;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import static javafx.scene.paint.Color.WHITE;
+
 // The circle that a Piece will travel through
 // Can be accessed via index at map.spaceMap
 // Get coordinates by space.getLayoutX() and space.getLayoutY()
@@ -12,7 +14,9 @@ public class Space extends Circle implements Position {
 
     public Space(Color color) {
         setRadius(20);
-        setFill(color);
+        setStroke(color);
+        setStrokeWidth(2);
+        setFill(WHITE);
         this.piece = null;
     }
 

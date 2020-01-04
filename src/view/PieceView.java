@@ -8,7 +8,7 @@ import model.Space;
 public class PieceView extends Circle {
 
     public PieceView(Color color){
-        setRadius(10);
+        setRadius(12);
         setFill(color);
     }
 
@@ -21,7 +21,7 @@ public class PieceView extends Circle {
         if (!isBlocked){
 
             //If the piece goes out of index, then set the current index 0
-            if (currentIndex+moveAmount > 47){
+            if (currentIndex + moveAmount > 47){
                 moveAmount = moveAmount - (48 - currentIndex);
                 currentIndex = 0;
             }

@@ -27,6 +27,10 @@ public class Map extends Pane {
     final public static int YELLOW_START = 13;
     final public static int GREEN_START = 25;
     final public static int RED_START = 37;
+    final public static int BLUE_HOUSE_1 = 0;
+    final public static int YELLOW_HOUSE_1 = 6;
+    final public static int GREEN_HOUSE_1 = 12;
+    final public static int RED_HOUSE_1 = 18;
 
     // A map to store all circle positions
     HashMap<Integer, Space> spaceMap = new HashMap<>();
@@ -127,7 +131,7 @@ public class Map extends Pane {
     // Draw 6 rectangles of specified color horizontally
     void drawHousesHorizontally(double x, double y, Color color, int startIndex, boolean isLtR) {
         for (int i = 0; i < 6; i++) {
-            House house = new House(color, HOUSE_SHORT_SIDE, HOUSE_LONG_SIDE);
+            House house = new House(color, HOUSE_SHORT_SIDE, HOUSE_LONG_SIDE, i + 1);
             house.setLayoutY(y);
 
             if (isLtR)
@@ -143,7 +147,7 @@ public class Map extends Pane {
     // Draw 6 rectangles of specified color vertically
     void drawHousesVertically(double x, double y, Color color, int startIndex, boolean isUtD) {
         for (int i = 0; i < 6; i++) {
-            House house = new House(color, HOUSE_LONG_SIDE, HOUSE_SHORT_SIDE);
+            House house = new House(color, HOUSE_LONG_SIDE, HOUSE_SHORT_SIDE, i + 1);
             house.setLayoutX(x);
 
             if (isUtD)
@@ -250,8 +254,7 @@ public class Map extends Pane {
 
     // Change border of space to black
     void markSpace(Space space) {
-        space.setStroke(BLACK);
-        space.setStrokeWidth(2);
+        space.setStrokeWidth(4);
     }
 
     // Getters
