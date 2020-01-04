@@ -19,7 +19,7 @@ public class Player {
     }
 
     // Player name getter and setter
-    String getName(){
+    public String getName(){
         return name;
     }
     void setName(String name){

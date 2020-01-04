@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,17 +21,27 @@ import static helper.Helper.*;
  */
 
 public class Controller implements Initializable {
-    public Label faceDice1;
+    @FXML
+    public Label faceDice1; // Dice 1's rolled number
+
+    @FXML
+    public Label faceDice2; // Dice 2's rolled number
+
+    public Label playerName;
+
     @FXML
     private BorderPane container;
+
     @FXML
     private Button rollDiceBtn;
 
-    private int moveAmount;
-    Map map;
+    Player[] players = {new Player("Player 1"),new Player("Player 2"),new Player("Player 3"),new Player("Player 4"),};
 
+    private int moveAmount;
+
+    Map map;
+    private int id = -1;
     int NUM_OF_PLAYER = 4;
-    Player[] players = new Player[NUM_OF_PLAYER];
 
     /**
      * Set color
@@ -52,96 +63,83 @@ public class Controller implements Initializable {
 //            System.out.println(players[i].getName());
 //        }
 
-
-//        House hs1 = map.getHouseMap().get(1);
-//
-//        double x = hs1.getLayoutX() + Map.HOUSE_LONG_SIDE/2;
-//        double y = hs1.getLayoutY() + Map.HOUSE_SHORT_SIDE/2;
-//
-//        PieceView test = new PieceView(PIECE_COLOR[0]);
-//        test.setLayoutX(x);
-//        test.setLayoutY(y);
-////        test.moveToHouse(map,2,3);
-//
-//        map.getChildren().add(test);
+        //Move the piece with move amount 3
 
 
-//        Run through nest color and create piece
-        for (int i = 0; i < 4; i++){
+
+        //Run through nest color and create piece
+        for (int nestId = 0; nestId < Map.REGION_COLOR.length; nestId++){
             //nest id
 
-            for (int j = 0; j < 4 ; j++ ){
+            for (int pieceId = 0; pieceId < 4; pieceId++){
                 //piece id
 
-                int finalI = i;
-                Piece piece = new Piece(i,-1);
-                //current position is in the nest
+                int finalI = nestId;
+                Piece piece = new Piece(nestId,-1);
+                //current postion is home
 
-                PieceView p = new PieceView(PIECE_COLOR[i]);
-                p.startPosition(map, j, i );
+                PieceView p = new PieceView(PIECE_COLOR[nestId]);
+                p.startPosition(map, pieceId, nestId );
                 p.setOnMouseClicked(event -> {
-                    //First set the piece block is false, should be deleted
-                    piece.setBlocked(false);
-                    if (piece.getMove() + moveAmount < 48){
-                        //when the piece does not go enough 1 round (48 spaces)
+                    if(players[finalI].isRolled()) {
+                        if (id == finalI) {
+                            if (piece.getCurrentPosition() != -1 || players[finalI].getDices()[0].getFace() == 6 || players[finalI].getDices()[1].getFace() == 6) {
+                                if (piece.getMove() + moveAmount < 48){
+                                    //when the piece runs 1 round of map
 
-                        int nextPosition = p.movePiece(piece.getCurrentPosition(),moveAmount,map,Map.REGION_COLOR[finalI],piece.isHome(),piece.isBlocked());
-                        //To make the piece move according to the moveAmount and set current position for the piece
+                                    players[finalI].resetCheck();
 
-                        piece.setCurrentPosition(nextPosition);
-                        if (piece.isHome()){
-                            piece.setHome(false);
-                            piece.setMove(1);
-                        }
-                        else {
-                            piece.setMove(piece.getMove()+moveAmount);
-                        }
-                    }
-                    else{
-                        int leftAmount = 0;
-                        if (!piece.isFinished()){
-                            leftAmount = 48 - piece.getMove() ;
-                            p.movePiece(piece.getCurrentPosition(),leftAmount,map,Map.REGION_COLOR[finalI],piece.isHome(),piece.isBlocked());
-                            piece.setFinished(true);
-                            piece.setCurrentPosition(-1);
-                            piece.setMove(48);
-                        }
-                        if (piece.getCurrentPosition() + moveAmount > 5){
-                            piece.setBlocked(true);
-                        }
-                        else{
-                            piece.setCurrentPosition(p.moveToHouse(map,piece.getCurrentPosition(),finalI,moveAmount - leftAmount ,piece.isBlocked()));
-                            System.out.println(piece.getCurrentPosition());
-                        }
+                                    piece.setBlocked(false);
+                                    //First set the piece block is false, should be deleted
 
+                                    int nextPosition = p.movePiece(piece.getCurrentPosition(), moveAmount, map, Map.REGION_COLOR[finalI], piece.isHome(), piece.isBlocked());
+                                    //To make the piece move with MoveAmount step
+
+                                    piece.setCurrentPosition(nextPosition);
+                                    //and get the next position for another turn
+
+                                    if (piece.isHome()) {
+                                        //once the piece get out of the nest
+
+                                        piece.setHome(false);
+                                        piece.setMove(1);
+                                        //start move at 1
+                                    }
+                                    else
+                                        piece.setMove(piece.getMove()+moveAmount);
+                                }
+                            }
+                        }
                     }
                 });
                 map.getChildren().add(p);
             }
         }
 
-
-
-
         /***/
-
 
     }
 
+
+
     /**
      * Input listener for dice rolling button
-     * @param mouseEvent
+     * @param
      * @return void;
      */
     @FXML
-    private void rollDice(MouseEvent mouseEvent) {
+    private void rollDice(ActionEvent event) {
+        if (id == 3){
+            id = 0;
+        }
+        else {
+            id++;
+        }
         //Roll dice here, wilasdasd
-
-        Dice dice = new Dice();
-        rollDiceBtn.setOnMouseClicked(event -> {
-            dice.roll();
-            moveAmount = dice.getFace();
-            faceDice1.setText(""+moveAmount);
-        });
+        players[id].roll();
+        moveAmount = players[id].getDices()[0].getFace() + players[id].getDices()[1].getFace();
+        faceDice1.setText("" + players[id].getDices()[0].getFace());
+        faceDice2.setText("" + players[id].getDices()[1].getFace());
+        playerName.setText("" + players[id].getName());
     }
 }
