@@ -56,6 +56,9 @@ public class Map extends Pane {
         defineMapSize();    // Vital for future draws
         drawHouses();
         drawNests();
+
+        // TEST DICE
+        drawDiceZone(this.getPrefWidth() / 2, this.getPrefHeight() / 2);
     }
 
     /* DRAW THE CIRCLE SPACES AND ADD THEM TO SPACEMAP */
@@ -92,22 +95,23 @@ public class Map extends Pane {
      * @param x
      * @param y
      */
-    // Draw a single nest based on position and color
     void drawDiceZone(double x, double y) {
-        //For now its a button, please help me replace it with something cool
-        Dice dice = new Dice();
-        dice.setLayoutX(450);
-        dice.setLayoutY(450);
+        // For now its a button, please help me replace it with something cool
+        //Dice dice = new Dice();
+        TestDice dice = new TestDice();
+        dice.setLayoutX(x - 40);    // 40 = dice size / 2
+        dice.setLayoutY(y - 40);
+
         this.getChildren().add(dice);
 
     }
 
     /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */
     void drawNests() {
-        drawNestAndPieceByCoordinates(MAP_PADDING, MAP_PADDING, 0);
-        drawNestAndPieceByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - Nest.NEST_SIZE, 1);
-        drawNestAndPieceByCoordinates(MAP_WIDTH - MAP_PADDING - Nest.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - Nest.NEST_SIZE, 2);
-        drawNestAndPieceByCoordinates(MAP_WIDTH - MAP_PADDING - Nest.NEST_SIZE, MAP_PADDING, 3);
+        drawNestAndPiecesByCoordinates(MAP_PADDING, MAP_PADDING, 0);
+        drawNestAndPiecesByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - Nest.NEST_SIZE, 1);
+        drawNestAndPiecesByCoordinates(MAP_WIDTH - MAP_PADDING - Nest.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - Nest.NEST_SIZE, 2);
+        drawNestAndPiecesByCoordinates(MAP_WIDTH - MAP_PADDING - Nest.NEST_SIZE, MAP_PADDING, 3);
     }
 
     /* DRAW THE HOME RECTANGLES AND ADD TO HOUSEMAP */
@@ -175,16 +179,16 @@ public class Map extends Pane {
     }
 
     // Draw a single nest based on position and color
-    void drawNestAndPieceByCoordinates(double x, double y, int nestId) {
+    void drawNestAndPiecesByCoordinates(double x, double y, int nestId) {
         Nest nest = new Nest(nestId);
         nest.setLayoutX(x);
         nest.setLayoutY(y);
         nestMap.put(nestId, nest);
         this.getChildren().add(nest);
 
-        //Call the piece in in pieceList and display
-        for (int idPiece = 0; idPiece < 4 ; idPiece++){
-            Piece piece = nest.getPieceList()[idPiece];
+        // Get the pieces in pieceList to display
+        for (int pieceID = 0; pieceID < 4 ; pieceID++){
+            Piece piece = nest.getPieceList()[pieceID];
             piece.pieceNest(nestId);
             getChildren().add(piece);
         }
