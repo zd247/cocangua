@@ -32,6 +32,7 @@ public class Nest extends Pane {
 
         initNest();
 
+        //register event handler
 
     }
 
@@ -56,11 +57,14 @@ public class Nest extends Pane {
                 break;
         }
 
-
         // Draw a circle
-        Circle circle = new Circle(75);
+        Circle circle = new Circle(75); // magic number
+        circle.setCenterX(95); // magic number
+        circle.setCenterY(95);
         circle.setFill(WHITE);
 
+        pieces.setLayoutX(75);
+        pieces.setLayoutY(75);
         // add pieces (2x2)
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {

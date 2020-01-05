@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -32,10 +33,10 @@ public class Map extends Pane {
     final public static int RED_HOUSE_1 = 18;
 
     // A map to store all circle positions
-    HashMap<Integer, Space> spaceMap = new HashMap<>();
+    static HashMap<Integer, Space> spaceMap = new HashMap<>();
 
     // A map to store all nests with colors as their key
-    HashMap<Integer, Nest> nestMap = new HashMap<>();
+    static HashMap<Integer, Nest> nestMap = new HashMap<>();
 
     // Maps to store all houses
     HashMap<Integer, House> houseMap = new HashMap<>();
@@ -85,6 +86,21 @@ public class Map extends Pane {
         markSpace(spaceMap.get(YELLOW_START));
         markSpace(spaceMap.get(GREEN_START));
         markSpace(spaceMap.get(RED_START));
+    }
+
+    /**
+     * HELP ME FIX THIS
+     * @param x
+     * @param y
+     */
+    // Draw a single nest based on position and color
+    void drawDiceZone(double x, double y) {
+        //For now its a button, please help me replace it with something cool
+        Dice dice = new Dice();
+        dice.setLayoutX(450);
+        dice.setLayoutY(450);
+        this.getChildren().add(dice);
+
     }
 
     /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */
@@ -257,11 +273,11 @@ public class Map extends Pane {
     }
 
     // Getters
-    public HashMap<Integer, Space> getSpaceMap() {
+    public static HashMap<Integer, Space> getSpaceMap() {
         return spaceMap;
     }
 
-    public HashMap<Integer, Nest> getNestMap() { return nestMap; }
+    public static HashMap<Integer, Nest> getNestMap() { return nestMap; }
 
     public static double getMapWidth() {
         return MAP_WIDTH;

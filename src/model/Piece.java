@@ -5,15 +5,25 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import static model.Map.*;
+
 
 public class Piece extends Circle {
     private static final int RADIUS = 12;
 
     private int nestId;
     private int currentPosition;
-    private boolean isDeployed;
+    private boolean isDeployed; // check if piece is still in nest
     private boolean isBlocked;
-    private boolean isHome;
+    private boolean isHome; // is inside one of six rectangle
+    private Color color;
+
+
+
+
+
+    Player player;// - get player by nestId - a static function
+    boolean canDeploy = true; // this will be reference by the player later
 
 
     //=================================[Init]=====================================
@@ -22,22 +32,24 @@ public class Piece extends Circle {
     public Piece(int nestId) {
         this.nestId = nestId;
 
+
         // Display
         switch (nestId){ //set color base on nestId.
             case 0:
-                this.setFill(Color.DODGERBLUE);
+                this.color = Color.DODGERBLUE;
                 break;
             case 1:
-                this.setFill(Color.GOLD);
+                this.color = Color.GOLD;
                 break;
             case 2:
-                this.setFill(Color.SEAGREEN);
+                this.color = Color.SEAGREEN;
                 break;
             case 3:
-                this.setFill(Color.TOMATO);
+                this.color = Color.TOMATO;
                 break;
 
         }
+        this.setFill(color);
         this.setRadius(RADIUS);
 
         this.currentPosition = -1; //inside nest status
@@ -50,39 +62,9 @@ public class Piece extends Circle {
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                /*
-                if(players[finalI].isRolled()) {
-                    if (id == finalI) {
-                        if (piece.getCurrentPosition() != -1 || players[finalI].getDices()[0].getFace() == 6 || players[finalI].getDices()[1].getFace() == 6) {
-                            if (piece.getMove() + moveAmount < 48){
-                                //when the piece runs 1 round of map
+                System.out.println("something");
+//                move(3); //check all cases (move from nest, move when is deployed...)
 
-                                players[finalI].resetCheck();
-
-                                piece.setBlocked(false);
-                                //First set the piece block is false, should be deleted
-
-                                int nextPosition = p.movePiece(piece.getCurrentPosition(), moveAmount, map, Map.REGION_COLOR[finalI], piece.isHome(), piece.isBlocked());
-                                //To make the piece move with MoveAmount step
-
-                                piece.setCurrentPosition(nextPosition);
-                                //and get the next position for another turn
-
-                                if (piece.isHome()) {
-                                    //once the piece get out of the nest
-
-                                    piece.setHome(false);
-                                    piece.setMove(1);
-                                    //start move at 1
-                                }
-                                else
-                                    piece.setMove(piece.getMove()+moveAmount);
-                            }
-                        }
-                    }
-                }
-                map.getChildren().add(p);
-                 */
             }
         });
 
@@ -96,48 +78,51 @@ public class Piece extends Circle {
     public double getY(){return this.getLayoutY();}
 
     // Move a specified circle a certain amount
-    public int movePiece(int currentIndex, int moveAmount, Map map, Color regionColor, boolean isHome, boolean isBlocked) {
+    private int move(int moveAmount) {
         if (!isBlocked){
-
-            //If the piece goes out of index, then set the current index 0
-            if (currentIndex + moveAmount > 47){
-                moveAmount = moveAmount - (48 - currentIndex);
-                currentIndex = 0;
-            }
-            if (isHome){
-                Space homeSpace = map.getSpaceMap().get(getStartPosition(regionColor));
+            //MoveAmount out of range, go to prepareHome position (could be a status here if needed)
+//            if (currentPosition + moveAmount > 47){
+//                moveAmount = moveAmount - (48 - currentPosition);
+//                currentPosition = 0; // not yet done, get homeGate position (0 for blue, 12 for yellow etc)
+//                updateCurrentPosition(moveAmount, map.spaceMap.get(BLUE_ARRIVAL));
+//                return 1;
+//            }
+            //deploying
+            if (!isDeployed && canDeploy){
+                Space homeSpace = getSpaceMap().get(getStartPosition(color)); //reference starting position
                 double x = homeSpace.getLayoutX();
                 double y = homeSpace.getLayoutY();
-                setLayoutX(x);
-                setLayoutY(y);
-                return getStartPosition(regionColor);
+                //move the piece to said location
+                updateCurrentPosition(currentPosition + moveAmount, x,y);
+
+                return 2;
             }else {
-                Space sp1 = map.getSpaceMap().get(currentIndex + moveAmount);
+                Space sp1 = getSpaceMap().get(currentPosition + moveAmount);
 
                 //get previous space
-                Space prevSpace = map.getSpaceMap().get(currentIndex);
+                Space prevSpace = getSpaceMap().get(currentPosition);
 
                 double x = sp1.getLayoutX();
                 double y = sp1.getLayoutY();
+
+                // call kick function ()
 
                 if (!sp1.getOccupancy()) {
                     setLayoutX(x);
                     setLayoutY(y);
                     sp1.setOccupancy(true);
                     prevSpace.setOccupancy(false);
-                    return currentIndex+moveAmount;
+                    return currentPosition+moveAmount;
                 }
                 else
                     System.out.println("Space is occupied");
             }
         }
-        return currentIndex;
+        return -1; // for move cant be performed signal
     }
 
-    public void startPosition(Map map, int nestId){
-        Nest nest = map.getNestMap().get(nestId);
-        double x = nest.getLayoutX() + Nest.NEST_SIZE / 2;
-        double y = nest.getLayoutY() + Nest.NEST_SIZE / 2;
+    private void updateCurrentPosition(int moveAmount,double x, double y) {
+        currentPosition += moveAmount;
         setLayoutX(x);
         setLayoutY(y);
     }
