@@ -23,13 +23,10 @@ public class Nest extends Pane {
     private int id;
     private GridPane pieces = new GridPane();
 
-
     final public static double NEST_SIZE = 200;
-
 
     public Nest(int id) {
         this.id = id;
-
         initNest();
 
         //register event handler
@@ -40,6 +37,8 @@ public class Nest extends Pane {
      * Populate the container with 4 Pieces and have them displayed on a 4x4 gridPane
      */
     public void initNest() {
+        StackPane sp = new StackPane();
+
         // Draw a 200x200 colored square
         Rectangle rect = new Rectangle(NEST_SIZE, NEST_SIZE);
         switch (id){ //set color base on nestId.
@@ -57,14 +56,17 @@ public class Nest extends Pane {
                 break;
         }
 
-        // Draw a circle
-        Circle circle = new Circle(75); // magic number
-        circle.setCenterX(95); // magic number
-        circle.setCenterY(95);
+        // Draw a circle of 75 radius
+        Circle circle = new Circle(75);
         circle.setFill(WHITE);
 
-        pieces.setLayoutX(75);
-        pieces.setLayoutY(75);
+        // Add rectangle and circle to StackPane
+        sp.getChildren().addAll(rect, circle);
+
+        // Set layout of pieces GridPane
+        pieces.setLayoutX(77.5);    // magic number
+        pieces.setLayoutY(77.5);
+
         // add pieces (2x2)
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
@@ -73,7 +75,6 @@ public class Nest extends Pane {
             }
         }
 
-
-        this.getChildren().addAll(rect, circle, pieces);
+        this.getChildren().addAll(sp, pieces);
     }
 }
