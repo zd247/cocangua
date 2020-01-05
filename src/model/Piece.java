@@ -5,7 +5,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import static javafx.scene.paint.Color.CYAN;
+import static javafx.scene.paint.Color.*;
 import static model.Map.*;
 
 
@@ -13,26 +13,26 @@ public class Piece extends Circle {
     private static final int RADIUS = 12;
 
     private int nestId;
+    private int pieceId;
     private int currentPosition;
     private boolean isDeployed; // check if piece is still in nest
     private boolean isBlocked;
     private boolean isHome; // is inside one of six rectangle
     private Color color;
 
-
-
-
-
     Player player;// - get player by nestId - a static function
     boolean canDeploy = true; // this will be reference by the player later
 
-
+    //Helper
+    private double width_house;
+    private double height_house;
+    private int step = 0;   //how many steps that the piece goes
     //=================================[Init]=====================================
 
     // Construct piece based on nestId
-    public Piece(int nestId) {
+    public Piece(int nestId, int pieceId) {
         this.nestId = nestId;
-
+        this.pieceId = pieceId;
         // Display
         switch (nestId){ //set color base on nestId.
             case 0:
@@ -62,9 +62,8 @@ public class Piece extends Circle {
         /* REGISTER EVENT HANDLERS */
         // Click event
         this.setOnMouseClicked(click -> {
-            System.out.println("something");
+            move(1);    //Assum move amount is 1
 //                move(3); //check all cases (move from nest, move when is deployed...)
-
         });
 
         // Hover effect for pieces
@@ -74,83 +73,166 @@ public class Piece extends Circle {
 
     //=================================[Move]=====================================
 
+    /**
+     * the controller move , use moveSpace and moveToHouse
+     * @param moveAmount
+     */
+    public void move(int moveAmount){
+        System.out.println(step);
+        if (step + moveAmount < 49)
+            //Run in the space map
+            moveSpace(moveAmount);
+        else {
+            //reach to the arrival
+            if (step == 48){ //at the arrival space
+                if (moveAmount < 7) {//moveAmount should be 1-6
+                    currentPosition = -1;   //Start index for house
+                    moveToHouseDestination(moveAmount);
+                }
+            }
+            else    //at the house destination
+                if (currentPosition + 2 == moveAmount)
+                    //get the position (in display board) + 1 (before postion) + 1 (index in map less than current)
+                    moveToHouseDestination(1);
+        }
+    }
+
+    /**
+     * make the piece run by space and moveAmount
+     * @param moveAmount
+     */
     // Move a specified circle a certain amount
-    private int move(int moveAmount) {
+    private void moveSpace(int moveAmount) {
         if (!isBlocked){
-            //MoveAmount out of range, go to prepareHome position (could be a status here if needed)
-//            if (currentPosition + moveAmount > 47){
-//                moveAmount = moveAmount - (48 - currentPosition);
-//                currentPosition = 0; // not yet done, get homeGate position (0 for blue, 12 for yellow etc)
-//                updateCurrentPosition(moveAmount, map.spaceMap.get(BLUE_ARRIVAL));
-//                return 1;
-//            }
+
+            //checking out of boundary, not a case
+            if (currentPosition + moveAmount > 47){
+                moveAmount = moveAmount - (48 - currentPosition);//remaining moveAmount
+                currentPosition = 0; //after that set the current position to 0, to start running index of spaceMap
+                step++;
+            }
+
             //deploying
-            if (!isDeployed && canDeploy){
+            if (!isDeployed && canDeploy) {
+                //Move the piece from nest
                 Space homeSpace = getSpaceMap().get(getStartPosition(color)); //reference starting position
                 double x = homeSpace.getLayoutX();
                 double y = homeSpace.getLayoutY();
+                currentPosition = getStartPosition(color) - 1 ;  //index at the start space
+                moveAmount = 1; //no moving
                 //move the piece to said location
-                updateCurrentPosition(currentPosition + moveAmount, x,y);
-
-                return 2;
+                updateCurrentPosition(moveAmount, x,y);
+                isDeployed = true;  //Piece had already move outside the nest
             }else {
-                Space sp1 = getSpaceMap().get(currentPosition + moveAmount);
-
-                //get previous space
-                Space prevSpace = getSpaceMap().get(currentPosition);
-
+                //Move the piece in space
+                Space sp1 = getSpaceMap().get(currentPosition + moveAmount); //running in the space
                 double x = sp1.getLayoutX();
                 double y = sp1.getLayoutY();
-
-                // call kick function ()
-
-                if (!sp1.getOccupancy()) {
-                    setLayoutX(x);
-                    setLayoutY(y);
-                    sp1.setOccupancy(true);
-                    prevSpace.setOccupancy(false);
-                    return currentPosition+moveAmount;
-                }
-                else
-                    System.out.println("Space is occupied");
+                // move the piece to said location
+                updateCurrentPosition(moveAmount,x,y);
             }
         }
-        return -1; // for move cant be performed signal
     }
 
+    /**
+     * get into the house destination
+     * @param moveAmount
+     */
+    private void moveToHouseDestination(int moveAmount){
+        //start to move into the houseDestination
+        if (!isBlocked){
+            House hs = getHouseMap().get(currentPosition + getHouseArrival() + moveAmount);
+            double x = hs.getLayoutX() + width_house;
+            double y = hs.getLayoutY() + height_house;
+            //move the piece to said location
+            updateCurrentPosition(moveAmount,x,y);
+        }
+    }
+
+    /**
+     * update to its next position, and make the piece move
+     * @param moveAmount
+     * @param x
+     * @param y
+     */
     private void updateCurrentPosition(int moveAmount,double x, double y) {
         currentPosition += moveAmount;
+        step += moveAmount;
         setLayoutX(x);
         setLayoutY(y);
     }
 
-    public int getStartPosition(Color nestColor){
-        if (Map.REGION_COLOR[0].equals(nestColor)) {
-            return Map.BLUE_START;
-        } else if (Map.REGION_COLOR[1].equals(nestColor)) {
-            return Map.YELLOW_START;
-        } else if (Map.REGION_COLOR[2].equals(nestColor)) {
-            return Map.GREEN_START;
-        } else if (Map.REGION_COLOR[3].equals(nestColor)) {
-            return Map.RED_START;
-        }
-        return 0;
-    }
-
-    public int checkOneRound(int currentIndex, int moveAmout){
-        if (currentIndex+moveAmout > Map.RED_ARRIVAL + 10){
-            return 0;
+    /**
+     * get StartSpace when the piece is deployed
+     * @param nestColor
+     * @return spaceNumber
+     */
+    private int getStartPosition(Color nestColor){
+        if (DODGERBLUE.equals(color)) {
+            return BLUE_START;
+        } else if (GOLD.equals(color)) {
+            return YELLOW_START;
+        } else if (SEAGREEN.equals(color)) {
+            return GREEN_START;
+        } else if (TOMATO.equals(color)) {
+            return RED_START;
         }
         return 0;
     }
 
     /**
-     * Handle onClick event
+     * get the index of house in housemap , also get the height and width of each house to set piece at center
+     * @return
      */
-    class OnClickPiece implements EventHandler<MouseEvent> {
-        public void handle(MouseEvent e) {
-
+    private int getHouseArrival(){
+        switch (nestId){
+            case 0:{
+                width_house = Map.HOUSE_LONG_SIDE/2;
+                height_house = Map.HOUSE_SHORT_SIDE/2;
+                return Map.BLUE_HOUSE_1;
+            }
+            case 1:{
+                width_house = Map.HOUSE_SHORT_SIDE/2;
+                height_house = Map.HOUSE_LONG_SIDE/2;
+                return Map.YELLOW_HOUSE_1;
+            }
+            case 2:{
+                width_house = Map.HOUSE_LONG_SIDE/2;
+                height_house = Map.HOUSE_SHORT_SIDE/2;
+                return Map.GREEN_HOUSE_1;
+            }
+            case 3: {
+                width_house = Map.HOUSE_SHORT_SIDE / 2;
+                height_house = Map.HOUSE_LONG_SIDE / 2;
+                return Map.RED_HOUSE_1;
+            }
         }
+        return 0;   //return dummy value
+    }
+
+    /**
+     * to settle piece in the nest with its id
+     * @param nestId
+     */
+    public void pieceNest(int nestId){
+        //to set the piece with its id nicely
+        int ver,hor;
+        if (pieceId == 0) {
+            hor = -1;
+            ver = -1;
+        } else if (pieceId == 1) {
+            hor = 1;
+            ver = -1;
+        } else if (pieceId == 2) {
+            hor = -1;
+            ver = 1;
+        } else {
+            hor = 1;
+            ver = 1;
+        }
+        Nest nest = Map.getNestMap().get(nestId);
+        setLayoutX(nest.getLayoutX() + Nest.NEST_SIZE / 2 + hor * 20);  //20 is gap piece
+        setLayoutY(nest.getLayoutY() + Nest.NEST_SIZE / 2 + ver * 20);
     }
 
 

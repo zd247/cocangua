@@ -1,27 +1,16 @@
 package model;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import static javafx.scene.paint.Color.WHITE;
 
 public class Nest extends Pane {
     private int id;
-    private GridPane pieces = new GridPane();
+    private Piece[] pieceList = new Piece[4];
 
     final public static double NEST_SIZE = 200;
 
@@ -63,18 +52,16 @@ public class Nest extends Pane {
         // Add rectangle and circle to StackPane
         sp.getChildren().addAll(rect, circle);
 
-        // Set layout of pieces GridPane
-        pieces.setLayoutX(77.5);    // magic number
-        pieces.setLayoutY(77.5);
-
-        // add pieces (2x2)
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                Piece piece = new Piece(this.id);
-                pieces.add(piece, i, j);
-            }
+        //add piece in the nest list
+        for (int idPiece = 0; idPiece < pieceList.length; idPiece++) {
+            Piece piece = new Piece(this.id, idPiece);
+            pieceList[idPiece] = piece;
         }
 
-        this.getChildren().addAll(sp, pieces);
+        this.getChildren().addAll(sp);
+    }
+
+    public Piece[] getPieceList() {
+        return pieceList;
     }
 }
