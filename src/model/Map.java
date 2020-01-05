@@ -2,7 +2,6 @@ package model;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import view.NestView;
 
 import java.util.HashMap;
 
@@ -36,7 +35,7 @@ public class Map extends Pane {
     HashMap<Integer, Space> spaceMap = new HashMap<>();
 
     // A map to store all nests with colors as their key
-    HashMap<Integer, NestView> nestViewMap = new HashMap<>();
+    HashMap<Integer, Nest> nestMap = new HashMap<>();
 
     // Maps to store all houses
     HashMap<Integer, House> houseMap = new HashMap<>();
@@ -90,10 +89,10 @@ public class Map extends Pane {
 
     /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */
     void drawNests() {
-        drawNestByCoordinates(MAP_PADDING, MAP_PADDING, DODGERBLUE, 0);
-        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, GOLD, 1);
-        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - NestView.NEST_SIZE, SEAGREEN, 2);
-        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - NestView.NEST_SIZE, MAP_PADDING, TOMATO, 3);
+        drawNestByCoordinates(MAP_PADDING, MAP_PADDING, 0);
+        drawNestByCoordinates(MAP_PADDING, MAP_HEIGHT - MAP_PADDING - Nest.NEST_SIZE, 1);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - Nest.NEST_SIZE, MAP_HEIGHT - MAP_PADDING - Nest.NEST_SIZE, 2);
+        drawNestByCoordinates(MAP_WIDTH - MAP_PADDING - Nest.NEST_SIZE, MAP_PADDING, 3);
     }
 
     /* DRAW THE HOME RECTANGLES AND ADD TO HOUSEMAP */
@@ -161,13 +160,13 @@ public class Map extends Pane {
     }
 
     // Draw a single nest based on position and color
-    void drawNestByCoordinates(double x, double y, Color color, int nestId) {
-        NestView nest = new NestView(color);
+    void drawNestByCoordinates(double x, double y, int nestId) {
+        Nest nest = new Nest(nestId);
         nest.setLayoutX(x);
         nest.setLayoutY(y);
 
         this.getChildren().add(nest);
-        this.nestViewMap.put(nestId, nest);
+        this.nestMap.put(nestId, nest);
     }
 
     // Set map size based on drawn Spaces
@@ -262,7 +261,7 @@ public class Map extends Pane {
         return spaceMap;
     }
 
-    public HashMap<Integer, NestView> getNestViewMap() { return nestViewMap; }
+    public HashMap<Integer, Nest> getNestMap() { return nestMap; }
 
     public static double getMapWidth() {
         return MAP_WIDTH;

@@ -4,103 +4,72 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class Nest {
+import static javafx.scene.paint.Color.WHITE;
+
+public class Nest extends Pane {
     private int id;
-    private Color color;
-    private ArrayList<Piece> pieces;
+    private GridPane pieces = new GridPane();
+
+
+    final public static double NEST_SIZE = 200;
+
 
     public Nest(int id) {
         this.id = id;
-        this.color = Color.BLUE;
 
-        // CHANGED DUE TO CHANGES IN PIECE - HAN
-        pieces = new ArrayList<>();
+        initNest();
+
+
     }
 
-    //getter
-    public ArrayList<Piece> getPieces() {
-        return pieces;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public int getNestId() {
-        return this.id;
-    }
-
-    //Setter
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    //Method
-    public void addPiece(Piece piece) {
-        pieces.add(piece);
-    }
-
-    public void removePiece (Piece piece) {
-        pieces.remove(piece);
-    }
-
-    /** piece needs id to be displayed correctly to its number and grid position*/
-    public void displayPieces(GridPane nest) {
-        nest.getChildren().retainAll(nest.getChildren().get(0));
-        switch (pieces.size()) {
-            case 1: {
-                nest.add(generateNewPiece(1), 0, 0);
+    /**
+     * Populate the container with 4 Pieces and have them displayed on a 4x4 gridPane
+     */
+    public void initNest() {
+        // Draw a 200x200 colored square
+        Rectangle rect = new Rectangle(NEST_SIZE, NEST_SIZE);
+        switch (id){ //set color base on nestId.
+            case 0:
+                rect.setFill(Color.DODGERBLUE);
                 break;
-            }
-            case 2: {
-                nest.add(generateNewPiece(1), 0, 0);
-                nest.add(generateNewPiece(2), 1, 0);
+            case 1:
+                rect.setFill(Color.GOLD);
                 break;
-            }
-            case 3: {
-                nest.add(generateNewPiece(1), 0, 0);
-                nest.add(generateNewPiece(2), 1, 0);
-                nest.add(generateNewPiece(3), 0, 1);
+            case 2:
+                rect.setFill(Color.SEAGREEN);
                 break;
-            }
-            case 4: {
-                nest.add(generateNewPiece(1), 0, 0);
-                nest.add(generateNewPiece(2), 1, 0);
-                nest.add(generateNewPiece(3), 0, 1);
-                nest.add(generateNewPiece(4), 1, 1);
+            case 3:
+                rect.setFill(Color.TOMATO);
                 break;
+        }
+
+
+        // Draw a circle
+        Circle circle = new Circle(75);
+        circle.setFill(WHITE);
+
+        // add pieces (2x2)
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                Piece piece = new Piece(this.id);
+                pieces.add(piece, i, j);
             }
         }
+
+
+        this.getChildren().addAll(rect, circle, pieces);
     }
-
-    private Label generateNewPiece(int number) {
-        Label newLabel = new Label();
-        newLabel.alignmentProperty().set(Pos.CENTER);
-        newLabel.contentDisplayProperty().set(ContentDisplay.CENTER);
-        newLabel.textProperty().setValue( Integer.toString(number));
-        newLabel.textAlignmentProperty().set(TextAlignment.CENTER);
-        newLabel.textFillProperty().set(Color.WHITE);
-        newLabel.fontProperty().set(Font.font("Arial",25.0));
-        newLabel.setStyle("-fx-font-weight: bold");
-        Circle tmp = new Circle(15.0, color);
-        tmp.strokeProperty().set(Color.BLACK);
-        tmp.strokeTypeProperty().set(StrokeType.INSIDE);
-        newLabel.graphicProperty().set(tmp);
-        return newLabel;
-    }
-
-
 }
