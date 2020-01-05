@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import static javafx.scene.paint.Color.CYAN;
 import static model.Map.*;
 
 
@@ -28,10 +29,9 @@ public class Piece extends Circle {
 
     //=================================[Init]=====================================
 
-
+    // Construct piece based on nestId
     public Piece(int nestId) {
         this.nestId = nestId;
-
 
         // Display
         switch (nestId){ //set color base on nestId.
@@ -47,35 +47,32 @@ public class Piece extends Circle {
             case 3:
                 this.color = Color.TOMATO;
                 break;
-
         }
+
+        // Set piece appearance
         this.setFill(color);
         this.setRadius(RADIUS);
 
+        // Set move-related attributes
         this.currentPosition = -1; //inside nest status
         this.isDeployed = false;
         this.isBlocked = false;
         this.isHome = false;
 
-
-        //Register event handler
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                System.out.println("something");
+        /* REGISTER EVENT HANDLERS */
+        // Click event
+        this.setOnMouseClicked(click -> {
+            System.out.println("something");
 //                move(3); //check all cases (move from nest, move when is deployed...)
 
-            }
         });
 
+        // Hover effect for pieces
+        this.setOnMouseEntered(hover -> this.setFill(color.darker()));
+        this.setOnMouseExited(endHover -> this.setFill(color));
     }
 
-
     //=================================[Move]=====================================
-
-    public double getX(){return this.getLayoutX();}
-
-    public double getY(){return this.getLayoutY();}
 
     // Move a specified circle a certain amount
     private int move(int moveAmount) {

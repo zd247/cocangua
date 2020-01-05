@@ -19,13 +19,10 @@ public class Dice extends ImageView {
     public Dice(){
         this.setImage(this.image);
         //Register event handler
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                roll();
-                //Future implementation: Co-routine to wait until the rolling animation finished then update
-                update();
-            }
+        this.setOnMouseClicked(mouseEvent -> {
+            roll();
+            //Future implementation: Co-routine to wait until the rolling animation finished then update
+            update();
         });
     }
 
