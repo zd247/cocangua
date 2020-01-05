@@ -9,7 +9,8 @@ import model.Space;
 public class PieceView extends Circle {
 
     private final static int GAP_PIECE = 20;
-
+    private double width_nest;
+    private double height_nest;
     public PieceView(Color color) {
         setRadius(12);
         setFill(color);
@@ -58,32 +59,30 @@ public class PieceView extends Circle {
      */
     // Move a specified circle a certain amount
     public int movePiece(int currentIndex, int moveAmount, Map map, Color regionColor, boolean isHome, boolean isBlocked) {
-        if (!isBlocked) {
+        if (currentIndex + moveAmount > 47) {
+            //If the piece goes out of index, then set the current index 0
+            moveAmount = moveAmount - (48 - currentIndex);
+            currentIndex = 0;
+        }
 
-            if (currentIndex + moveAmount > 47) {
-                //If the piece goes out of index, then set the current index 0
-                moveAmount = moveAmount - (48 - currentIndex);
-                currentIndex = 0;
-            }
+        if (isHome) {
+            //when the piece starts to move from its nest
 
-            if (isHome) {
-                //when the piece starts to move from its nest
+            Space homeSpace = map.getSpaceMap().get(getStartPosition(regionColor));
+            //to get the home space
 
-                Space homeSpace = map.getSpaceMap().get(getStartPosition(regionColor));
-                //to get the home space
+            setLayoutX(homeSpace.getLayoutX());
+            setLayoutY(homeSpace.getLayoutY());
 
-                setLayoutX(homeSpace.getLayoutX());
-                setLayoutY(homeSpace.getLayoutY());
+            return getStartPosition(regionColor);
+        } else {
+            Space sp1 = map.getSpaceMap().get(currentIndex + moveAmount);
 
-                return getStartPosition(regionColor);
-            } else {
-                Space sp1 = map.getSpaceMap().get(currentIndex + moveAmount);
+            //get previous space
+            Space prevSpace = map.getSpaceMap().get(currentIndex);
 
-                //get previous space
-                Space prevSpace = map.getSpaceMap().get(currentIndex);
-
-                setLayoutX(sp1.getLayoutX());
-                setLayoutY(sp1.getLayoutY());
+            setLayoutX(sp1.getLayoutX());
+            setLayoutY(sp1.getLayoutY());
 //
 //                if (!sp1.getOccupancy()) {
 //                    //need more update
@@ -92,13 +91,11 @@ public class PieceView extends Circle {
 //
 //                    sp1.setOccupancy(true);
 //
-                return currentIndex + moveAmount;
+            return currentIndex + moveAmount;
 //                }
 //                else
 //                    System.out.println("Space is occupied");
-            }
         }
-        return currentIndex;
     }
 
     /**
@@ -141,13 +138,12 @@ public class PieceView extends Circle {
             House hs1 = map.getHouseMap().get(currentIndex + getHomeArrival(idNest) + moveAmount);
             //get house from the housemap
 
-            setLayoutX(hs1.getLayoutX() + Map.HOUSE_LONG_SIDE / 2);
-            setLayoutY(hs1.getLayoutY() + Map.HOUSE_SHORT_SIDE / 2);
+            setLayoutX(hs1.getLayoutX() + width_nest);
+            setLayoutY(hs1.getLayoutY() + height_nest);
 
             return currentIndex + moveAmount;
             //to save for the next step
         }
-        System.out.println("true " + currentIndex);
         return currentIndex;
     }
 
@@ -159,14 +155,26 @@ public class PieceView extends Circle {
     private int getHomeArrival(int idNest){
         //To get the index in the hashmap
         switch (idNest){
-            case 0:
+            case 0:{
+                width_nest = Map.HOUSE_LONG_SIDE/2;
+                height_nest = Map.HOUSE_SHORT_SIDE/2;
                 return Map.BLUE_HOUSE_1;
-            case 1:
+            }
+            case 1:{
+                width_nest = Map.HOUSE_SHORT_SIDE/2;
+                height_nest = Map.HOUSE_LONG_SIDE/2;
                 return Map.YELLOW_HOUSE_1;
-            case 2:
+            }
+            case 2:{
+                width_nest = Map.HOUSE_LONG_SIDE/2;
+                height_nest = Map.HOUSE_SHORT_SIDE/2;
                 return Map.GREEN_HOUSE_1;
-            case 3:
+            }
+            case 3: {
+                width_nest = Map.HOUSE_SHORT_SIDE / 2;
+                height_nest = Map.HOUSE_LONG_SIDE / 2;
                 return Map.RED_HOUSE_1;
+            }
         }
         return 0;
     }

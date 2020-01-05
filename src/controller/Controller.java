@@ -80,11 +80,13 @@ public class Controller implements Initializable {
 
                 PieceView p = new PieceView(PIECE_COLOR[nestId]);
                 p.startPosition(map, pieceId, nestId );
+                int finalNestId = nestId;
                 p.setOnMouseClicked(event -> {
                     if(players[finalI].isRolled()) {
                         if (id == finalI) {
                             if (piece.getCurrentPosition() != -1 || players[finalI].getDices()[0].getFace() == 6 || players[finalI].getDices()[1].getFace() == 6) {
-                                if (piece.getMove() + moveAmount < 48){
+                                System.out.println(finalI + " if statement " + piece.getMove()+moveAmount);
+                                if (piece.getMove() + moveAmount < 49){
                                     //when the piece runs 1 round of map
 
                                     players[finalI].resetCheck();
@@ -107,6 +109,26 @@ public class Controller implements Initializable {
                                     }
                                     else
                                         piece.setMove(piece.getMove()+moveAmount);
+                                    System.out.println("piece.getMove "+ piece.getMove());
+                                }else {
+                                    if (piece.getMove() == 48){
+                                        System.out.println("48? "+piece.getMove());
+                                        if (players[finalI].getDices()[0].getFace() > players[finalI].getDices()[1].getFace())
+                                            moveAmount = players[finalI].getDices()[0].getFace();
+                                        else moveAmount = players[finalI].getDices()[1].getFace();
+                                        System.out.println(moveAmount);
+                                        piece.setCurrentPosition(-1);
+                                        piece.setCurrentPosition(p.moveToHouse(map, piece.getCurrentPosition(), finalNestId, moveAmount, piece.isBlocked()));
+                                        piece.setMove(piece.getMove() + moveAmount);
+                                    }
+                                    else {
+                                        System.out.println("move forward "+piece.getCurrentPosition());
+                                        if (players[finalI].getDices()[0].getFace() == (piece.getCurrentPosition()+2) || players[finalI].getDices()[1].getFace() == (piece.getCurrentPosition()+2)){
+                                            piece.setCurrentPosition(p.moveToHouse(map, piece.getCurrentPosition(), finalNestId, 1 , piece.isBlocked()));
+                                            //run step by step
+                                            piece.setMove(piece.getMove() + 1);
+                                        }
+                                    }
                                 }
                             }
                         }
