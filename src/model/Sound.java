@@ -56,8 +56,16 @@ public class Sound {
 
         if (!isMute) {
             assert sfx != null;
-            sfx.seek(Duration.ZERO);
+            if (sfx != THEME_AUDIO) {
+                sfx.seek(Duration.ZERO);
+            }
             sfx.play();
+        } else {
+            if (sfx == THEME_AUDIO) {
+                sfx.pause();
+            } else {
+                sfx.stop();
+            }
         }
 
     }
