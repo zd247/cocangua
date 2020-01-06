@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -81,6 +82,17 @@ public class Controller implements Initializable {
 
         }
         return rets;
+    }
+
+    @FXML
+    private void setSound(ActionEvent event) {
+        if (Sound.isMute == false) {
+            Sound.isMute = true;
+            Sound.playSound(THEME);
+        } else {
+            Sound.isMute = false;
+            Sound.playSound(THEME);
+        }
     }
 
 }
