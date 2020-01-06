@@ -12,7 +12,7 @@ public class TestDice extends Button {
 
         this.setBackground(
                 new Background(new BackgroundImage(
-                new Image("view/images/diceFace1.jpg"),
+                new Image("view/images/dice1.png"),
                 BackgroundRepeat.REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
