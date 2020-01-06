@@ -6,6 +6,7 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Sound {
     public static boolean isMute; // Control sound's playability
@@ -15,44 +16,49 @@ public class Sound {
 
     // Sound indexes in list, feel free to add more
     final public static int THEME = 0;
-    final public static int PICK = 1;
-    final public static int MOVE = 2;
-    final public static int DEPLOY = 3;
-    final public static int BLOCKED = 4;
-    final public static int KICK = 5;
+    final public static int MOVE = 1;
+    final public static int DEPLOY = 2;
+    final public static int BLOCKED = 3;
+    final public static int KICK = 4;
+    final public static int HOME = 5;
     final public static int ROLL = 6;
     final public static int WIN = 7;
-    final public static int LOSE = 8;
 
     // Template for new MediaPlayer
-    //public static MediaPlayer DUMMY = new MediaPlayer(new Media(new File("src/model/sounds/DUMMY.mp3").toURI().toString()));
+    final private static MediaPlayer THEME_AUDIO = new MediaPlayer(new Media(new File("src/Audio/theme.mp3").toURI().toString()));
+    final private static MediaPlayer MOVE_AUDIO = new MediaPlayer(new Media(new File("src/Audio/move.wav").toURI().toString()));
+    final private static MediaPlayer DEPLOY_AUDIO = new MediaPlayer(new Media(new File("src/Audio/deploy.wav").toURI().toString()));
+    final private static MediaPlayer BLOCK_AUDIO = new MediaPlayer(new Media(new File("src/Audio/block.wav").toURI().toString()));
+    final private static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("src/Audio/kick.wav").toURI().toString()));
+    final private static MediaPlayer HOME_AUDIO = new MediaPlayer(new Media(new File("src/Audio/home.wav").toURI().toString()));
+    final private static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("src/Audio/roll.wav").toURI().toString()));
+    final private static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("src/Audio/roll.wav").toURI().toString()));
+
+
 
     // Constructor : Perhaps add sounds to List
     Sound() {
+        sounds.addAll(List.of(THEME_AUDIO, MOVE_AUDIO, DEPLOY_AUDIO, BLOCK_AUDIO, KICK_AUDIO, HOME_AUDIO, ROLL_AUDIO, WIN_AUDIO));
         // Your default settings here if any
-        for (MediaPlayer sound: sounds) {
-            //sound.setOnEndOfMedia();
-            //sound.setOnStopped();
-        }
+        sounds.get(0).setCycleCount(MediaPlayer.INDEFINITE); //repeat the theme audio
+        isMute = false;
     }
 
     // Template play sound function (mute handled)
     public static void playSound(int soundID) {
         MediaPlayer sfx = sounds.get(soundID);
         if (!isMute) {
-            // First, reset the sound to its beginning
-            sfx.seek(Duration.ZERO);
-            // Then play
+            if (sounds.get(soundID) != THEME_AUDIO) { //reset if it is not theme audio
+                // First, reset the sound to its beginning
+                sfx.seek(Duration.ZERO);
+                // Then play
+            }
             sfx.play();
+        } else {
+            if (sounds.get(soundID) == THEME_AUDIO) { //pause if it is theme audio
+                sfx.pause();
+            }
         }
-
-        /*
-        THEME NEEDS SPECIAL HANDLER
-        BECAUSE IT IS THE ONLY SOUND LONG ENOUGH
-        TO NOT BE RESET WHENEVER WE PLAY IT
-        BUT INSTEAD RESUMED, PAUSED, AND RESET ONLY WHEN setOnEndMedia()
-        WILL GET TO THAT LATER
-         */
     }
 
 }
