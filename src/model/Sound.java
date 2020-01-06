@@ -34,7 +34,6 @@ public class Sound {
     public static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("src/audio/roll.wav").toURI().toString()));
     public static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("src/audio/roll.wav").toURI().toString()));
 
-
     // Constructor : Perhaps add sounds to List
     public Sound() {
         isMute = false;
@@ -57,6 +56,7 @@ public class Sound {
 
         if (!isMute) {
             assert sfx != null;
+            sfx.seek(Duration.ZERO);
             sfx.play();
         }
 

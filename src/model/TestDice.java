@@ -1,29 +1,63 @@
 package model;
 
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
+import javafx.geometry.Point3D;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
+
+import java.util.Random;
 
 // TEST DICE: Button with background image
-public class TestDice extends Button {
+public class TestDice extends ImageView {
+    Image diceFace = new Image("view/images/dice1.png");
 
     TestDice() {
-        this.setPrefSize(80, 80);
+        setFitWidth(85);
+        setFitHeight(85);
+        setImage(diceFace);
 
-        this.setBackground(
-                new Background(new BackgroundImage(
-                new Image("view/images/dice1.png"),
-                BackgroundRepeat.REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.DEFAULT,
-                new BackgroundSize(50, 50, false, false, true, false))));
+        // Slight "jump" effect when hovered
+        this.setOnMouseEntered(hover -> {
+            this.setTranslateY(-5);
+        });
 
-        // TEST HOVER EFFECT
-        this.setOnMouseEntered(hover -> this.setStyle("-fx-border-color: BLUEVIOLET;" +
-                "-fx-border-radius: 8;" +
-                "-fx-border-width: 2"));
+        this.setOnMouseExited(endHover -> {
+            this.setTranslateY(0);
+        });
 
+        // Roll when clicked on
+        this.setOnMouseClicked(click -> this.rollAnimation());
+    }
 
-        this.setOnMouseExited(endHover -> this.setStyle(""));
+    // TEST ROLL ANIMATION
+    void rollAnimation() {
+        Random rand = new Random();
+        int num = rand.nextInt(6) + 1;
+
+        // Play roll animation
+        RotateTransition rt = new RotateTransition(Duration.millis(200), this);
+        rt.setByAngle(360);
+        rt.setAutoReverse(true);
+        rt.setCycleCount(3);
+        rt.setAxis(Rotate.Y_AXIS);
+        rt.play();  // Play roll animation
+        Sound.playSound(Sound.ROLL);    // Play roll sound
+
+        // Set new diceFace image after roll
+        rt.setOnFinished(finishRoll -> {
+            switch (num) {
+                case 1: this.setImage(new Image("view/images/dice1.png")); break;
+                case 2: this.setImage(new Image("view/images/dice2.png")); break;
+                case 3: this.setImage(new Image("view/images/dice3.png")); break;
+                case 4: this.setImage(new Image("view/images/dice4.png")); break;
+                case 5: this.setImage(new Image("view/images/dice5.png")); break;
+                case 6: this.setImage(new Image("view/images/dice6.png")); break;
+            }
+        });
     }
 }
