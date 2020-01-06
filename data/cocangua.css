@@ -28,6 +28,7 @@ VBox {
 
     -fx-padding: 5 25 5 25;
     -fx-cursor:pointer;
+    -fx-background-color: Blue;
 }
 
 #pauseBtn {
