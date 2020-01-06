@@ -72,13 +72,13 @@ VBox {
 
 /* SOUND BUTTON */
 #soundBtn {
-    -fx-background-color: linear-gradient(to bottom, #56e3d0 5%, #583cc9 100%);
+    -fx-background-color: linear-gradient(to bottom, #583cc9 5%, #56e3d0 100%);
     -fx-effect: dropshadow(GAUSSIAN, #242485, 10, 0.2, 2, 2);
     -fx-background-image: url("/images/soundOn.png");
 }
 
 #soundBtn:hover {
-    -fx-background-color: linear-gradient(to bottom, #583cc9 5%, #56e3d0 100%);
+    -fx-background-color: linear-gradient(to bottom, #56e3d0 5%, #583cc9 100%);
 }
 
 #soundBtn:selected {
