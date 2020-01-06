@@ -11,14 +11,17 @@ import java.util.Random;
 public class Dice extends ImageView {
     private int[] values = new int[2];   // The rolled number (1 - 6)
 
-    /* DOESN"T DISPLAY */
+    /* DOESN'T DISPLAY */
     File file = new File("view/images/diceFace1.jpg");
     Image image = new Image(file.toURI().toString(), 50, 50, false, false);
 
     // Constructor
-    public Dice(){
+    public Dice() {
         this.setImage(this.image);
-        //Register event handler
+        // TEST
+        this.setFitWidth(200);
+
+        // Register event handler
         this.setOnMouseClicked(mouseEvent -> {
             roll();
             //Future implementation: Co-routine to wait until the rolling animation finished then update
@@ -40,12 +43,10 @@ public class Dice extends ImageView {
         for (int i = 0; i < values.length;i++) {
             this.values[i] = random.nextInt(6) + 1;
         }
-
     }
 
     // total moves
-    public int total() {
+    public int getTotalMoves() {
         return values[0] + values[1];
     }
-
 }

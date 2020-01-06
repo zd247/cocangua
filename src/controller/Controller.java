@@ -26,7 +26,6 @@ public class Controller implements Initializable {
     @FXML
     private BorderPane container;
 
-
     int NUM_OF_PLAYER = 4;
 
     @Override
@@ -36,7 +35,6 @@ public class Controller implements Initializable {
         container.setCenter(map);
 
         Player[] players = initPlayers(NUM_OF_PLAYER);
-
 
         /**===========================[Test code goes here]===========================*/
 
