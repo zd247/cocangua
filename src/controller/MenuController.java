@@ -30,13 +30,13 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        int id = 0;
         // populate the player container
         for (int i = 0; i < playerContainer.getRowCount();i++) {
             for (int j = 0; j < playerContainer.getColumnCount();j++){
                 // add 4 create buttons
-                int id = i+j; // can be used as Nest id
                 CreateButton addButton = new CreateButton("Player " + id, id);
-
+                id++;
                 playerContainer.add(addButton, i, j);
 
             }
