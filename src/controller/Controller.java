@@ -12,6 +12,9 @@ import model.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static model.Sound.THEME;
+
+
 /**
  * Input listeners
  */
@@ -25,6 +28,8 @@ public class Controller implements Initializable {
 
     @FXML
     private BorderPane container;
+
+    @FXML public Button passBtn;
 
     int NUM_OF_PLAYER = 4;
 
@@ -48,6 +53,8 @@ public class Controller implements Initializable {
             //get piece
         }
 
+        Sound.playSound(THEME);
+
         /**===========================[End of view.test code]===========================*/
     }
 
@@ -57,7 +64,6 @@ public class Controller implements Initializable {
             //player
             String name = "Player" + i; // TO-DO (load from input file FileStream when user finishes the start menu)
             Player player = new Player(name,i);
-
 
             rets[i] = player; // assign
 
