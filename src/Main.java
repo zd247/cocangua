@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static statics.StaticContainer.players;
-
 public class Main extends Application {
 
     @Override

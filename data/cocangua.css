@@ -1,52 +1,80 @@
 /* GUI STYLING */
 
 .root {
-    -fx-background-color: WHITE;
+    -fx-background-image: url("images/envi.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+}
+
+#map {
+    -fx-background-color: rgba(255, 255, 255, .7);
+    -fx-background-radius: 20px;
+}
+
+#nestSq {
+    -fx-arc-width: 20;
+    -fx-arc-height: 20;
 }
 
 HBox {
-    -fx-background-color: GOLD;
+    -fx-background-image: url("images/plank.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center top;
 }
 
 VBox {
     -fx-background-color: CYAN;
 }
 
-.label {
-    -fx-text-fill: BLACK;
-    -fx-font-size: 24px;
-    -fx-font-style: italic;
+/* CHOICE-BOX CUSTOMIZATION */
+#languageBox {
+    -fx-background-color: linear-gradient(to right, white 5%, lightcyan 100%);
+    -fx-mark-color: darkgreen;
+    -fx-pref-width: 160;
 }
 
+/* BUTTON TEMPLATE */
 .button, .toggle-button {
     -fx-background-radius: 20;
-
-    -fx-text-fill: WHITE;
-    -fx-text-alignment: center;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-
     -fx-padding: 5 25 5 25;
     -fx-cursor:pointer;
-    -fx-background-color: Blue;
+
+    -fx-min-width: 60px;
+    -fx-min-height: 45px;
+
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
 }
 
+/* PAUSE BUTTON */
 #pauseBtn {
     -fx-background-color: linear-gradient(to bottom, #ff6666 5%, #ffdd57 100%);
     -fx-effect: dropshadow(GAUSSIAN, #c26134, 10, 0.2, 2, 2);
-    -fx-text-fill: #bf3535;
+    -fx-background-image: url("images/pause.png");
 }
 
 #pauseBtn:hover {
     -fx-background-color: linear-gradient(to bottom, #ffdd57 5%, #ff6666 100%);
 }
 
+/* Change icon from Pause to Resume and change color to green yellow */
+#pauseBtn:selected {
+    -fx-background-color: linear-gradient(to bottom, #d9f53b 5%, #54b500 100%);
+    -fx-effect: dropshadow(GAUSSIAN, #378a20, 10, 0.2, 2, 2);
+    -fx-background-image: url("images/play.png");
+}
+
+#pauseBtn:selected:hover {
+    -fx-background-color: linear-gradient(to bottom, #54b500 5%, #d9f53b 100%);
+}
+
+/* SOUND BUTTON */
 #soundBtn {
     -fx-background-color: linear-gradient(to bottom, #56e3d0 5%, #583cc9 100%);
     -fx-effect: dropshadow(GAUSSIAN, #242485, 10, 0.2, 2, 2);
     -fx-background-image: url("images/soundOn.png");
-    -fx-background-position: center center;
-    -fx-background-repeat: stretch;
 }
 
 #soundBtn:hover {
@@ -55,6 +83,16 @@ VBox {
 
 #soundBtn:selected {
     -fx-background-image: url("images/soundOff.png");
-    -fx-background-position: center center;
-    -fx-background-repeat: stretch;
+}
+
+/* */
+#houseRec {
+    -fx-arc-width: 10px;
+    -fx-arc-height: 10px;
+}
+
+#houseText {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: white;
 }
