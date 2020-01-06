@@ -14,7 +14,6 @@ public class Main extends Application {
         FXMLLoader menu = new FXMLLoader(getClass().getResource("view/menu.fxml"));
         FXMLLoader game = new FXMLLoader(getClass().getResource("view/game.fxml"));
 
-
         Parent menuDisplay = menu.load(); // load main menu
 
         MenuController menuController = menu.getController();
@@ -27,10 +26,10 @@ public class Main extends Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            primaryStage.setScene(new Scene(gameDisplay, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight()));
-
+            Scene scene = new Scene(gameDisplay, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
+            scene.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
+            primaryStage.setScene(scene);
         });
-
 
 
         primaryStage.setTitle("Co Ca Ngua");

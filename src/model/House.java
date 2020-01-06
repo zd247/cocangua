@@ -1,12 +1,9 @@
 package model;
 
-import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-
-import static javafx.scene.paint.Color.WHITE;
+import javafx.scene.text.Text;
 
 // Home rectangle (6 for each color)
 public class House extends StackPane implements Position {
@@ -17,18 +14,18 @@ public class House extends StackPane implements Position {
     public House(Color color, double width, double height, int position) {
         // Set House appearance
         Rectangle rec = new Rectangle(width, height);
-        rec.setStroke(color);
-        rec.setStrokeWidth(2);
-        rec.setFill(WHITE);
+        rec.setFill(color);
+        rec.setId("houseRec");  // For css file to refer to
 
         // Stack number label on top
-        Label houseLb = new Label("" + position);
-        houseLb.setStyle("-fx-font-size: 20");
-        houseLb.setTextFill(color);
-
-        this.getChildren().addAll(rec, houseLb);
+        Text text = new Text(String.valueOf(position));
+        text.setId("houseText");
+        this.getChildren().addAll(rec, text);
 
         piece = null;   // Initially, no piece on the House
+
+        // Add css file
+        getStylesheets().add(getClass().getResource("/cocangua.css").toExternalForm());
     }
 
     @Override

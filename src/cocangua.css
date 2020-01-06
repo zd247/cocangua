@@ -1,7 +1,7 @@
 /* GUI STYLING */
 
 .root {
-    -fx-background-image: url("images/envi.png");
+    -fx-background-image: url("/images/envi.png");
     -fx-background-position: center center;
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover, auto;
@@ -18,7 +18,7 @@
 }
 
 HBox {
-    -fx-background-image: url("images/plank.png");
+    -fx-background-image: url("/images/plank.png");
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover, auto;
     -fx-background-position: center top;
@@ -52,7 +52,7 @@ VBox {
 #pauseBtn {
     -fx-background-color: linear-gradient(to bottom, #ff6666 5%, #ffdd57 100%);
     -fx-effect: dropshadow(GAUSSIAN, #c26134, 10, 0.2, 2, 2);
-    -fx-background-image: url("images/pause.png");
+    -fx-background-image: url("/images/pause.png");
 }
 
 #pauseBtn:hover {
@@ -63,7 +63,7 @@ VBox {
 #pauseBtn:selected {
     -fx-background-color: linear-gradient(to bottom, #d9f53b 5%, #54b500 100%);
     -fx-effect: dropshadow(GAUSSIAN, #378a20, 10, 0.2, 2, 2);
-    -fx-background-image: url("images/play.png");
+    -fx-background-image: url("/images/play.png");
 }
 
 #pauseBtn:selected:hover {
@@ -74,7 +74,7 @@ VBox {
 #soundBtn {
     -fx-background-color: linear-gradient(to bottom, #56e3d0 5%, #583cc9 100%);
     -fx-effect: dropshadow(GAUSSIAN, #242485, 10, 0.2, 2, 2);
-    -fx-background-image: url("images/soundOn.png");
+    -fx-background-image: url("/images/soundOn.png");
 }
 
 #soundBtn:hover {
@@ -82,7 +82,7 @@ VBox {
 }
 
 #soundBtn:selected {
-    -fx-background-image: url("images/soundOff.png");
+    -fx-background-image: url("/images/soundOff.png");
 }
 
 /* */

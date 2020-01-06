@@ -27,6 +27,10 @@ public class Nest extends StackPane {
     public void initNest() {
         // Draw a 200x200 colored square
         Rectangle rect = new Rectangle(NEST_SIZE, NEST_SIZE);
+        // Add css file
+        getStylesheets().add(getClass().getResource("/cocangua.css").toExternalForm());
+        rect.setId("nestSq");
+
         switch (id){ //set color base on nestId.
             case 0:
                 rect.setFill(Color.DODGERBLUE);

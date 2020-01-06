@@ -56,6 +56,10 @@ public class Map extends Pane {
         defineMapSize();    // Vital for future draws
         drawHouses();
         drawNests();
+
+        // Add css file
+        getStylesheets().add(getClass().getResource("/cocangua.css").toExternalForm());
+        this.setId("map");
     }
 
     /* DRAW THE CIRCLE SPACES AND ADD THEM TO SPACEMAP */
@@ -189,7 +193,6 @@ public class Map extends Pane {
         setPrefSize(MAP_WIDTH, MAP_HEIGHT);
         setMinSize(MAP_WIDTH, MAP_HEIGHT);
         setMaxSize(MAP_WIDTH, MAP_HEIGHT);
-        setStyle("-fx-border-color: black");
     }
 
     // Draw 5 horizontal circles of specified color and direction

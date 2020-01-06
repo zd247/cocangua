@@ -3,8 +3,8 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 
@@ -29,7 +29,7 @@ public class GameController implements Initializable {
     @FXML
     private HBox bottomBar;
     @FXML
-    private Button pauseBtn;
+    private ToggleButton pauseBtn;
     @FXML
     private ToggleButton soundBtn;
     @FXML
@@ -66,7 +66,7 @@ public class GameController implements Initializable {
 
     @FXML
     private void setSound(ActionEvent event) {
-        if (Sound.isMute == false) {
+        if (!Sound.isMute) {
             Sound.isMute = true;
             Sound.playSound(THEME);
         } else {
