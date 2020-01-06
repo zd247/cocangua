@@ -32,7 +32,7 @@ public class Sound {
     final private static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("src/Audio/kick.wav").toURI().toString()));
     final private static MediaPlayer HOME_AUDIO = new MediaPlayer(new Media(new File("src/Audio/home.wav").toURI().toString()));
     final private static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("src/Audio/roll.wav").toURI().toString()));
-    final private static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("src/Audio/roll.wav").toURI().toString()));
+    final private static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("src/Audio/win.mp3").toURI().toString()));
 
 
 
