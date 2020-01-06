@@ -3,12 +3,18 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import model.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -21,15 +27,18 @@ import static model.Sound.THEME;
 
 public class Controller implements Initializable {
     @FXML
-    public Label faceDice1; // Dice 1's rolled number
-
-    @FXML
-    public Label faceDice2; // Dice 2's rolled number
-
-    @FXML
     private BorderPane container;
+    @FXML
+    private HBox topBar;
+    @FXML
+    private HBox bottomBar;
+    @FXML
+    private Button pauseBtn;
+    @FXML
+    private ToggleButton soundBtn;
+    @FXML
+    private ChoiceBox<String> languageBox;
 
-    @FXML public Button passBtn;
 
     int NUM_OF_PLAYER = 4;
 
@@ -53,7 +62,10 @@ public class Controller implements Initializable {
             //get piece
         }
 
-        Sound.playSound(THEME);
+        Sound.playSound(THEME); // play sound
+        Dice dice1 = new Dice();    // add dices
+        Dice dice2 = new Dice();
+        topBar.getChildren().addAll(dice1, dice2);
 
         /**===========================[End of view.test code]===========================*/
     }

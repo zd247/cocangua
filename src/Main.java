@@ -16,8 +16,9 @@ public class Main extends Application {
 
         /***/
 
-
-        primaryStage.setScene(new Scene(root, 800 , 800));
+        Scene scene = new Scene(root, 1000 , 900);
+        scene.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

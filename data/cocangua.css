@@ -1,0 +1,59 @@
+/* GUI STYLING */
+
+.root {
+    -fx-background-color: WHITE;
+}
+
+HBox {
+    -fx-background-color: GOLD;
+}
+
+VBox {
+    -fx-background-color: CYAN;
+}
+
+.label {
+    -fx-text-fill: BLACK;
+    -fx-font-size: 24px;
+    -fx-font-style: italic;
+}
+
+.button, .toggle-button {
+    -fx-background-radius: 20;
+
+    -fx-text-fill: WHITE;
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 5 25 5 25;
+    -fx-cursor:pointer;
+}
+
+#pauseBtn {
+    -fx-background-color: linear-gradient(to bottom, #ff6666 5%, #ffdd57 100%);
+    -fx-effect: dropshadow(GAUSSIAN, #c26134, 10, 0.2, 2, 2);
+    -fx-text-fill: #bf3535;
+}
+
+#pauseBtn:hover {
+    -fx-background-color: linear-gradient(to bottom, #ffdd57 5%, #ff6666 100%);
+}
+
+#soundBtn {
+    -fx-background-color: linear-gradient(to bottom, #56e3d0 5%, #583cc9 100%);
+    -fx-effect: dropshadow(GAUSSIAN, #242485, 10, 0.2, 2, 2);
+    -fx-background-image: url("images/soundOn.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+}
+
+#soundBtn:hover {
+    -fx-background-color: linear-gradient(to bottom, #583cc9 5%, #56e3d0 100%);
+}
+
+#soundBtn:selected {
+    -fx-background-image: url("images/soundOff.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+}

@@ -56,9 +56,6 @@ public class Map extends Pane {
         defineMapSize();    // Vital for future draws
         drawHouses();
         drawNests();
-
-        // TEST DICE
-        drawDiceZone(this.getPrefWidth() / 2, this.getPrefHeight() / 2);
     }
 
     /* DRAW THE CIRCLE SPACES AND ADD THEM TO SPACEMAP */
@@ -88,22 +85,6 @@ public class Map extends Pane {
         markSpace(spaceMap.get(YELLOW_START));
         markSpace(spaceMap.get(GREEN_START));
         markSpace(spaceMap.get(RED_START));
-    }
-
-    /**
-     * HELP ME FIX THIS
-     * @param x
-     * @param y
-     */
-    void drawDiceZone(double x, double y) {
-        // For now its a button, please help me replace it with something cool
-        //Dice dice = new Dice();
-        Dice dice = new Dice();
-        dice.setLayoutX(x - 40);    // 40 = dice size / 2
-        dice.setLayoutY(y - 40);
-
-        this.getChildren().add(dice);
-
     }
 
     /* DRAW THE NESTS IN MAP's 4 CORNERS AND ADD TO NESTMAP */

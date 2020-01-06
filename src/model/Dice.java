@@ -10,10 +10,10 @@ import java.util.Random;
 
 // Dice class
 public class Dice extends ImageView {
-    Image diceFace = new Image("view/images/dice1.png");
+    Image diceFace = new Image("images/dice1.png");
 
     // Constructor
-    Dice() {
+    public Dice() {
         setFitWidth(85);
         setFitHeight(85);
         setImage(diceFace);
@@ -48,12 +48,12 @@ public class Dice extends ImageView {
         // Set new diceFace image after roll
         rt.setOnFinished(finishRoll -> {
             switch (num) {
-                case 1: this.setImage(new Image("view/images/dice1.png")); break;
-                case 2: this.setImage(new Image("view/images/dice2.png")); break;
-                case 3: this.setImage(new Image("view/images/dice3.png")); break;
-                case 4: this.setImage(new Image("view/images/dice4.png")); break;
-                case 5: this.setImage(new Image("view/images/dice5.png")); break;
-                case 6: this.setImage(new Image("view/images/dice6.png")); break;
+                case 1: this.setImage(new Image("images/dice1.png")); break;
+                case 2: this.setImage(new Image("images/dice2.png")); break;
+                case 3: this.setImage(new Image("images/dice3.png")); break;
+                case 4: this.setImage(new Image("images/dice4.png")); break;
+                case 5: this.setImage(new Image("images/dice5.png")); break;
+                case 6: this.setImage(new Image("images/dice6.png")); break;
             }
         });
         return num;

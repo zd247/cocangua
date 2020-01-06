@@ -25,14 +25,14 @@ public class Sound {
     final public static int WIN = 7;
 
     // Template for new MediaPlayer
-    public static MediaPlayer THEME_AUDIO = new MediaPlayer(new Media(new File("src/audio/theme.mp3").toURI().toString()));
-    public static MediaPlayer MOVE_AUDIO = new MediaPlayer(new Media(new File("src/audio/move.wav").toURI().toString()));
-    public static MediaPlayer DEPLOY_AUDIO = new MediaPlayer(new Media(new File("src/audio/deploy.wav").toURI().toString()));
-    public static MediaPlayer BLOCK_AUDIO = new MediaPlayer(new Media(new File("src/audio/block.wav").toURI().toString()));
-    public static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("src/audio/kick.wav").toURI().toString()));
-    public static MediaPlayer HOME_AUDIO = new MediaPlayer(new Media(new File("src/audio/home.wav").toURI().toString()));
-    public static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("src/audio/roll.wav").toURI().toString()));
-    public static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("src/audio/roll.wav").toURI().toString()));
+    public static MediaPlayer THEME_AUDIO = new MediaPlayer(new Media(new File("data/audio/theme.mp3").toURI().toString()));
+    public static MediaPlayer MOVE_AUDIO = new MediaPlayer(new Media(new File("data/audio/move.wav").toURI().toString()));
+    public static MediaPlayer DEPLOY_AUDIO = new MediaPlayer(new Media(new File("data/audio/deploy.wav").toURI().toString()));
+    public static MediaPlayer BLOCK_AUDIO = new MediaPlayer(new Media(new File("data/audio/block.wav").toURI().toString()));
+    public static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("data/audio/kick.wav").toURI().toString()));
+    public static MediaPlayer HOME_AUDIO = new MediaPlayer(new Media(new File("data/audio/home.wav").toURI().toString()));
+    public static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("data/audio/roll.wav").toURI().toString()));
+    public static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("data/audio/roll.wav").toURI().toString()));
 
     // Constructor : Perhaps add sounds to List
     public Sound() {
