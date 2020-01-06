@@ -25,41 +25,40 @@ public class Sound {
     final public static int WIN = 7;
 
     // Template for new MediaPlayer
-    public static MediaPlayer THEME_AUDIO = new MediaPlayer(new Media(new File("src/audio/theme.mp3").toURI().toString()));
-    public static MediaPlayer MOVE_AUDIO = new MediaPlayer(new Media(new File("src/audio/move.wav").toURI().toString()));
-    public static MediaPlayer DEPLOY_AUDIO = new MediaPlayer(new Media(new File("src/audio/deploy.wav").toURI().toString()));
-    public static MediaPlayer BLOCK_AUDIO = new MediaPlayer(new Media(new File("src/audio/block.wav").toURI().toString()));
-    public static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("src/audio/kick.wav").toURI().toString()));
-    public static MediaPlayer HOME_AUDIO = new MediaPlayer(new Media(new File("src/audio/home.wav").toURI().toString()));
-    public static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("src/audio/roll.wav").toURI().toString()));
-    public static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("src/audio/roll.wav").toURI().toString()));
+    final private static MediaPlayer THEME_AUDIO = new MediaPlayer(new Media(new File("src/Audio/theme.mp3").toURI().toString()));
+    final private static MediaPlayer MOVE_AUDIO = new MediaPlayer(new Media(new File("src/Audio/move.wav").toURI().toString()));
+    final private static MediaPlayer DEPLOY_AUDIO = new MediaPlayer(new Media(new File("src/Audio/deploy.wav").toURI().toString()));
+    final private static MediaPlayer BLOCK_AUDIO = new MediaPlayer(new Media(new File("src/Audio/block.wav").toURI().toString()));
+    final private static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("src/Audio/kick.wav").toURI().toString()));
+    final private static MediaPlayer HOME_AUDIO = new MediaPlayer(new Media(new File("src/Audio/home.wav").toURI().toString()));
+    final private static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("src/Audio/roll.wav").toURI().toString()));
+    final private static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("src/Audio/win.mp3").toURI().toString()));
+
 
 
     // Constructor : Perhaps add sounds to List
-    public Sound() {
+    Sound() {
+        sounds.addAll(List.of(THEME_AUDIO, MOVE_AUDIO, DEPLOY_AUDIO, BLOCK_AUDIO, KICK_AUDIO, HOME_AUDIO, ROLL_AUDIO, WIN_AUDIO));
+        // Your default settings here if any
+        sounds.get(0).setCycleCount(MediaPlayer.INDEFINITE); //repeat the theme audio
         isMute = false;
     }
 
     // Template play sound function (mute handled)
     public static void playSound(int soundID) {
-        MediaPlayer sfx = null;
-
-        switch (soundID) {
-            case THEME: sfx = THEME_AUDIO; break;
-            case MOVE: sfx = MOVE_AUDIO; break;
-            case DEPLOY: sfx = DEPLOY_AUDIO; break;
-            case BLOCKED: sfx = BLOCK_AUDIO; break;
-            case KICK: sfx = KICK_AUDIO; break;
-            case HOME: sfx = HOME_AUDIO; break;
-            case ROLL: sfx = ROLL_AUDIO; break;
-            case WIN: sfx = WIN_AUDIO; break;
-        }
-
+        MediaPlayer sfx = sounds.get(soundID);
         if (!isMute) {
-            assert sfx != null;
+            if (sounds.get(soundID) != THEME_AUDIO) { //reset if it is not theme audio
+                // First, reset the sound to its beginning
+                sfx.seek(Duration.ZERO);
+                // Then play
+            }
             sfx.play();
+        } else {
+            if (sounds.get(soundID) == THEME_AUDIO) { //pause if it is theme audio
+                sfx.pause();
+            }
         }
-
     }
 
 }
