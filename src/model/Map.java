@@ -98,7 +98,7 @@ public class Map extends Pane {
     void drawDiceZone(double x, double y) {
         // For now its a button, please help me replace it with something cool
         //Dice dice = new Dice();
-        TestDice dice = new TestDice();
+        Dice dice = new Dice();
         dice.setLayoutX(x - 40);    // 40 = dice size / 2
         dice.setLayoutY(y - 40);
 

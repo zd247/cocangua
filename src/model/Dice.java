@@ -1,52 +1,61 @@
 package model;
-import javafx.event.EventHandler;
+
+import javafx.animation.RotateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
-import java.io.File;
 import java.util.Random;
 
 // Dice class
 public class Dice extends ImageView {
-    private int[] values = new int[2];   // The rolled number (1 - 6)
-
-    /* DOESN'T DISPLAY */
-    File file = new File("view/images/diceFace1.jpg");
-    Image image = new Image(file.toURI().toString(), 50, 50, false, false);
+    Image diceFace = new Image("view/images/dice1.png");
 
     // Constructor
-    public Dice() {
-        this.setImage(this.image);
-        // TEST
-        this.setFitWidth(200);
+    Dice() {
+        setFitWidth(85);
+        setFitHeight(85);
+        setImage(diceFace);
 
-        // Register event handler
-        this.setOnMouseClicked(mouseEvent -> {
-            roll();
-            //Future implementation: Co-routine to wait until the rolling animation finished then update
-            update();
+        // Slight "jump" effect when hovered
+        this.setOnMouseEntered(hover -> {
+            this.setTranslateY(-5);
         });
+
+        this.setOnMouseExited(endHover -> {
+            this.setTranslateY(0);
+        });
+
+        // Roll when clicked on
+        this.setOnMouseClicked(click -> this.roll());
     }
 
-    //this function is called inside event handlers
-    private void update() {
-        //update attributes..
+    // Roll a dice and return rolled number
+    int roll() {
+        Random rand = new Random();
+        int num = rand.nextInt(6) + 1;
 
-        //update view display
-    }
+        // Play roll animation
+        RotateTransition rt = new RotateTransition(Duration.millis(200), this);
+        rt.setByAngle(360);
+        rt.setAutoReverse(true);
+        rt.setCycleCount(3);
+        rt.setAxis(Rotate.Y_AXIS);
+        rt.play();  // Play roll animation
+        Sound.playSound(Sound.ROLL);    // Play roll sound
 
-
-    // Roll function (1 - 6)
-    private void roll(){
-        Random random = new Random();
-        for (int i = 0; i < values.length;i++) {
-            this.values[i] = random.nextInt(6) + 1;
-        }
-    }
-
-    // total moves
-    public int getTotalMoves() {
-        return values[0] + values[1];
+        // Set new diceFace image after roll
+        rt.setOnFinished(finishRoll -> {
+            switch (num) {
+                case 1: this.setImage(new Image("view/images/dice1.png")); break;
+                case 2: this.setImage(new Image("view/images/dice2.png")); break;
+                case 3: this.setImage(new Image("view/images/dice3.png")); break;
+                case 4: this.setImage(new Image("view/images/dice4.png")); break;
+                case 5: this.setImage(new Image("view/images/dice5.png")); break;
+                case 6: this.setImage(new Image("view/images/dice6.png")); break;
+            }
+        });
+        return num;
     }
 }
