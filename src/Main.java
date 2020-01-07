@@ -4,8 +4,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import statics.StaticContainer;
 
 import java.io.IOException;
+
+import static statics.StaticContainer.playerFields;
+import static statics.StaticContainer.players;
 
 public class Main extends Application {
 
@@ -18,8 +22,18 @@ public class Main extends Application {
 
         MenuController menuController = menu.getController();
 
-        //go to main game, if no players is null then the game plays itself
+        //TODO: go to main game, if no players is null then the game plays itself
         menuController.startBtn.setOnAction(actionEvent -> {
+            // Pre-process the static array of Player
+            for (int i = 0 ; i < players.length;i++){
+                //finialize the player field to pass it to player in game
+                if (playerFields[i].isClickedOn()){
+                    players[i].setConnectionStatus(playerFields[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
+                }
+                playerFields[i].getTextField().setText(playerFields[i].getTextField().getText());
+                players[i].setName(playerFields[i].getTextField().getText() +  " ( " + players[i].getConnectionStatus() + " ) ");
+            }
+            //Load main game
             Parent gameDisplay = null;
             try {
                 gameDisplay = game.load();

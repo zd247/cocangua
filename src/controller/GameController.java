@@ -3,11 +3,16 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ToggleButton;
+
 import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
 import model.*;
+import static statics.StaticContainer.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -52,24 +57,19 @@ public class GameController implements Initializable {
 
         /**===========================[Test code goes here]===========================*/
 
-//        for (int i = 0; i < players.size(); i++) {
-////            System.out.println(players.get(i).getName());
-//            //TODO:
-//            //get piece using player
-//
-//            //get piece using nest
-//
-//            //get piece
-//        }
+        for (int i = 0; i < players.length; i++) {
+            System.out.println(players[i].getName());
+        }
+
 
         Sound.playSound(THEME); // play sound
+        // this logic can be moved to static class.
         Dice dice1 = new Dice();    // add dices
         Dice dice2 = new Dice();
         topBar.getChildren().addAll(dice1, dice2);
 
         /**===========================[End of view.test code]===========================*/
     }
-
 
 
     @FXML

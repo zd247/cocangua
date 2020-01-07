@@ -11,6 +11,7 @@ import static javafx.scene.paint.Color.WHITE;
 public class Nest extends StackPane {
     private int id;
     private Piece[] pieceList = new Piece[4];
+    private Color color;
 
     final public static double NEST_SIZE = 200;
 
@@ -33,18 +34,19 @@ public class Nest extends StackPane {
 
         switch (id){ //set color base on nestId.
             case 0:
-                rect.setFill(Color.DODGERBLUE);
+                this.color = Color.DODGERBLUE;
                 break;
             case 1:
-                rect.setFill(Color.GOLD);
+                this.color = Color.GOLD;
                 break;
             case 2:
-                rect.setFill(Color.SEAGREEN);
+                this.color = Color.SEAGREEN;
                 break;
             case 3:
-                rect.setFill(Color.TOMATO);
+                this.color = Color.TOMATO;
                 break;
         }
+        rect.setFill(color);
 
         // Draw a circle of 75 radius
         Circle circle = new Circle(75);
@@ -61,5 +63,9 @@ public class Nest extends StackPane {
 
     public Piece[] getPieceList() {
         return pieceList;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }

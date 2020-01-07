@@ -1,46 +1,56 @@
 package statics;
 
-import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import model.Nest;
 import model.Player;
+import model.PlayerField;
 
-import java.util.HashMap;
+
+import static model.Map.*;
 
 public class StaticContainer { // can be made singleton but not necessary
-    public static HashMap<Integer, Player> players = new HashMap<>(); // check for null when starting the game
+    // containers
+    public static Player[] players = new Player[4];
+    public static PlayerField[] playerFields = new PlayerField[4];
+
+    public enum ConnectionStatus {
+        PLAYER, BOT, OFF
+    }
 
     /**
      *
-     * @param id
+     * @param nestId
      * @return
      */
-    public static Player createPlayer(int id) {
-       Player player = new Player(id, "Player" + id, true);
-
+    public static Player createPlayer(int nestId) {
+       Player player = new Player(nestId, "Player" + nestId);
+       player.setConnectionStatus(ConnectionStatus.OFF);
 
        return player;
     }
 
+
     /**
-     *
-     * @param id
-     * @return
+     * return the color of the player reference by nestId (limit calling this function, bad logic)
+     * @param nestId reference id
      */
-    public static Player createBot(int id) {
-        Player player = new Player(id, "Player" + id, false);
 
-
-        return player;
+    public static Color getColorByNestId(int nestId) {
+        Nest ret = new Nest(nestId);
+        return ret.getColor();
     }
 
-//    /**
-//     *
-//     */
-//    public static Color getColorByNestId(int nestId) {
-//        Color color = n
+    /**
+     * return nest by id, only call this function after Map is initialized
+     * @param nestId
+     * @return
+     */
+    public static Nest getNestById(int nestId) {
+        return getNestMap().get(nestId);
+    }
+
+//    public static ConnectionStatus getPlayerConnectionStatusById() {
 //
-//        return color;
 //    }
 
 
