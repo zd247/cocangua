@@ -39,13 +39,9 @@ public class MenuController implements Initializable {
                 PlayerField addPlayerField = new PlayerField(id); // nestId
                 playerFields[id] = addPlayerField;
                 playerFieldContainer.add(addPlayerField, i, j);
-
             }
         }
     }
-
-
-
 
 }
 

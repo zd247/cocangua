@@ -26,10 +26,10 @@ public class Map extends Pane {
     final public static int YELLOW_START = 13;
     final public static int GREEN_START = 25;
     final public static int RED_START = 37;
-    final public static int BLUE_HOUSE_1 = 0;
-    final public static int YELLOW_HOUSE_1 = 6;
-    final public static int GREEN_HOUSE_1 = 12;
-    final public static int RED_HOUSE_1 = 18;
+    final public static int BLUE_HOUSE_1 = 48;
+    final public static int YELLOW_HOUSE_1 = 54;
+    final public static int GREEN_HOUSE_1 = 60;
+    final public static int RED_HOUSE_1 = 66;
 
     // A map to store all circle positions
     static HashMap<Integer, Space> spaceMap = new HashMap<>();
@@ -44,7 +44,7 @@ public class Map extends Pane {
     public static double MAP_WIDTH;
     public static double MAP_HEIGHT;
 
-    //Set color of region
+    // Set color of region
     final public static Color[] REGION_COLOR = {Color.DODGERBLUE, Color.GOLD, Color.SEAGREEN,Color.TOMATO};
 
     /* FUNCTIONS BELOW */
@@ -110,25 +110,25 @@ public class Map extends Pane {
         y = space.getLayoutY();
 
         // Draw blue houses based on arrival space's coordinates
-        drawHousesVertically(x - HOUSE_LONG_SIDE / 2, y + CIRCLE_RADIUS + 25, DODGERBLUE, 0, true);
+        drawHousesVertically(x - HOUSE_LONG_SIDE / 2, y + CIRCLE_RADIUS + 25, DODGERBLUE, spaceMap.size(), true);
 
         // Same with Yellow houses
         space = spaceMap.get(YELLOW_ARRIVAL);
         x = space.getLayoutX();
         y = space.getLayoutY();
-        drawHousesHorizontally(x + CIRCLE_RADIUS + 25, y - HOUSE_LONG_SIDE / 2, GOLD, 6, true);
+        drawHousesHorizontally(x + CIRCLE_RADIUS + 25, y - HOUSE_LONG_SIDE / 2, GOLD, spaceMap.size() + 6, true);
 
         // Green houses
         space = spaceMap.get(GREEN_ARRIVAL);
         x = space.getLayoutX();
         y = space.getLayoutY();
-        drawHousesVertically(x - HOUSE_LONG_SIDE / 2, y - (CIRCLE_RADIUS + 25 + HOUSE_SHORT_SIDE), SEAGREEN, 12, false);
+        drawHousesVertically(x - HOUSE_LONG_SIDE / 2, y - (CIRCLE_RADIUS + 25 + HOUSE_SHORT_SIDE), SEAGREEN, spaceMap.size() + 12, false);
 
         // Same with Red houses
         space = spaceMap.get(RED_ARRIVAL);
         x = space.getLayoutX();
         y = space.getLayoutY();
-        drawHousesHorizontally(x - (CIRCLE_RADIUS + 25 + HOUSE_SHORT_SIDE), y - HOUSE_LONG_SIDE / 2, TOMATO, 18, false);
+        drawHousesHorizontally(x - (CIRCLE_RADIUS + 25 + HOUSE_SHORT_SIDE), y - HOUSE_LONG_SIDE / 2, TOMATO, spaceMap.size() + 18, false);
     }
 
     // Draw 6 rectangles of specified color horizontally
@@ -265,7 +265,36 @@ public class Map extends Pane {
         space.setStrokeWidth(4);
     }
 
-    // Getters
+    // Get coordinates of targeted house
+    public double getHouseX(int key) {
+        House house = houseMap.get(key);
+        // Return different coordinates for vertical houses
+        if ((YELLOW_HOUSE_1 <= key && key < GREEN_HOUSE_1) || (RED_HOUSE_1 <= key && key < 72))
+            return house.getLayoutX() + HOUSE_SHORT_SIDE / 2;
+        else
+            return house.getLayoutX() + HOUSE_LONG_SIDE / 2;
+    }
+
+    public double getHouseY(int key) {
+        House house = houseMap.get(key);
+        // Return different coordinates for vertical houses
+        if ((YELLOW_HOUSE_1 <= key && key < GREEN_HOUSE_1) || (RED_HOUSE_1 <= key && key < 72))
+            return house.getLayoutY() + HOUSE_LONG_SIDE / 2;
+        else
+            return house.getLayoutY() + HOUSE_SHORT_SIDE / 2;
+    }
+
+    public double getSpaceX(int key) {
+        Space space = spaceMap.get(key);
+        return space.getLayoutX();
+    }
+
+    public double getSpaceY(int key) {
+        Space space = spaceMap.get(key);
+        return space.getLayoutY();
+    }
+
+    // Simple getters
     public static HashMap<Integer, Space> getSpaceMap() {
         return spaceMap;
     }
@@ -274,13 +303,5 @@ public class Map extends Pane {
 
     public static HashMap<Integer, House> getHouseMap() {
         return houseMap;
-    }
-
-    public static double getMapWidth() {
-        return MAP_WIDTH;
-    }
-
-    public static double getMapHeight() {
-        return MAP_HEIGHT;
     }
 }

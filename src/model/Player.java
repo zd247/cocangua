@@ -19,11 +19,8 @@ public class Player extends Node {
     }
 
     public Player (int nestId, String name) {
-
         this.nestId = nestId;
         this.name = name;
-
-
     }
 
 

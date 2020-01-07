@@ -12,9 +12,15 @@
     -fx-background-radius: 20px;
 }
 
-#nestSq {
+#nest > Rectangle {
     -fx-arc-width: 20;
     -fx-arc-height: 20;
+}
+
+#nest-disconnected > Rectangle {
+    -fx-arc-width: 20;
+    -fx-arc-height: 20;
+    -fx-fill: url("/images/stone.jpg");
 }
 
 HBox {

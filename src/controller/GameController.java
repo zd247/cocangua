@@ -11,7 +11,10 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Circle;
 import model.*;
+
+import static javafx.scene.paint.Color.BLACK;
 import static statics.StaticContainer.*;
 
 import java.net.URL;
@@ -59,6 +62,10 @@ public class GameController implements Initializable {
 
         for (int i = 0; i < players.length; i++) {
             System.out.println(players[i].getName());
+
+            if (players[i].getConnectionStatus() == ConnectionStatus.OFF) {
+                Map.getNestMap().get(i).setDisplayDisconnected();
+            }
         }
 
 
@@ -67,6 +74,22 @@ public class GameController implements Initializable {
         Dice dice1 = new Dice();    // add dices
         Dice dice2 = new Dice();
         topBar.getChildren().addAll(dice1, dice2);
+
+        // test index
+        System.out.println(Map.getSpaceMap().size() + " " + Map.getHouseMap().size());
+
+        Circle c = new Circle(12);
+        c.setFill(BLACK);
+
+        // test move
+        map.getChildren().add(c);
+        double x = map.getHouseX(Map.RED_HOUSE_1 + 3);
+        double y = map.getHouseY(Map.RED_HOUSE_1 + 3);
+        //double x = map.getSpaceX(Map.BLUE_ARRIVAL);
+        //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
+        c.setLayoutX(x);
+        c.setLayoutY(y);
+
 
         /**===========================[End of view.test code]===========================*/
     }
