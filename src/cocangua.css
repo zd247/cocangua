@@ -25,7 +25,70 @@ HBox {
 }
 
 VBox {
-    -fx-background-color: CYAN;
+    /*-fx-background-color: CYAN;*/
+    -fx-vgap: 20;
+}
+
+/* STATUS PANE DISPLAY */
+VBox > .label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: right;
+    -fx-label-padding: 5 5 5 40;
+    -fx-background-color: rgba(255, 255, 255, .9);
+    -fx-background-radius: 20px;
+
+    -fx-background-size: 32px 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left;
+}
+
+#nameLbBlue {
+    -fx-background-image: url(/images/blueC.png);
+    -fx-text-fill: dodgerblue;
+}
+
+#nameLbYellow {
+    -fx-background-image: url(/images/yellowC.png);
+    -fx-text-fill: #C9A634;
+}
+
+#nameLbGreen {
+    -fx-background-image: url(/images/greenC.png);
+    -fx-text-fill: seagreen;
+}
+
+#nameLbRed {
+    -fx-background-image: url(/images/redC.png);
+    -fx-text-fill: tomato;
+}
+
+#scoreLbBlue {
+    -fx-label-padding: 5;
+    -fx-text-fill: dodgerblue;
+}
+
+#scoreLbYellow {
+    -fx-label-padding: 5;
+    -fx-text-fill: #C9A634;
+}
+
+#scoreLbGreen {
+    -fx-label-padding: 5;
+    -fx-text-fill: seagreen;
+}
+
+#scoreLbRed {
+    -fx-label-padding: 5;
+    -fx-text-fill: tomato;
+}
+
+#activityLog {
+    -fx-border-width: 2px;
+    -fx-border-color: #C95C34;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(GAUSSIAN, saddlebrown, 10, 0.2, 2, 2);
 }
 
 /* CHOICE-BOX CUSTOMIZATION */
@@ -85,7 +148,7 @@ VBox {
     -fx-background-image: url("/images/soundOff.png");
 }
 
-/* */
+/* MISCS */
 #houseRec {
     -fx-arc-width: 10px;
     -fx-arc-height: 10px;

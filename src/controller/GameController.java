@@ -3,9 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
@@ -35,6 +33,16 @@ public class GameController implements Initializable {
     @FXML
     private ChoiceBox<String> languageBox;
 
+    // Text fields that needs updating
+    @FXML private Label nameLbBlue;
+    @FXML private Label nameLbYellow;
+    @FXML private Label nameLbGreen;
+    @FXML private Label nameLbRed;
+    @FXML private Label scoreLbBlue;
+    @FXML private Label scoreLbYellow;
+    @FXML private Label scoreLbGreen;
+    @FXML private Label scoreLbRed;
+    @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
