@@ -13,7 +13,7 @@ public class Nest extends StackPane {
     private int id;
     private Piece[] pieceList = new Piece[4];
     private Color color;
-    Rectangle rect = new Rectangle(NEST_SIZE, NEST_SIZE);
+    public Rectangle rect = new Rectangle(NEST_SIZE, NEST_SIZE);
 
     final public static double NEST_SIZE = 200;
 

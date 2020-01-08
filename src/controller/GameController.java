@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeType;
 import model.*;
 
 import static javafx.scene.paint.Color.BLACK;
@@ -222,6 +223,7 @@ public class GameController implements Initializable {
     }
 
     public void rollDice() {
+        int lastID = id;
         dice1.setOnMouseClicked(event -> {
             System.out.println(players.length);
             if (turn == 0) {
@@ -246,9 +248,12 @@ public class GameController implements Initializable {
                 //Roll dice here, wilasdasd
                 for (int i = 0; i < players.length; i++) {
                     if (i != id) {
+                        Map.getNestMap().get(i).rect.setStrokeWidth(0);
                         players[i].resetCheck();;
                     }
                     else{
+                        Map.getNestMap().get(i).rect.setStroke(BLACK);
+                        Map.getNestMap().get(i).rect.setStrokeWidth(10);
                         players[i].rolled();
                     }
                 }
@@ -259,7 +264,6 @@ public class GameController implements Initializable {
                     }
                     turn = 0;
                 }
-
                 else if (!able_To_Move(id, moveAmount1) && !able_To_Move(id,moveAmount2) && !canDeploy(id,moveAmount1,moveAmount2) && !able_To_Kick(moveAmount1,id) &&!able_To_Kick(moveAmount2,id)){
                     players[id].resetCheck();
                     if (moveAmount1 == moveAmount2) {
@@ -333,6 +337,7 @@ public class GameController implements Initializable {
             return false;
         }
     }
+
     boolean able_To_Kick(int diceAmount, int nestId){
         for (int i = 0; i< 47; i++){
             if (Map.getSpaceMap().get(i).getOccupancy()){
