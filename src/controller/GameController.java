@@ -45,7 +45,7 @@ public class GameController implements Initializable {
     Dice dice1 = new Dice();    // add dices
     Dice dice2 = new Dice();
     int turn = 0;
-    int id = 0;
+    int id = -1;
     int moveAmount1 = 0;
     int moveAmount2 = 0;
     // Text fields that needs updating
@@ -223,12 +223,19 @@ public class GameController implements Initializable {
 
     public void rollDice() {
         dice1.setOnMouseClicked(event -> {
+            System.out.println(players.length);
             if (turn == 0) {
                 turn = 1;
-                if (id == (players.length - 1)) {
+                if (id >= (players.length - 1)) {
                     id = 0;
                 } else {
                     id++;
+                }
+                if (id != -1 && players[id].getConnectionStatus() == ConnectionStatus.OFF){
+                    id++;
+                    if (id > (players.length - 1)) {
+                        id = 0;
+                    }
                 }
                 moveAmount1 = dice1.roll();
                 moveAmount2 = dice2.roll();

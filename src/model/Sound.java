@@ -43,6 +43,8 @@ public class Sound {
     public static void playSound(int soundID) {
         MediaPlayer sfx = null;
 
+        THEME_AUDIO.setCycleCount(MediaPlayer.INDEFINITE);
+
         switch (soundID) {
             case THEME: sfx = THEME_AUDIO; break;
             case MOVE: sfx = MOVE_AUDIO; break;
