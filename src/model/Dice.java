@@ -48,7 +48,7 @@ public class Dice extends ImageView {
         int num = rand.nextInt(6) + 1;
 
         // Play roll animation
-        RotateTransition rt = new RotateTransition(Duration.millis(200), this);
+        RotateTransition rt = new RotateTransition(Duration.millis(100), this);
         rt.setByAngle(360);
         rt.setAutoReverse(true);
         rt.setCycleCount(3);

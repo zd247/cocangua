@@ -68,6 +68,7 @@ public class Piece extends Circle {
     }
 
     //=================================[Move]=====================================
+/*
     void handleThisNewLogic() {
         if (nestCounter == 0) {
             curPlayerMoveAmount = diceValue1;
@@ -138,8 +139,10 @@ public class Piece extends Circle {
         }
 
     }
+*/
 
 
+/*
     boolean ableToMove(int nestId, int dices){
         int check =0;
         for (int i = 0; i <=  47; i++){
@@ -158,6 +161,7 @@ public class Piece extends Circle {
         }
         return check == 0 && (moveAmount1 == 6 || moveAmount2 == 6) ;
     }
+*/
 
     boolean ableToKick(int position, int diceAmount, int nestId){
         if (position == -1) {
@@ -288,6 +292,7 @@ public class Piece extends Circle {
     public void moveToHouseDestination(int moveAmount){
         //start to move into the houseDestination
         if (!isBlocked){
+
             House hs = getHouseMap().get(step - 49 + getHouseArrival() + moveAmount);
             double x = hs.getLayoutX() + width_house;
             double y = hs.getLayoutY() + height_house;

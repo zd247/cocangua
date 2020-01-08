@@ -85,7 +85,7 @@ public class GameController implements Initializable {
                 int count = 0;
             };
             for(int pieceID = 0; pieceID <4; pieceID++) {
-                int finalI = i; //nestID
+                int id_Nest = i; //nestID
                 int finalPieceId = pieceID;
                 Piece piece = nest.getPieceList()[pieceID];
                 piece.setOnMouseClicked(event -> {
@@ -94,8 +94,8 @@ public class GameController implements Initializable {
                         initial = piece.getCurrentPosition();
                     }
 
-                    if(players[finalI].isRolled()) {
-                        if (id == finalI) {
+                    if(players[id_Nest].isRolled()) {
+                        if (id == id_Nest) {
                             if (nest_counter.count == 0) {
                                 p_move.moveAmount = moveAmount1;
                                 if (piece.getCurrentPosition() != -1) {
@@ -107,31 +107,32 @@ public class GameController implements Initializable {
                                     nest_counter.count = 2;
                                 }
                             }
-                            if (!able_To_Move(finalI,p_move.moveAmount) && piece.getCurrentPosition()!= -1 && nest_counter.count == 1){
-                                if (able_To_Move(finalI,moveAmount2) || able_To_Kick(piece.getCurrentPosition(),moveAmount2,finalI)){
+                            if (!able_To_Move(id_Nest,p_move.moveAmount) && !able_To_Kick(piece.getCurrentPosition(),p_move.moveAmount,id_Nest)  && piece.getCurrentPosition()!= -1 && nest_counter.count == 1){
+                                if (able_To_Move(id_Nest,moveAmount2) || able_To_Kick(piece.getCurrentPosition(),moveAmount2,id_Nest)){
                                     p_move.moveAmount = moveAmount2;
                                     moveAmount2 = moveAmount1;
                                     moveAmount1 = p_move.moveAmount;
                                     System.out.println("dzo");
                                 }
                             }
-                            if (!isBlockedPiece(piece.getCurrentPosition(), p_move.moveAmount, piece.getNestId()) || able_To_Kick(piece.getCurrentPosition(), p_move.moveAmount, finalI)) {
-                                if (able_To_Kick(piece.getCurrentPosition(), p_move.moveAmount, finalI)){
-                                    if (piece.getCurrentPosition() != -1) {
+                            if (!isBlockedPiece(piece.getCurrentPosition(), p_move.moveAmount, piece.getNestId()) || able_To_Kick(piece.getCurrentPosition(), p_move.moveAmount, id_Nest)) {
+                                if (able_To_Kick(piece.getCurrentPosition(), p_move.moveAmount, id_Nest)){
+                                    if (piece.getCurrentPosition() != -1 && piece.getStep() + p_move.moveAmount <= 48) {
                                         int next = piece.getCurrentPosition() + p_move.moveAmount;
                                         if (next > 47){
                                             next -= 48;
                                         }
-
                                         piece.kick(Map.getSpaceMap().get(next).getPiece());
                                         Map.getSpaceMap().get(next).setOccupancy(false);
 
                                     } else {
-                                        int next ;
-                                        next = piece.getStartPosition(piece.getNestId());   //get the piece at start position
+                                        if (canDeploy(id_Nest,moveAmount1,moveAmount2)) {
+                                            int next;
+                                            next = piece.getStartPosition(piece.getNestId());   //get the piece at start position
 
-                                        piece.kick(Map.getSpaceMap().get(next).getPiece());
-                                        Map.getSpaceMap().get(next).setOccupancy(false);
+                                            piece.kick(Map.getSpaceMap().get(next).getPiece());
+                                            Map.getSpaceMap().get(next).setOccupancy(false);
+                                        }
                                     }
                                 }
                                 if ((piece.getCurrentPosition() != -1 || ((moveAmount1 == 6 || moveAmount2 == 6) && nest_counter.count == 0)) && nest_counter.count!= 3) {
@@ -139,7 +140,6 @@ public class GameController implements Initializable {
                                     if (piece.getCurrentPosition() == -1) {
                                         nest_counter.count = 2;
                                     }
-
                                     if (piece.getStep() == 48){
                                         if (moveAmount1 < moveAmount2 && nest_counter.count == 1){
                                             p_move.moveAmount = moveAmount2;
@@ -153,7 +153,6 @@ public class GameController implements Initializable {
                                     if (piece.getCurrentPosition() == initial){
                                         nest_counter.count--;
                                     }
-
                                     if (initial != -1) {
                                         Map.getSpaceMap().get(initial).setOccupancy(false);
                                         Map.getSpaceMap().get(initial).setPiece(null);
@@ -167,16 +166,16 @@ public class GameController implements Initializable {
                             else if (isBlockedPiece(piece.getCurrentPosition(), p_move.moveAmount, piece.getNestId()) && piece.getCurrentPosition()!= -1){
                                 nest_counter.count--;
                             }
-                            if (piece.getCurrentPosition()!= -1 && !able_To_Move(finalI,moveAmount2)&& !able_To_Kick(piece.getCurrentPosition(),moveAmount2,finalI) && nest_counter.count == 1){
+                            if (piece.getCurrentPosition()!= -1 && !able_To_Move(id_Nest,moveAmount2)&& !able_To_Kick(piece.getCurrentPosition(),moveAmount2,id_Nest) && nest_counter.count == 1){
                                 nest_counter.count = 3;
                             }
-                            System.out.println(finalI + " " + nest_counter.count);
+                            System.out.println(id_Nest + " " + nest_counter.count);
                             if (nest_counter.count >= 2) {
                                 if (moveAmount1 == moveAmount2) {
                                     id--;
                                 }
                                 turn = 0;
-                                players[finalI].resetCheck();
+                                players[id_Nest].resetCheck();
                                 nest_counter.count = 0;
                             }
                         }
@@ -223,7 +222,6 @@ public class GameController implements Initializable {
     }
 
     public void rollDice() {
-        int lastID = id;
         dice1.setOnMouseClicked(event -> {
             System.out.println(players.length);
             if (turn == 0) {
@@ -374,6 +372,27 @@ public class GameController implements Initializable {
         }
         return false;
     }
+
+    boolean isBlockedPiece(int dice, int nestID){
+        int start = 0;
+        if (nestID == 0) {
+            start = Map.BLUE_HOUSE_1;
+        } else if (nestID == 1) {
+            start = Map.YELLOW_HOUSE_1;
+        } else if (nestID == 2) {
+            start = Map.GREEN_HOUSE_1;
+        } else if (nestID == 3) {
+            start = Map.RED_HOUSE_1;
+        }
+        for (int i = start; i < start + dice; i++){
+            if (Map.getSpaceMap().get(i).getOccupancy()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     boolean all_At_Home(int nestId){
         for (int i = 0; i <=  47; i++){
             if( Map.getSpaceMap().get(i).getOccupancy())
