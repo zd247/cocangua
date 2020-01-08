@@ -232,9 +232,11 @@ public class GameController implements Initializable {
                     id++;
                 }
                 if (id != -1 && players[id].getConnectionStatus() == ConnectionStatus.OFF){
-                    id++;
-                    if (id > (players.length - 1)) {
-                        id = 0;
+                    while (!(players[id].getConnectionStatus() == ConnectionStatus.PLAYER)) {
+                        id++;
+                        if (id > (players.length - 1)) {
+                            id = 0;
+                        }
                     }
                 }
                 moveAmount1 = dice1.roll();
@@ -285,6 +287,7 @@ public class GameController implements Initializable {
         }
         return false;
     }
+
     boolean able_To_Move(int nestId, int dices){
         int check =0;
         for (int i = 0; i <=  47; i++){
@@ -377,6 +380,5 @@ public class GameController implements Initializable {
         }
         return true;
     }
-
 }
 
