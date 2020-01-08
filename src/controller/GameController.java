@@ -110,6 +110,7 @@ public class GameController implements Initializable {
                                 if (able_To_Move(finalI,moveAmount2) || able_To_Kick(piece.getCurrentPosition(),moveAmount2,finalI)){
                                     p_move.moveAmount = moveAmount2;
                                     moveAmount2 = moveAmount1;
+                                    moveAmount1 = p_move.moveAmount;
                                     System.out.println("dzo");
                                 }
                             }
@@ -142,6 +143,8 @@ public class GameController implements Initializable {
                                         if (moveAmount1 < moveAmount2 && nest_counter.count == 1){
                                             p_move.moveAmount = moveAmount2;
                                             moveAmount2 = moveAmount1;
+                                            moveAmount1 = p_move.moveAmount;
+
                                         }
                                     }
                                     System.out.println("go");
@@ -229,8 +232,8 @@ public class GameController implements Initializable {
                 }
                 moveAmount1 = dice1.roll();
                 moveAmount2 = dice2.roll();
-                System.out.println(id + " " + moveAmount1);
-                System.out.println(id + " " + moveAmount2);
+                System.out.println("Player" + id  + " " + moveAmount1);
+                System.out.println("Player" + id  + " " + moveAmount2);
                 //Roll dice here, wilasdasd
                 for (int i = 0; i < players.length; i++) {
                     if (i != id) {
