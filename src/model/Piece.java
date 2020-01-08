@@ -1,7 +1,5 @@
 package model;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -19,6 +17,8 @@ public class Piece extends Circle {
     private boolean isBlocked;
     private boolean isHome; // is inside one of six rectangle
     private Color color;
+    private int move;
+
 
     Player player;// - get player by nestId - a static function
     boolean canDeploy = true; // this will be reference by the player later
@@ -26,6 +26,7 @@ public class Piece extends Circle {
     //Helper
     private double width_house;
     private double height_house;
+
     private int step = 0;   //how many steps that the piece goes
     //=================================[Init]=====================================
 
@@ -57,14 +58,9 @@ public class Piece extends Circle {
         this.currentPosition = -1; //inside nest status
         this.isDeployed = false;
         this.isBlocked = false;
-        this.isHome = false;
+        this.isHome = true;
 
         /* REGISTER EVENT HANDLERS */
-        // Click event
-        this.setOnMouseClicked(click -> {
-            move(1);    //Assum move amount is 1
-//                move(3); //check all cases (move from nest, move when is deployed...)
-        });
 
         // Hover effect for pieces
         this.setOnMouseEntered(hover -> this.setFill(color.darker()));
@@ -78,20 +74,17 @@ public class Piece extends Circle {
      * @param moveAmount
      */
     public void move(int moveAmount){
-        System.out.println(step);
         if (step + moveAmount < 49)
             //Run in the space map
             moveSpace(moveAmount);
         else {
             //reach to the arrival
             if (step == 48){ //at the arrival space
-                if (moveAmount < 7) {//moveAmount should be 1-6
-                    currentPosition = -1;   //Start index for house
-                    moveToHouseDestination(moveAmount);
-                }
+                currentPosition = step;
+                moveToHouseDestination(moveAmount);
             }
             else    //at the house destination
-                if (currentPosition + 2 == moveAmount)
+                if ( (step -48) == moveAmount)
                     //get the position (in display board) + 1 (before postion) + 1 (index in map less than current)
                     moveToHouseDestination(1);
         }
@@ -107,22 +100,29 @@ public class Piece extends Circle {
 
             //checking out of boundary, not a case
             if (currentPosition + moveAmount > 47){
-                moveAmount = moveAmount - (48 - currentPosition);//remaining moveAmount
+                if (currentPosition + moveAmount == 48){
+                    step += moveAmount;
+                    moveAmount = 0;
+                }
+                else {
+                    step += (48 - currentPosition);
+                    moveAmount = moveAmount - (48 - currentPosition);//remaining moveAmount
+                }
                 currentPosition = 0; //after that set the current position to 0, to start running index of spaceMap
-                step++;
             }
 
             //deploying
             if (!isDeployed && canDeploy) {
                 //Move the piece from nest
-                Space homeSpace = getSpaceMap().get(getStartPosition(color)); //reference starting position
+
+                Space homeSpace = getSpaceMap().get(getStartPosition(nestId)); //reference starting position
                 double x = homeSpace.getLayoutX();
                 double y = homeSpace.getLayoutY();
-                currentPosition = getStartPosition(color) - 1 ;  //index at the start space
-                moveAmount = 1; //no moving
+                currentPosition = getStartPosition(nestId) ;  //index at the start space
+                step = 1;
                 //move the piece to said location
-                updateCurrentPosition(moveAmount, x,y);
                 isDeployed = true;  //Piece had already move outside the nest
+                updateCurrentPosition(0,x,y);
             }else {
                 //Move the piece in space
                 Space sp1 = getSpaceMap().get(currentPosition + moveAmount); //running in the space
@@ -138,10 +138,10 @@ public class Piece extends Circle {
      * get into the house destination
      * @param moveAmount
      */
-    private void moveToHouseDestination(int moveAmount){
+    public void moveToHouseDestination(int moveAmount){
         //start to move into the houseDestination
         if (!isBlocked){
-            House hs = getHouseMap().get(currentPosition + getHouseArrival() + moveAmount);
+            House hs = getHouseMap().get(step - 49 + getHouseArrival() + moveAmount);
             double x = hs.getLayoutX() + width_house;
             double y = hs.getLayoutY() + height_house;
             //move the piece to said location
@@ -164,18 +164,18 @@ public class Piece extends Circle {
 
     /**
      * get StartSpace when the piece is deployed
-     * @param nestColor
      * @return spaceNumber
      */
-    private int getStartPosition(Color nestColor){
-        if (DODGERBLUE.equals(color)) {
-            return BLUE_START;
-        } else if (GOLD.equals(color)) {
-            return YELLOW_START;
-        } else if (SEAGREEN.equals(color)) {
-            return GREEN_START;
-        } else if (TOMATO.equals(color)) {
-            return RED_START;
+    public int getStartPosition(int nestId){
+        switch (nestId){
+            case 0:
+                return BLUE_START;
+            case 1:
+                return YELLOW_START;
+            case 2:
+                return GREEN_START;
+            case 3:
+                return RED_START;
         }
         return 0;
     }
@@ -235,5 +235,102 @@ public class Piece extends Circle {
         setLayoutY(nest.getLayoutY() + Nest.NEST_SIZE / 2 + ver * 20);
     }
 
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
 
+    public int getNestId() {
+        return nestId;
+    }
+
+    public void setCurrentPosition(int position){
+        currentPosition = position;
+    };
+
+    public int getMove() {
+        return move;
+    }
+
+    public void setMove(int move) {
+        this.move = move;
+    }
+
+    public int getStep(){
+        return step;
+    }
+    public void setHome(boolean home) {
+        isHome = home;
+    }
+
+    public boolean isHome() {
+        return isHome;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public int moveToHouse(Map map, int currentIndex, int idNest, int moveAmount, boolean isBlocked) {
+        if (!isBlocked) {
+            if (moveAmount == 0) {
+                //when the piece is at space arrival
+                return currentIndex;
+            }
+            House hs1 = map.getHouseMap().get(currentIndex + getHouseArrival() + moveAmount);
+            //get house from the housemap
+
+            setLayoutX(hs1.getLayoutX() + width_house);
+            setLayoutY(hs1.getLayoutY() + height_house);
+
+            return currentIndex + moveAmount;
+            //to save for the next step
+        }
+        return currentIndex;
+    }
+
+    public void kick(Piece piece){
+        piece.startPosition(piece.getPieceId(),piece.getNestId());
+        piece.setCurrentPosition(-1);
+        piece.setDeployed(false);
+        piece.setStep(0);
+    }
+
+    public void startPosition(int idPiece, int nestId) {
+        //Display pieces each nest
+        int ver, hor;
+        if (idPiece == 0) {
+            hor = -1;
+            ver = -1;
+        } else if (idPiece == 1) {
+            hor = 1;
+            ver = -1;
+        } else if (idPiece == 2) {
+            hor = -1;
+            ver = 1;
+        } else {
+            hor = 1;
+            ver = 1;
+        }
+
+        Nest nest = getNestMap().get(nestId);
+
+        setLayoutX(nest.getLayoutX() + Nest.NEST_SIZE / 2 + hor * 20); //gap piece
+        setLayoutY(nest.getLayoutY() + Nest.NEST_SIZE / 2 + ver * 20); //gap piece
+    }
+
+    public int getPieceId() {
+        return pieceId;
+    }
+
+    public void setDeployed(boolean deployed) {
+        isDeployed = deployed;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
 }

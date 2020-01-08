@@ -11,7 +11,7 @@ import java.util.Random;
 // Dice class
 public class Dice extends ImageView {
     Image diceFace = new Image("images/dice1.png");
-
+    int val;
     // Constructor
     public Dice() {
         setFitWidth(85);
@@ -28,11 +28,16 @@ public class Dice extends ImageView {
         });
 
         // Roll when clicked on
-        this.setOnMouseClicked(click -> this.roll());
+        this.setOnMouseClicked(click -> {
+            val=roll();
+        });
     }
 
+    public int getVal(){
+        return val;
+    }
     // Roll a dice and return rolled number
-    int roll() {
+    public int roll() {
         Random rand = new Random();
         int num = rand.nextInt(6) + 1;
 

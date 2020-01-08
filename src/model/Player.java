@@ -11,7 +11,7 @@ public class Player extends Node {
     private int nestId;
     private ConnectionStatus connectionStatus;
     private int point;
-
+    private boolean rolled;
 
     public Player () { // can be used for interactive UI (needs getters and setters) : future implementation
         this.nestId = -1;
@@ -44,5 +44,10 @@ public class Player extends Node {
         return this.connectionStatus;
     }
 
+    public void rolled(){rolled = true;}
+
+    public boolean isRolled(){ return rolled;}
+
+    public void resetCheck(){rolled = false;}
 }
 
