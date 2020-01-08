@@ -68,6 +68,153 @@ public class Piece extends Circle {
     }
 
     //=================================[Move]=====================================
+    void handleThisNewLogic() {
+        if (nestCounter == 0) {
+            curPlayerMoveAmount = diceValue1;
+            if (this.currentPosition != -1)
+                nestCounter = 1;
+        } else if (nestCounter == 1) {
+            curPlayerMoveAmount = diceValue2;
+            if (this.currentPosition != -1) {
+                nestCounter = 2;
+            }
+        }
+        if (!ableToMove(nestId, curPlayerMoveAmount) && this.currentPosition != -1 && nestCounter == 1) {
+            if (ableToMove(nestId, diceValue2) || ableToKick(this.currentPosition, diceValue2, nestId)) {
+                curPlayerMoveAmount = diceValue2;
+                diceValue2 = diceValue1;
+                diceValue1 = curPlayerMoveAmount;
+                System.out.println("dzo");
+            }
+        }
+        if (!isBlockedPiece(this.currentPosition, curPlayerMoveAmount, nestId) || able_To_Kick(piece.getCurrentPosition(), p_move.moveAmount, finalI)) {
+            if (able_To_Kick(piece.getCurrentPosition(), p_move.moveAmount, finalI)){
+                if (piece.getCurrentPosition() != -1) {
+                    int next = piece.getCurrentPosition() + p_move.moveAmount;
+                    if (next > 47){
+                        next -= 48;
+                    }
+
+                    piece.kick(Map.getSpaceMap().get(next).getPiece());
+                    Map.getSpaceMap().get(next).setOccupancy(false);
+
+                } else {
+                    int next ;
+                    next = piece.getStartPosition(piece.getNestId());   //get the piece at start position
+
+                    piece.kick(Map.getSpaceMap().get(next).getPiece());
+                    Map.getSpaceMap().get(next).setOccupancy(false);
+                }
+            }
+            if ((piece.getCurrentPosition() != -1 || ((moveAmount1 == 6 || moveAmount2 == 6) && nest_counter.count == 0)) && nest_counter.count!= 3) {
+                System.out.println(finalPieceId+ " if statement " + piece.getMove() + p_move.moveAmount);
+                if (piece.getCurrentPosition() == -1) {
+                    nest_counter.count = 2;
+                }
+
+                if (piece.getStep() == 48){
+                    if (moveAmount1 < moveAmount2 && nest_counter.count == 1){
+                        p_move.moveAmount = moveAmount2;
+                        moveAmount2 = moveAmount1;
+                        moveAmount1 = p_move.moveAmount;
+
+                    }
+                }
+                System.out.println("go");
+                piece.move(p_move.moveAmount);
+                if (piece.getCurrentPosition() == initial){
+                    nest_counter.count--;
+                }
+
+                if (initial != -1) {
+                    Map.getSpaceMap().get(initial).setOccupancy(false);
+                    Map.getSpaceMap().get(initial).setPiece(null);
+                }
+                if (piece.getCurrentPosition() <= 47) {
+                    Map.getSpaceMap().get(piece.getCurrentPosition()).setOccupancy(true);
+                    Map.getSpaceMap().get(piece.getCurrentPosition()).setPiece(piece);
+                }
+            }
+        }
+
+    }
+
+
+    boolean ableToMove(int nestId, int dices){
+        int check =0;
+        for (int i = 0; i <=  47; i++){
+            if( Map.getSpaceMap().get(i).getOccupancy())
+            {
+                if (Map.getSpaceMap().get(i).getPiece().getNestId() == nestId){
+                    check ++;
+                    if (Map.getSpaceMap().get(i).getPiece().getStep() == 48){
+                        return true;
+                    }
+                    else if (!isBlockedPiece(Map.getSpaceMap().get(i).getPiece().getCurrentPosition(), dices, nestId) && Map.getSpaceMap().get(i).getPiece().getStep() + dices <= 48){
+                        return true;
+                    }
+                }
+            }
+        }
+        return check == 0 && (moveAmount1 == 6 || moveAmount2 == 6) ;
+    }
+
+    boolean ableToKick(int position, int diceAmount, int nestId){
+        if (position == -1) {
+            if (nestId == 0 && Map.getSpaceMap().get(Map.BLUE_START).getOccupancy()) {
+                return Map.getSpaceMap().get(Map.BLUE_START).getPiece().getNestId() != nestId;
+            } else if (nestId == 1 && Map.getSpaceMap().get(Map.YELLOW_START).getOccupancy()) {
+                return Map.getSpaceMap().get(Map.YELLOW_START).getPiece().getNestId() != nestId;
+            } else if (nestId == 2 && Map.getSpaceMap().get(Map.GREEN_START).getOccupancy()) {
+                return Map.getSpaceMap().get(Map.GREEN_START).getPiece().getNestId() != nestId;
+            } else if (nestId == 3 && Map.getSpaceMap().get(Map.RED_START).getOccupancy()) {
+                return Map.getSpaceMap().get(Map.RED_START).getPiece().getNestId() != nestId;
+            }
+            else{
+                return false;
+            }
+        }
+        else {
+            int next = position + diceAmount;
+            if (next > 47){
+                next = next - 48;
+            }
+            if (Map.getSpaceMap().get(next).getOccupancy() && !isBlockedPiece(position,diceAmount-1,nestId)) {
+                return nestId != Map.getSpaceMap().get(next).getPiece().getNestId();
+            }
+            return false;
+        }
+    }
+
+    boolean isBlockedPiece(int position, int diceAmount, int nestID) {
+        if (position == -1) {
+            if (nestID == 0) {
+                return Map.getSpaceMap().get(Map.BLUE_START).getOccupancy();
+            } else if (nestID == 1) {
+                return Map.getSpaceMap().get(Map.YELLOW_START).getOccupancy();
+            } else if (nestID == 2) {
+                return Map.getSpaceMap().get(Map.GREEN_START).getOccupancy();
+            } else if (nestID == 3) {
+                return Map.getSpaceMap().get(Map.RED_START).getOccupancy();
+            }
+        } else {
+            for (int i = 0; i < diceAmount; i++, position++) {
+                if (position == 47){
+                    position = -1;
+                }
+                if (Map.getSpaceMap().get(position+1).getOccupancy()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
 
     /**
      * the controller move , use moveSpace and moveToHouse
