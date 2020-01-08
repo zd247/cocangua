@@ -219,17 +219,18 @@ public class GameController implements Initializable {
     }
 
     public void rollDice() {
+        dice1.setOnMouseClicked(event -> {
             if (turn == 0) {
                 turn = 1;
-                if (id == (players.length -1)) {
+                if (id == (players.length - 1)) {
                     id = 0;
                 } else {
                     id++;
                 }
-
-                moveAmount1 = dice1.getVal();
-                moveAmount2 = dice2.getVal();
-
+                moveAmount1 = dice1.roll();
+                moveAmount2 = dice2.roll();
+                System.out.println(id + " " + moveAmount1);
+                System.out.println(id + " " + moveAmount2);
                 //Roll dice here, wilasdasd
                 for (int i = 0; i < players.length; i++) {
                     if (i != id) {
@@ -261,7 +262,7 @@ public class GameController implements Initializable {
                 System.out.println(!able_To_Kick(moveAmount2,id));
                 System.out.println("--------------");
             }
-
+        });
     }
 
     public boolean canDeploy(int nestID, int dice1, int dice2){
