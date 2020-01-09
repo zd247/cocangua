@@ -74,7 +74,7 @@ public class Piece extends Circle {
             public void handle(MouseEvent mouseEvent) {
                 setClicked(true);
                 handleOnClickLogic();
-                updatePoint();
+//                updatePoint();
             }
         });
     }
