@@ -174,7 +174,7 @@ public class Map extends Pane {
         // Get the pieces in pieceList to display
         for (int pieceID = 0; pieceID < 4 ; pieceID++){
             Piece piece = nest.getPieceList()[pieceID];
-            piece.pieceNest(nestId);
+            piece.pieceInTheNest(nestId);
             getChildren().add(piece);
         }
     }
@@ -266,7 +266,7 @@ public class Map extends Pane {
     }
 
     // Get coordinates of targeted house
-    public double getHouseX(int key) {
+    public static double getHouseX(int key) {
         House house = houseMap.get(key);
         // Return different coordinates for vertical houses
         if ((YELLOW_HOUSE_1 <= key && key < GREEN_HOUSE_1) || (RED_HOUSE_1 <= key && key < 72))
@@ -275,7 +275,7 @@ public class Map extends Pane {
             return house.getLayoutX() + HOUSE_LONG_SIDE / 2;
     }
 
-    public double getHouseY(int key) {
+    public static double getHouseY(int key) {
         House house = houseMap.get(key);
         // Return different coordinates for vertical houses
         if ((YELLOW_HOUSE_1 <= key && key < GREEN_HOUSE_1) || (RED_HOUSE_1 <= key && key < 72))
@@ -284,12 +284,12 @@ public class Map extends Pane {
             return house.getLayoutY() + HOUSE_SHORT_SIDE / 2;
     }
 
-    public double getSpaceX(int key) {
+    public static double getSpaceX(int key) {
         Space space = spaceMap.get(key);
         return space.getLayoutX();
     }
 
-    public double getSpaceY(int key) {
+    public static double getSpaceY(int key) {
         Space space = spaceMap.get(key);
         return space.getLayoutY();
     }
