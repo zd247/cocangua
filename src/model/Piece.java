@@ -74,6 +74,7 @@ public class Piece extends Circle {
             public void handle(MouseEvent mouseEvent) {
                 setClicked(true);
                 handleOnClickLogic();
+                updatePoint();
             }
         });
     }
@@ -85,95 +86,95 @@ public class Piece extends Circle {
      */
     void handleOnClickLogic() {
         int initialPosition = this.currentPosition;
-        if (diceTurn == 0) { // turn 1
-            playerMoveAmount = diceValue1;
-            if (this.currentPosition != -1)
-                diceTurn = 1;
-        } else if (diceTurn == 1) { // turn 2
-            playerMoveAmount = diceValue2;
-            if (this.currentPosition != -1) {
-                diceTurn = 2; //reset
-            }
-        }
-        // case 1: piece being blocked and
-        if (!ableToMove(playerMoveAmount) && !ableToKick(playerMoveAmount)
-                && this.currentPosition != -1 && diceTurn == 1) {
-            if (ableToMove(diceValue2) || ableToKick(diceValue2)) {
+        if (players[nestId].isRolled()) {
+            if (diceTurn == 0) { // turn 1
+                playerMoveAmount = diceValue1;
+                if (this.currentPosition != -1)
+                    diceTurn = 1;
+            } else if (diceTurn == 1) { // turn 2
                 playerMoveAmount = diceValue2;
-                diceValue2 = diceValue1;
-                diceValue1 = playerMoveAmount;
-                System.out.println("dzo");
-            }
-        }
-        //case 2: not blocked or able to kick
-        if (!this.isBlockedPiece(playerMoveAmount) || this.ableToKick(playerMoveAmount)) {
-            // case 2.1: check for when able to kick
-            if (ableToKick(playerMoveAmount)){
                 if (this.currentPosition != -1) {
-                    int next = this.currentPosition +playerMoveAmount;
-                    if (next > 47){
-                        next -= 48;
-                    }
-
-                    this.kick(spaceMap.get(next).getPiece());
-                    spaceMap.get(next).setOccupancy(false);
-
-                } else {
-                    int next ;
-                    next = this.getStartPosition(this.nestId);   //get the piece at start position
-
-                    this.kick(spaceMap.get(next).getPiece());
-                    spaceMap.get(next).setOccupancy(false);
+                    diceTurn = 2; //reset
                 }
             }
-            //case 2.2: able to move
-            if ((this.currentPosition != -1 || (diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0 && diceTurn != 3)) {
-                if (this.currentPosition == -1) {
-                    diceTurn = 2;
-                }
-
-                if (this.getStep() == 48){
-                    if (diceValue1 < diceValue2 && diceTurn == 1){
-                        playerMoveAmount = diceValue2;
-                        diceValue2 = diceValue1;
-                        diceValue1 = playerMoveAmount;
-
-                    }
-                }
-                System.out.println("go");
-                this.movePiece(playerMoveAmount);
-                this.movePiece(playerMoveAmount);
-                if (this.getCurrentPosition() == initialPosition){
-                    diceTurn--;
-                }
-
-                if (initialPosition != -1) {
-                    spaceMap.get(initialPosition).setOccupancy(false);
-                    spaceMap.get(initialPosition).setPiece(null);
-                }
-                if (this.currentPosition <= 47) {
-                    spaceMap.get(this.currentPosition).setOccupancy(true);
-                    spaceMap.get(this.currentPosition).setPiece(this);
+            // case 1: piece being blocked and
+            if (!this.ableToMove(playerMoveAmount) && !this.ableToKick(playerMoveAmount)
+                    && this.currentPosition != -1 && diceTurn == 1) {
+                if (ableToMove(diceValue2) || ableToKick(diceValue2)) {
+                    playerMoveAmount = diceValue2;
+                    diceValue2 = diceValue1;
+                    diceValue1 = playerMoveAmount;
+                    System.out.println("dzo");
                 }
             }
-        }
-        //case 3: piece is blocked on board
-        if (this.isBlockedPiece(playerMoveAmount) && this.currentPosition != -1){
-            diceTurn--; //reset turn
-        }
-        //case 4:
-        if (this.currentPosition != -1 && !this.ableToMove(diceValue2)
-                && !this.ableToKick(diceValue2) && diceTurn == 1){
-            diceTurn = 3;
-        }
+            //case 2: not blocked or able to kick
+            if (!this.isBlockedPiece(playerMoveAmount) || this.ableToKick(playerMoveAmount)) {
+                // case 2.1: check for when able to kick
+                if (ableToKick(playerMoveAmount)) {
+                    int next;
+                    if (this.currentPosition != -1) {
+                        next = this.currentPosition + playerMoveAmount;
+                        if (next > 47) {
+                            next -= 48;
+                        }
+                    } else {
+                        next = this.getStartPosition(this.nestId);   //get the piece at start position
+                    }
+                    Piece kickedPiece = spaceMap.get(next).getPiece();
+                    this.kick(kickedPiece);
+                    players[nestId].setPoints(players[nestId].getPoints() + 2);
+                    players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                    spaceMap.get(next).setOccupancy(false);
+                }
+                //case 2.2: able to move
+                if ((this.currentPosition != -1 || (diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0 && diceTurn != 3)) {
+                    if (this.currentPosition == -1) {
+                        diceTurn = 2;
+                    }
 
+                    if (this.getStep() == 48) {
+                        if (diceValue1 < diceValue2 && diceTurn == 1) {
+                            playerMoveAmount = diceValue2;
+                            diceValue2 = diceValue1;
+                            diceValue1 = playerMoveAmount;
+
+                        }
+                    }
+                    System.out.println("go");
+                    players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
+                    players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
+                    if (this.getCurrentPosition() == initialPosition) {
+                        diceTurn--;
+                    }
+
+                    if (initialPosition != -1) {
+                        spaceMap.get(initialPosition).setOccupancy(false);
+                        spaceMap.get(initialPosition).setPiece(null);
+                    }
+                    if (this.currentPosition <= 47) {
+                        spaceMap.get(this.currentPosition).setOccupancy(true);
+                        spaceMap.get(this.currentPosition).setPiece(this);
+                    }
+                }
+            }
+            //case 3: piece is blocked on board
+            if (this.isBlockedPiece(playerMoveAmount) && this.currentPosition != -1) {
+                diceTurn--; //reset turn
+            }
+            //case 4:
+            if (this.currentPosition != -1 && !this.ableToMove(diceValue2)
+                    && !this.ableToKick(diceValue2) && diceTurn == 1) {
+                diceTurn = 3;
+            }
+        }
         //reset player and dice turns
         if (diceTurn >= 2){
-            if (diceValue1 == diceValue2) id--;
+            if (diceValue1 == diceValue2) globalNestId--;
             turn = 0;
             players[nestId].resetCheck();
             diceTurn = 0;
         }
+
 
     }
 
@@ -184,18 +185,20 @@ public class Piece extends Circle {
      */
     public boolean ableToMove(int moveAmount){
         int check =0;
-        int next = this.currentPosition + moveAmount;
-        Space nextSpace = spaceMap.get(next);
-        if(nextSpace.getOccupancy()){
-            if (nextSpace.getPiece().getNestId() == nestId){
-                check ++;
-                if (nextSpace.getPiece().getStep() == 48)
-                    return true;
-                else if (!nextSpace.getPiece().isBlockedPiece(moveAmount)
-                        &&  nextSpace.getPiece().getStep() + moveAmount <= 48) // extra cryptic?
-                    return true;
+        for (int i = 0; i <=  47; i++){
+            if( spaceMap.get(i).getOccupancy())
+            {
+                if (spaceMap.get(i).getPiece().getNestId() == nestId){
+                    check ++;
+                    if (spaceMap.get(i).getPiece().getStep() == 48){
+                        return true;
+                    }
+                    else if (!isBlockedPiece(moveAmount)
+                            && spaceMap.get(i).getPiece().getStep() + moveAmount <= 48){
+                        return true;
+                    }
+                }
             }
-
         }
         return check == 0 && (diceValue1 == 6 || diceValue2 == 6) ;
     }
@@ -205,7 +208,7 @@ public class Piece extends Circle {
      * @param moveAmount dice value get for each dice when done rolling
      * @return
      */
-    boolean ableToKick(int moveAmount){
+    public boolean ableToKick(int moveAmount){
         if (this.currentPosition == -1) { //case piece inside nest
             if (nestId == 0 && spaceMap.get(BLUE_START).getOccupancy()) {
                 return spaceMap.get(BLUE_START).getPiece().getNestId() != nestId;
@@ -250,28 +253,19 @@ public class Piece extends Circle {
                     return spaceMap.get(RED_START).getOccupancy();
             }
         } else {
-            if (!this.isAtArrival){ // need to set this since this is merged
-                int next = this.currentPosition + amount;
-                if (next == 47) this.currentPosition = -1; //reset ?? go back to house or what ?? the fuck is this?
-                if (spaceMap.get(this.currentPosition+1).getOccupancy()) return true;
-            }else { // logic here
-                int start = 0;
-                switch (nestId){
-                    case 0:
-                        start = BLUE_HOUSE_1;
-                    case 1:
-                        start = YELLOW_HOUSE_1;
-                    case 2:
-                        start = GREEN_HOUSE_1;
-                    case 3:
-                        start = RED_HOUSE_1;
+            int initial = currentPosition;
+            for (int i = 0; i < playerMoveAmount; i++, initial++) {
+                if (initial == 47){
+                    initial = -1;
                 }
-                for (int i = start; i < start + amount; i++){
-                    if (spaceMap.get(i).getOccupancy()){
-                        return true;
-                    }
+                /*
+                if(position > 47){
+                    return false;
                 }
-                return false;
+                 */
+                if (spaceMap.get(initial+1).getOccupancy()) {
+                    return true;
+                }
             }
 
         }

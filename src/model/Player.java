@@ -15,12 +15,12 @@ public class Player extends Node {
 
     public Player () { // can be used for interactive UI (needs getters and setters) : future implementation
         this.nestId = -1;
-
     }
 
     public Player (int nestId, String name) {
         this.nestId = nestId;
         this.name = name;
+        points = 0;
     }
 
 

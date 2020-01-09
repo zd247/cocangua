@@ -2,6 +2,7 @@ package model;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import static javafx.scene.paint.Color.WHITE;
@@ -20,6 +21,7 @@ public class Space extends Circle implements Position {
         setStrokeWidth(2);
         setFill(WHITE);
         this.piece = null;
+        rect = new Rectangle();
     }
 
     @Override

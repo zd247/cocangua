@@ -1,5 +1,6 @@
 package statics;
 
+import controller.GameController;
 import javafx.scene.paint.Color;
 import model.*;
 
@@ -7,11 +8,11 @@ import model.*;
 import java.util.HashMap;
 
 import static javafx.scene.paint.Color.BLACK;
-import static model.Map.*;
 
 public class StaticContainer { // can be made singleton but not necessary
     // containers
     public static Player[] players = new Player[4];
+
     public static PlayerField[] playerFields = new PlayerField[4];
 
     // A map to store all circle positions
@@ -25,10 +26,13 @@ public class StaticContainer { // can be made singleton but not necessary
 
     public static Piece currentPiece = null;
 
+    private static GameController gameController = new GameController();
+
+
 
     //TURN LOGIC STATICS
     public static int turn = 0;
-    public static int id = -1;
+    public static int globalNestId = -1;
     public static int diceTurn = 0;
     public static int playerMoveAmount = 0;
     public static int diceValue1 = 0;
@@ -80,22 +84,22 @@ public class StaticContainer { // can be made singleton but not necessary
      * @param dice1
      * @param dice2
      */
-    public static void rollDice(Dice dice1, Dice dice2) {
+    public static void setDiceOnClick(Dice dice1, Dice dice2) {
         dice1.setOnMouseClicked(event -> {
             if (turn == 0) {
                 turn = 1;
-                if (id >= (players.length - 1)) {
-                    id = 0;
+                if (globalNestId >= (players.length - 1)) {
+                    globalNestId = 0;
                 } else {
-                    id++;
+                    globalNestId++;
                 }
 
                 //check for default case
-                if (id != -1 && players[id].getConnectionStatus() == ConnectionStatus.OFF){
-                    while (!(players[id].getConnectionStatus() == ConnectionStatus.PLAYER)) {
-                        id++;
-                        if (id > (players.length - 1)) {
-                            id = 0;
+                if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == ConnectionStatus.OFF){
+                    while (!(players[globalNestId].getConnectionStatus() == ConnectionStatus.PLAYER)) {
+                        globalNestId++;
+                        if (globalNestId > (players.length - 1)) {
+                            globalNestId = 0;
                         }
                     }
                 }
@@ -103,49 +107,50 @@ public class StaticContainer { // can be made singleton but not necessary
                 //start rolling
                 diceValue1 = dice1.roll();
                 diceValue2 = dice2.roll();
-                System.out.println("Player" + id  + " " + diceValue1);
-                System.out.println("Player" + id  + " " + diceValue2);
+                System.out.println("Player" + globalNestId + " " + diceValue1);
+                System.out.println("Player" + globalNestId + " " + diceValue2);
 
                 //draw indicator
                 for (int i = 0; i < players.length; i++) {
-                    if (i != id) {
-                        spaceMap.get(i).rect.setStrokeWidth(0);
+                    if (i != globalNestId) {
                         players[i].resetCheck();
                     } else {
                         spaceMap.get(i).rect.setStroke(BLACK);
                         spaceMap.get(i).rect.setStrokeWidth(10);
                         players[i].rolled();
                     }
+                    spaceMap.get(i).rect.setStrokeWidth(0);
+
                 }
 
                 //check when clean board, reset turn counter
-                if (allAtHome(id) && diceValue1 != 6 && diceValue2 != 6) {
-                    players[id].resetCheck();
+                if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {
+                    players[globalNestId].resetCheck();
                     if (diceValue1 == diceValue2) {
-                        id--;
+                        globalNestId--;
                     }
                     turn = 0;
                 }
 
-                //brain-fuckery logic starts here
-
-//                else if (!currentPiece.ableToMove(diceValue1)
-//                        && !currentPiece.ableToMove(diceValue2)
-//                        && !canDeploy(id,moveAmount1,moveAmount2)
-//                        && !able_To_Kick(moveAmount1,id)
-//                        &&!able_To_Kick(moveAmount2,id)){
-//                    players[id].resetCheck();
-//                    if (moveAmount1 == moveAmount2) {
-//                        id--;
-//                    }
-//                    turn =0;
-//                }
-//                System.out.println(!able_To_Move(id, moveAmount1));
-//                System.out.println(!able_To_Move(id,moveAmount2));
-//                System.out.println(!canDeploy(id));
-//                System.out.println(!able_To_Kick(moveAmount1,id));
-//                System.out.println(!able_To_Kick(moveAmount2,id));
-//                System.out.println("--------------");
+                else if (currentPiece != null) {
+                    if (!currentPiece.ableToMove(diceValue1)
+                            && !currentPiece.ableToMove(diceValue2)
+                            && !canDeploy(globalNestId)
+                            && !currentPiece.ableToKick(diceValue1)
+                            && !currentPiece.ableToKick(diceValue2)) {
+                        players[globalNestId].resetCheck();
+                        if (diceValue1 == diceValue2) {
+                            globalNestId--;
+                        }
+                        turn = 0;
+                    }
+                    System.out.println(!currentPiece.ableToMove(diceValue1));
+                    System.out.println(!currentPiece.ableToMove(diceValue2));
+                    System.out.println(!canDeploy(globalNestId));
+                    System.out.println(!ableToKick(diceValue1, globalNestId));
+                    System.out.println(!ableToKick(diceValue2, globalNestId));
+                    System.out.println("--------------");
+                }
             }
         });
     }
@@ -167,7 +172,7 @@ public class StaticContainer { // can be made singleton but not necessary
         return true;
     }
 
-    public boolean canDeploy(int nestID){
+    public static boolean canDeploy(int nestID){
         if(diceValue1 == 6 || diceValue2 == 6) {
             for (int i = 0; i < 4; i ++){
                 if (nestMap.get(nestID).getPieceList()[i].getCurrentPosition() == -1){
@@ -179,13 +184,30 @@ public class StaticContainer { // can be made singleton but not necessary
     }
 
 
+    static boolean ableToKick(int moveAmount, int nestId){
+        Piece piece;
+        for (int i =0; i< 4; i++) {
+            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1){
+                piece =getNestById(nestId).getPieceList()[i];
+                if (piece.ableToKick(moveAmount)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 
 //    public static ConnectionStatus getPlayerConnectionStatusById() {
 //
 //    }
 
-
+    public static void updatePoint () {
+        gameController.scoreLbBlue.setText("0");
+        gameController.scoreLbYellow.setText("0");
+        gameController.scoreLbGreen.setText("0");
+        gameController.scoreLbRed.setText("0");
+    }
 
 
 
