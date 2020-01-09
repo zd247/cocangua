@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 
 // Home rectangle (6 for each color)
 public class House extends StackPane implements Position {
-    boolean isOccupied;
+    boolean isOccupied = false;
     Piece piece;
 
     // Construct a space bases on input

@@ -132,25 +132,22 @@ public class StaticContainer { // can be made singleton but not necessary
                     turn = 0;
                 }
 
-                else if (currentPiece != null) {
-                    if (!currentPiece.ableToMove(diceValue1)
-                            && !currentPiece.ableToMove(diceValue2)
+                else {
+                    if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1)
+                            && !nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2)
                             && !canDeploy(globalNestId)
-                            && !currentPiece.ableToKick(diceValue1)
-                            && !currentPiece.ableToKick(diceValue2)) {
+                            && !ableToKick(diceValue1,globalNestId)
+                            && !ableToKick(diceValue2,globalNestId)) {
                         players[globalNestId].resetCheck();
                         if (diceValue1 == diceValue2) {
                             globalNestId--;
                         }
                         turn = 0;
                     }
-                    System.out.println(!currentPiece.ableToMove(diceValue1));
-                    System.out.println(!currentPiece.ableToMove(diceValue2));
-                    System.out.println(!canDeploy(globalNestId));
-                    System.out.println(!ableToKick(diceValue1, globalNestId));
-                    System.out.println(!ableToKick(diceValue2, globalNestId));
+
                     System.out.println("--------------");
                 }
+
             }
         });
     }
