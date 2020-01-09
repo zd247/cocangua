@@ -81,11 +81,11 @@ public class GameController implements Initializable {
             System.out.println(players[i].getName());
 
             if (players[i].getConnectionStatus() == ConnectionStatus.OFF) {
-                Map.getNestMap().get(i).setDisplayDisconnected();
+                nestMap.get(i).setDisplayDisconnected();
             }
         }
         for (int i = 0; i < players.length; i++) {
-            Nest nest = Map.getNestMap().get(i);
+            Nest nest = nestMap.get(i);
             var p_move = new Object() {
                 int moveAmount = 0;
             };
@@ -136,12 +136,12 @@ public class GameController implements Initializable {
                                             next = piece.getStartPosition(piece.getNestId());   //get the piece at start position
                                         }
                                     }
-                                    Piece pieceKicked = Map.getSpaceMap().get(next).getPiece();
+                                    Piece pieceKicked = spaceMap.get(next).getPiece();
                                     piece.kick(pieceKicked);
                                     players[id_Nest].setPoints(players[id_Nest].getPoints() + 2);   //increase points by 2
                                     players[pieceKicked.getNestId()].setPoints(players[pieceKicked.getNestId()].getPoints() -2);
                                     //decrease point by 2
-                                    Map.getSpaceMap().get(next).setOccupancy(false);
+                                    spaceMap.get(next).setOccupancy(false);
                                 }
                                 if ((piece.getCurrentPosition() != -1 || ((moveAmount1 == 6 || moveAmount2 == 6) && nest_counter.count == 0)) && nest_counter.count!= 3) {
                                     System.out.println(finalPieceId+ " if statement " + piece.getMove() + p_move.moveAmount);
@@ -163,12 +163,12 @@ public class GameController implements Initializable {
                                         nest_counter.count--;
                                     }
                                     if (initial != -1) {
-                                        Map.getSpaceMap().get(initial).setOccupancy(false);
-                                        Map.getSpaceMap().get(initial).setPiece(null);
+                                        spaceMap.get(initial).setOccupancy(false);
+                                        spaceMap.get(initial).setPiece(null);
                                     }
                                     if (piece.getCurrentPosition() <= 47) {
-                                        Map.getSpaceMap().get(piece.getCurrentPosition()).setOccupancy(true);
-                                        Map.getSpaceMap().get(piece.getCurrentPosition()).setPiece(piece);
+                                        spaceMap.get(piece.getCurrentPosition()).setOccupancy(true);
+                                        spaceMap.get(piece.getCurrentPosition()).setPiece(piece);
                                     }
                                 }
                             }
@@ -195,13 +195,12 @@ public class GameController implements Initializable {
         }
 
 
-
         Sound.playSound(THEME); // play sound
         // this logic can be moved to static class.
         topBar.getChildren().addAll(dice1, dice2);
 
         // test index
-        System.out.println(Map.getSpaceMap().size() + " " + Map.getHouseMap().size());
+        System.out.println(spaceMap.size() + " " + houseMap.size());
 
         Circle c = new Circle(12);
         c.setFill(BLACK);
@@ -254,12 +253,12 @@ public class GameController implements Initializable {
                 //Roll dice here, wilasdasd
                 for (int i = 0; i < players.length; i++) {
                     if (i != id) {
-                        Map.getNestMap().get(i).rect.setStrokeWidth(0);
+                        nestMap.get(i).rect.setStrokeWidth(0);
                         players[i].resetCheck();;
                     }
                     else{
-                        Map.getNestMap().get(i).rect.setStroke(BLACK);
-                        Map.getNestMap().get(i).rect.setStrokeWidth(10);
+                        nestMap.get(i).rect.setStroke(BLACK);
+                        nestMap.get(i).rect.setStrokeWidth(10);
                         players[i].rolled();
                     }
                 }
@@ -290,7 +289,7 @@ public class GameController implements Initializable {
     public boolean canDeploy(int nestID, int dice1, int dice2){
         if(dice1 == 6 || dice2 == 6) {
             for (int i = 0; i < 4; i ++){
-                if (Map.getNestMap().get(nestID).getPieceList()[i].getCurrentPosition() == -1){
+                if (nestMap.get(nestID).getPieceList()[i].getCurrentPosition() == -1){
                     return true;
                 }
             }
@@ -301,14 +300,14 @@ public class GameController implements Initializable {
     boolean able_To_Move(int nestId, int dices){
         int check =0;
         for (int i = 0; i <=  47; i++){
-            if( Map.getSpaceMap().get(i).getOccupancy())
+            if( spaceMap.get(i).getOccupancy())
             {
-                if (Map.getSpaceMap().get(i).getPiece().getNestId() == nestId){
+                if (spaceMap.get(i).getPiece().getNestId() == nestId){
                     check ++;
-                    if (Map.getSpaceMap().get(i).getPiece().getStep() == 48){
+                    if (spaceMap.get(i).getPiece().getStep() == 48){
                         return true;
                     }
-                    else if (!isBlockedPiece(Map.getSpaceMap().get(i).getPiece().getCurrentPosition(), dices, nestId) && Map.getSpaceMap().get(i).getPiece().getStep() + dices <= 48){
+                    else if (!isBlockedPiece(spaceMap.get(i).getPiece().getCurrentPosition(), dices, nestId) && spaceMap.get(i).getPiece().getStep() + dices <= 48){
                         return true;
                     }
                 }
@@ -319,14 +318,14 @@ public class GameController implements Initializable {
 
     boolean able_To_Kick(int position, int diceAmount, int nestId){
         if (position == -1) {
-            if (nestId == 0 && Map.getSpaceMap().get(Map.BLUE_START).getOccupancy()) {
-                return Map.getSpaceMap().get(Map.BLUE_START).getPiece().getNestId() != nestId;
-            } else if (nestId == 1 && Map.getSpaceMap().get(Map.YELLOW_START).getOccupancy()) {
-                return Map.getSpaceMap().get(Map.YELLOW_START).getPiece().getNestId() != nestId;
-            } else if (nestId == 2 && Map.getSpaceMap().get(Map.GREEN_START).getOccupancy()) {
-                return Map.getSpaceMap().get(Map.GREEN_START).getPiece().getNestId() != nestId;
-            } else if (nestId == 3 && Map.getSpaceMap().get(Map.RED_START).getOccupancy()) {
-                return Map.getSpaceMap().get(Map.RED_START).getPiece().getNestId() != nestId;
+            if (nestId == 0 && spaceMap.get(Map.BLUE_START).getOccupancy()) {
+                return spaceMap.get(Map.BLUE_START).getPiece().getNestId() != nestId;
+            } else if (nestId == 1 && spaceMap.get(Map.YELLOW_START).getOccupancy()) {
+                return spaceMap.get(Map.YELLOW_START).getPiece().getNestId() != nestId;
+            } else if (nestId == 2 && spaceMap.get(Map.GREEN_START).getOccupancy()) {
+                return spaceMap.get(Map.GREEN_START).getPiece().getNestId() != nestId;
+            } else if (nestId == 3 && spaceMap.get(Map.RED_START).getOccupancy()) {
+                return spaceMap.get(Map.RED_START).getPiece().getNestId() != nestId;
             }
             else{
                 return false;
@@ -337,8 +336,8 @@ public class GameController implements Initializable {
             if (next > 47){
                 next = next - 48;
             }
-            if (Map.getSpaceMap().get(next).getOccupancy() && !isBlockedPiece(position,diceAmount-1,nestId)) {
-                return nestId != Map.getSpaceMap().get(next).getPiece().getNestId();
+            if (spaceMap.get(next).getOccupancy() && !isBlockedPiece(position,diceAmount-1,nestId)) {
+                return nestId != spaceMap.get(next).getPiece().getNestId();
             }
             return false;
         }
@@ -346,8 +345,8 @@ public class GameController implements Initializable {
 
     boolean able_To_Kick(int diceAmount, int nestId){
         for (int i = 0; i< 47; i++){
-            if (Map.getSpaceMap().get(i).getOccupancy()){
-                if(Map.getSpaceMap().get(i).getPiece().getNestId() == nestId){
+            if (spaceMap.get(i).getOccupancy()){
+                if(spaceMap.get(i).getPiece().getNestId() == nestId){
                     if (able_To_Kick(i,diceAmount,nestId)){
                         return true;
                     }
@@ -360,13 +359,13 @@ public class GameController implements Initializable {
     boolean isBlockedPiece(int position, int diceAmount, int nestID) {
         if (position == -1) {
             if (nestID == 0) {
-                return Map.getSpaceMap().get(Map.BLUE_START).getOccupancy();
+                return spaceMap.get(Map.BLUE_START).getOccupancy();
             } else if (nestID == 1) {
-                return Map.getSpaceMap().get(Map.YELLOW_START).getOccupancy();
+                return spaceMap.get(Map.YELLOW_START).getOccupancy();
             } else if (nestID == 2) {
-                return Map.getSpaceMap().get(Map.GREEN_START).getOccupancy();
+                return spaceMap.get(Map.GREEN_START).getOccupancy();
             } else if (nestID == 3) {
-                return Map.getSpaceMap().get(Map.RED_START).getOccupancy();
+                return spaceMap.get(Map.RED_START).getOccupancy();
             }
         } else {
             for (int i = 0; i < diceAmount; i++, position++) {
@@ -378,7 +377,7 @@ public class GameController implements Initializable {
                     return false;
                 }
                  */
-                if (Map.getSpaceMap().get(position+1).getOccupancy()) {
+                if (spaceMap.get(position+1).getOccupancy()) {
                     return true;
                 }
             }
@@ -398,19 +397,18 @@ public class GameController implements Initializable {
             start = Map.RED_HOUSE_1;
         }
         for (int i = start; i < start + dice; i++){
-            if (Map.getSpaceMap().get(i).getOccupancy()){
+            if (spaceMap.get(i).getOccupancy()){
                 return true;
             }
         }
         return false;
     }
 
-
     boolean all_At_Home(int nestId){
         for (int i = 0; i <=  47; i++){
-            if( Map.getSpaceMap().get(i).getOccupancy())
+            if( spaceMap.get(i).getOccupancy())
             {
-                if (Map.getSpaceMap().get(i).getPiece().getNestId() == nestId){
+                if (spaceMap.get(i).getPiece().getNestId() == nestId){
                     return false;
                 }
             }
@@ -448,4 +446,3 @@ public class GameController implements Initializable {
 
     }
 }
-

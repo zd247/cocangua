@@ -142,6 +142,7 @@ public class Piece extends Circle {
                 }
                 System.out.println("go");
                 this.movePiece(playerMoveAmount);
+                this.movePiece(playerMoveAmount);
                 if (this.getCurrentPosition() == initialPosition){
                     diceTurn--;
                 }
@@ -324,7 +325,6 @@ public class Piece extends Circle {
                 isDeployed = true;  //Piece had already move outside the nest
             }else {
                 //Move the piece in space
-
                 // move the piece to said location
                 for (int i = 1; i < moveAmount + 1 ; i++) {
                     if (currentPosition + 1 > 47)
@@ -346,7 +346,6 @@ public class Piece extends Circle {
         //start to move into the houseDestination
         if (!isBlocked){
             SequentialTransition seq = new SequentialTransition();
-//            House hs = houseMap.get(step - 49 + getHouseArrival() + moveAmount);
             for (int i = 0; i < moveAmount ; i++){
                 double x = getHouseX(getHouseArrival() + step - 48);     //start at the first and jump to the moveamount and ghe currentt
                 double y = getHouseY(getHouseArrival() + step - 48);

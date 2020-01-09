@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import java.util.HashMap;
 
 import static javafx.scene.paint.Color.*;
+import static statics.StaticContainer.*;
 
 /* MAP CLASS THAT CONTAINS ALL GUI ELEMENTS + HASHMAP FOR INDEX */
 public class Map extends Pane {
@@ -31,14 +32,7 @@ public class Map extends Pane {
     final public static int GREEN_HOUSE_1 = 60;
     final public static int RED_HOUSE_1 = 66;
 
-    // A map to store all circle positions
-    static HashMap<Integer, Space> spaceMap = new HashMap<>();
 
-    // A map to store all nests with colors as their key
-    static HashMap<Integer, Nest> nestMap = new HashMap<>();
-
-    // Maps to store all houses
-    static HashMap<Integer, House> houseMap = new HashMap<>();
 
     // Map's width and height
     public static double MAP_WIDTH;
@@ -294,14 +288,5 @@ public class Map extends Pane {
         return space.getLayoutY();
     }
 
-    // Simple getters
-    public static HashMap<Integer, Space> getSpaceMap() {
-        return spaceMap;
-    }
 
-    public static HashMap<Integer, Nest> getNestMap() { return nestMap; }
-
-    public static HashMap<Integer, House> getHouseMap() {
-        return houseMap;
-    }
 }

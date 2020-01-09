@@ -13,10 +13,6 @@ public class Dice extends ImageView {
     Image diceFace = new Image("images/dice1.png");
     int val;
 
-    int turn = 0;
-    int id = 0;
-    int moveAmount1 = 0;
-    int moveAmount2 = 0;
 
     // Constructor
     public Dice() {
@@ -33,10 +29,6 @@ public class Dice extends ImageView {
             this.setTranslateY(0);
         });
 
-        // Roll when clicked on
-//        this.setOnMouseClicked(click -> {
-//            roll();
-//        });
     }
 
     public int getVal(){
