@@ -1,5 +1,9 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,12 +47,14 @@ public class GameController implements Initializable {
     @FXML
     private ChoiceBox<String> languageBox;
 
+
     Dice dice1 = new Dice();    // add dices
     Dice dice2 = new Dice();
     int turn = 0;
     int id = -1;
     int moveAmount1 = 0;
     int moveAmount2 = 0;
+    Language language = new Language("en","US");
     // Text fields that needs updating
     @FXML private Label nameLbBlue;
     @FXML private Label nameLbYellow;
@@ -62,9 +68,11 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        chooseLanguage();
         Map map = new Map();
         // draw board
         container.setCenter(map);
+        updatePoint();
         rollDice();
 
         /**===========================[Test code goes here]===========================*/
@@ -117,23 +125,23 @@ public class GameController implements Initializable {
                             }
                             if (!isBlockedPiece(piece.getCurrentPosition(), p_move.moveAmount, piece.getNestId()) || able_To_Kick(piece.getCurrentPosition(), p_move.moveAmount, id_Nest)) {
                                 if (able_To_Kick(piece.getCurrentPosition(), p_move.moveAmount, id_Nest)){
+                                    int next = 0;
                                     if (piece.getCurrentPosition() != -1 && piece.getStep() + p_move.moveAmount <= 48) {
-                                        int next = piece.getCurrentPosition() + p_move.moveAmount;
+                                        next = piece.getCurrentPosition() + p_move.moveAmount;
                                         if (next > 47){
                                             next -= 48;
                                         }
-                                        piece.kick(Map.getSpaceMap().get(next).getPiece());
-                                        Map.getSpaceMap().get(next).setOccupancy(false);
-
                                     } else {
                                         if (canDeploy(id_Nest,moveAmount1,moveAmount2)) {
-                                            int next;
                                             next = piece.getStartPosition(piece.getNestId());   //get the piece at start position
-
-                                            piece.kick(Map.getSpaceMap().get(next).getPiece());
-                                            Map.getSpaceMap().get(next).setOccupancy(false);
                                         }
                                     }
+                                    Piece pieceKicked = Map.getSpaceMap().get(next).getPiece();
+                                    piece.kick(pieceKicked);
+                                    players[id_Nest].setPoints(players[id_Nest].getPoints() + 2);   //increase points by 2
+                                    players[pieceKicked.getNestId()].setPoints(players[pieceKicked.getNestId()].getPoints() -2);
+                                    //decrease point by 2
+                                    Map.getSpaceMap().get(next).setOccupancy(false);
                                 }
                                 if ((piece.getCurrentPosition() != -1 || ((moveAmount1 == 6 || moveAmount2 == 6) && nest_counter.count == 0)) && nest_counter.count!= 3) {
                                     System.out.println(finalPieceId+ " if statement " + piece.getMove() + p_move.moveAmount);
@@ -149,7 +157,8 @@ public class GameController implements Initializable {
                                         }
                                     }
                                     System.out.println("go");
-                                    piece.move(p_move.moveAmount);
+                                    players[id_Nest].setPoints(players[id_Nest].getPoints() + piece.move(p_move.moveAmount));
+                                    //store points
                                     if (piece.getCurrentPosition() == initial){
                                         nest_counter.count--;
                                     }
@@ -180,6 +189,7 @@ public class GameController implements Initializable {
                             }
                         }
                     }
+                    updatePoint();
                 });
             }
         }
@@ -241,8 +251,6 @@ public class GameController implements Initializable {
                 }
                 moveAmount1 = dice1.roll();
                 moveAmount2 = dice2.roll();
-                System.out.println("Player" + id  + " " + moveAmount1);
-                System.out.println("Player" + id  + " " + moveAmount2);
                 //Roll dice here, wilasdasd
                 for (int i = 0; i < players.length; i++) {
                     if (i != id) {
@@ -365,6 +373,11 @@ public class GameController implements Initializable {
                 if (position == 47){
                     position = -1;
                 }
+                /*
+                if(position > 47){
+                    return false;
+                }
+                 */
                 if (Map.getSpaceMap().get(position+1).getOccupancy()) {
                     return true;
                 }
@@ -403,6 +416,36 @@ public class GameController implements Initializable {
             }
         }
         return true;
+    }
+
+    void updatePoint(){
+        scoreLbBlue.setText(players[0].getPoints()+"");
+        scoreLbYellow.setText(players[1].getPoints()+"");
+        scoreLbGreen.setText(players[2].getPoints()+"");
+        scoreLbRed.setText(players[3].getPoints()+"");
+    }
+
+    private void chooseLanguage(){
+        ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
+        languageBox.setItems(availableChoices);
+        languageBox.setValue("English");
+        languageBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.equals("Tiếng Việt")){
+                    language.setLanguage("vi","VN");
+                    loadLangue();
+                }
+                else{
+                    language.setLanguage("en","US");
+                    loadLangue();
+                }
+            }
+        });
+    }
+
+    private void loadLangue(){
+
     }
 }
 

@@ -223,8 +223,9 @@ public class Piece extends Circle {
     /**
      * the controller move , use moveSpace and moveToHouse
      * @param moveAmount
+     * @return point
      */
-    public void move(int moveAmount){
+    public int move(int moveAmount){
         if (step + moveAmount < 49)
             //Run in the space map
             moveSpace(moveAmount);
@@ -233,12 +234,17 @@ public class Piece extends Circle {
             if (step == 48){ //at the arrival space
                 currentPosition = step;
                 moveToHouseDestination(moveAmount);
+                return moveAmount;
             }
             else    //at the house destination
-                if ( (step -48) == moveAmount)
+                if ( (step -47) == moveAmount){
                     //get the position (in display board) + 1 (before postion) + 1 (index in map less than current)
                     moveToHouseDestination(1);
+                    return 1;
+                }
+
         }
+        return 0;
     }
 
     /**
