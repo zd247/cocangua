@@ -155,12 +155,10 @@ public class Piece extends Circle {
                 }
             }
             else if (!blockHome(playerMoveAmount) && this.step >= 48) {
-                if (this.step == 48) {
-                    if (!blockHome(diceValue2) && diceValue1 < diceValue2 && diceTurn == 1) {
-                        playerMoveAmount = diceValue2;
-                        diceValue2 = diceValue1;
-                        diceValue1 = playerMoveAmount;
-                    }
+                if (!blockHome(diceValue2) && diceValue1 < diceValue2 && diceTurn == 1) {
+                    playerMoveAmount = diceValue2;
+                    diceValue2 = diceValue1;
+                    diceValue1 = playerMoveAmount;
                 }
                 players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
                 if (initialPosition >= 48) {
@@ -171,8 +169,8 @@ public class Piece extends Circle {
                     spaceMap.get(initialPosition).setOccupancy(false);
                     spaceMap.get(initialPosition).setPiece(null);
                 }
-                houseMap.get(this.step -1).setOccupancy(true);
-                houseMap.get(this.step -1 ).setPiece(this);
+                houseMap.get(this.currentPosition).setOccupancy(true);
+                houseMap.get(this.currentPosition).setPiece(this);
             }
             if (currentPosition == initialPosition && this.step >= 48) {
                 diceTurn--;
@@ -348,9 +346,8 @@ public class Piece extends Circle {
                     }
                 }
             } else{
-                if (dice == (this.step - start + 1)) {
-                    System.out.println(this.step + " haaaaaaaaa");
-                    return houseMap.get(this.step).getOccupancy();
+                if (dice == (this.currentPosition - start + 1)) {
+                    return houseMap.get(this.currentPosition+1).getOccupancy();
                 }
                 return false;
             }
