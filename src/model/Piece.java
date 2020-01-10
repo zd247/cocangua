@@ -24,11 +24,9 @@ public class Piece extends Circle {
     private boolean isHouse; // is inside one of six rectangle
     private boolean isAtArrival;
     private Color color;
-    private int move;
     private boolean isClicked;
-
     Player player;// - get player by nestId - a static function
-    boolean canDeploy = true; // this will be reference by the player later
+    private boolean canDeploy = true; // this will be reference by the player later
 
     private int step = 0;   //how many steps that the piece goes
     //=================================[Init]=====================================
@@ -428,7 +426,6 @@ public class Piece extends Circle {
         tt.setToY(y - getLayoutY());
         currentPosition += 1;
         step += 1;
-        System.out.println("step "   + step );
         return tt;
     }
     /**
@@ -473,27 +470,28 @@ public class Piece extends Circle {
 
     /**
      * to settle piece in the nest with its id
-     * @param nestId
+     *
      */
-    public void pieceInTheNest(int nestId){
+    public void pieceInTheNest(){
         //to set the piece with its id nicely
-        int ver,hor;
+        int vPos;
+        int hPos;
         if (pieceId == 0) {
-            hor = -1;
-            ver = -1;
+            hPos = -1;
+            vPos = -1;
         } else if (pieceId == 1) {
-            hor = 1;
-            ver = -1;
+            hPos = 1;
+            vPos = -1;
         } else if (pieceId == 2) {
-            hor = -1;
-            ver = 1;
+            hPos = -1;
+            vPos = 1;
         } else {
-            hor = 1;
-            ver = 1;
+            hPos = 1;
+            vPos = 1;
         }
         Nest nest = nestMap.get(nestId);
-        setLayoutX(nest.getLayoutX() + Nest.NEST_SIZE / 2 + hor * 20);  //20 is gap piece
-        setLayoutY(nest.getLayoutY() + Nest.NEST_SIZE / 2 + ver * 20);
+        setLayoutX(nest.getLayoutX() + Nest.NEST_SIZE / 2 + hPos * 20);  //20 is gap piece
+        setLayoutY(nest.getLayoutY() + Nest.NEST_SIZE / 2 + vPos * 20);
     }
 
     public int getCurrentPosition() {
@@ -508,46 +506,24 @@ public class Piece extends Circle {
         currentPosition = position;
     };
 
-    public int getMove() {
-        return move;
-    }
-
     public int getStep(){
         return step;
     }
 
     public void kick(Piece piece){
-        piece.getPieceInNest(piece.getPieceId(),piece.getNestId());
+
+//        piece.pieceInTheNest();
+        piece.kickTransition();
         piece.setCurrentPosition(-1);
         piece.setDeployed(false);
         piece.setStep(0);
     }
 
-    public void getPieceInNest(int idPiece, int nestId) {
-        //Display pieces each nest
-        int ver, hor;
-        if (idPiece == 0) {
-            hor = -1;
-            ver = -1;
-        } else if (idPiece == 1) {
-            hor = 1;
-            ver = -1;
-        } else if (idPiece == 2) {
-            hor = -1;
-            ver = 1;
-        } else {
-            hor = 1;
-            ver = 1;
-        }
-
-        Nest nest = nestMap.get(nestId);
-
-        setLayoutX(nest.getLayoutX() + Nest.NEST_SIZE / 2 + hor * 20); //gap piece
-        setLayoutY(nest.getLayoutY() + Nest.NEST_SIZE / 2 + ver * 20); //gap piece
-    }
-
-    public int getPieceId() {
-        return pieceId;
+    private void kickTransition(){
+        TranslateTransition tt = new TranslateTransition(Duration.millis(400), this);
+        tt.setToX(0);
+        tt.setToY(0);
+        tt.play();
     }
 
     public void setDeployed(boolean deployed) {

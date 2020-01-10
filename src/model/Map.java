@@ -168,7 +168,7 @@ public class Map extends Pane {
         // Get the pieces in pieceList to display
         for (int pieceID = 0; pieceID < 4 ; pieceID++){
             Piece piece = nest.getPieceList()[pieceID];
-            piece.pieceInTheNest(nestId);
+            piece.pieceInTheNest();
             getChildren().add(piece);
         }
     }

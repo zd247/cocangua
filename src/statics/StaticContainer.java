@@ -194,17 +194,10 @@ public class StaticContainer { // can be made singleton but not necessary
         return false;
     }
 
-
 //    public static ConnectionStatus getPlayerConnectionStatusById() {
 //
 //    }
 
-    public static void updatePoint () {
-        gameController.scoreLbBlue.setText("0");
-        gameController.scoreLbYellow.setText("0");
-        gameController.scoreLbGreen.setText("0");
-        gameController.scoreLbRed.setText("0");
-    }
 
 
 

@@ -60,16 +60,15 @@ public class GameController implements Initializable {
     @FXML private Label nameLbYellow;
     @FXML private Label nameLbGreen;
     @FXML private Label nameLbRed;
-    @FXML public Label scoreLbBlue;
-    @FXML public Label scoreLbYellow;
-    @FXML public Label scoreLbGreen;
-    @FXML public Label scoreLbRed;
+    @FXML public static Label scoreLbBlue;
+    @FXML public static Label scoreLbYellow;
+    @FXML public static Label scoreLbGreen;
+    @FXML public static Label scoreLbRed;
     @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chooseLanguage();
-
         // draw board
         Map map = new Map();
         container.setCenter(map);
@@ -148,5 +147,12 @@ public class GameController implements Initializable {
 
     private void loadLangue(){
 
+    }
+
+    public static void updatePoint () {
+        scoreLbBlue.setText("0");
+        scoreLbYellow.setText("0");
+        scoreLbGreen.setText("0");
+        scoreLbRed.setText("0");
     }
 }
