@@ -1,5 +1,6 @@
 package controller;
 
+import helper.InputHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,7 +35,7 @@ import static model.Sound.THEME;
  * Input listeners
  */
 
-public class GameController implements Initializable, Runnable {
+public class GameController implements Initializable {
     public Button button;
     @FXML
     private BorderPane container;
@@ -62,19 +63,6 @@ public class GameController implements Initializable, Runnable {
     @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
 
 
-    @Override
-    public void run() {
-        while (true){
-            updatePoint();
-            System.out.println("a");
-            try {
-                Thread.sleep(POLLING_INTERVAL);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,8 +86,9 @@ public class GameController implements Initializable, Runnable {
         topBar.getChildren().addAll(dice1, dice2);
         setDiceOnClick(dice1, dice2 );
 
+
         //update points
-        updatePoint();
+//        updatePoint();
 
 
         //============================[test]============================
@@ -115,6 +104,9 @@ public class GameController implements Initializable, Runnable {
         //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
         c.setLayoutX(x);
         c.setLayoutY(y);
+
+        InputHandler inputHandler = new InputHandler();
+        new Thread(inputHandler).start();
 
     }
 

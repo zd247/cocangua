@@ -14,6 +14,7 @@ public class Player extends Node {
     private ConnectionStatus connectionStatus;
     private int points;
     private boolean rolled;
+    private Label scoreLabel; //
 
     public Player (int nestId, String name) {
         this.nestId = nestId;
