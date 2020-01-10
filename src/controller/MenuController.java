@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import model.Language;
 import model.PlayerField;
 import static statics.StaticContainer.*;
 
@@ -33,7 +32,6 @@ public class MenuController implements Initializable {
     @FXML
     public Button startBtn; //finalize, populate and move on, called main
 
-    private Language language = new Language("en", "US");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,9 +57,7 @@ public class MenuController implements Initializable {
     }
 
     private void chooseLanguage(){
-        ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
-        languageBox.setItems(availableChoices);
-        languageBox.setValue("English");
+        changeChoiceBoxInMenu(this);
         languageBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {

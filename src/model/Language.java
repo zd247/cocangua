@@ -24,4 +24,8 @@ public class Language {
     public String getStartButton(){
         return bundle.getString("startButton");
     }
+
+    public String getLocale(){
+        return Locale.getDefault()+"";
+    }
 }

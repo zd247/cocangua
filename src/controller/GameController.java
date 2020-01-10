@@ -2,8 +2,6 @@ package controller;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,11 +13,8 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.StrokeType;
 import model.*;
 
-import static javafx.scene.paint.Color.BLACK;
 import static statics.StaticContainer.*;
 
 import java.net.URL;
@@ -45,7 +40,7 @@ public class GameController implements Initializable {
     @FXML
     private ToggleButton soundBtn;
     @FXML
-    private ChoiceBox<String> languageBox;
+    public ChoiceBox<String> languageBox;
 
 
     Dice dice1 = new Dice();    // add dices
@@ -54,16 +49,16 @@ public class GameController implements Initializable {
     int id = -1;
     int moveAmount1 = 0;
     int moveAmount2 = 0;
-    Language language = new Language("en","US");
+
     // Text fields that needs updating
     @FXML private Label nameLbBlue;
     @FXML private Label nameLbYellow;
     @FXML private Label nameLbGreen;
     @FXML private Label nameLbRed;
-    @FXML public static Label scoreLbBlue;
-    @FXML public static Label scoreLbYellow;
-    @FXML public static Label scoreLbGreen;
-    @FXML public static Label scoreLbRed;
+    @FXML public Label scoreLbBlue;
+    @FXML public Label scoreLbYellow;
+    @FXML public Label scoreLbGreen;
+    @FXML public Label scoreLbRed;
     @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
 
     @Override
@@ -72,7 +67,6 @@ public class GameController implements Initializable {
         // draw board
         Map map = new Map();
         container.setCenter(map);
-
         Dice dice1 = new Dice();
         Dice dice2 = new Dice();
 
@@ -85,6 +79,8 @@ public class GameController implements Initializable {
         }
 
         /**===========================[Test code goes here]===========================*/
+        updateName();
+        updatePoint(this);
 
         for (int i = 0; i < players.length; i++) {
             System.out.println(players[i].getName());
@@ -98,18 +94,6 @@ public class GameController implements Initializable {
 
         // test index
         System.out.println(spaceMap.size() + " " + houseMap.size());
-
-        Circle c = new Circle(12);
-        c.setFill(BLACK);
-
-        // test move
-       /* map.getChildren().add(c);
-        double x = map.getHouseX(Map.RED_HOUSE_1 + 3);
-        double y = map.getHouseY(Map.RED_HOUSE_1 + 3);
-        //double x = map.getSpaceX(Map.BLUE_ARRIVAL);
-        //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
-        c.setLayoutX(x);
-        c.setLayoutY(y);*/
     }
 
 
@@ -127,9 +111,7 @@ public class GameController implements Initializable {
 
 
     private void chooseLanguage(){
-        ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
-        languageBox.setItems(availableChoices);
-        languageBox.setValue("English");
+        changeChoiceBoxInGame(this);
         languageBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -149,10 +131,13 @@ public class GameController implements Initializable {
 
     }
 
-    public static void updatePoint () {
-        scoreLbBlue.setText("0");
-        scoreLbYellow.setText("0");
-        scoreLbGreen.setText("0");
-        scoreLbRed.setText("0");
+    /**===========================[Test code goes here]===========================*/
+
+    private void updateName(){
+        nameLbBlue.setText(players[0].getName());
+        nameLbYellow.setText(players[1].getName());
+        nameLbGreen.setText(players[2].getName());
+        nameLbRed.setText(players[3].getName());
     }
+    /**===========================[End of view.test code]===========================*/
 }

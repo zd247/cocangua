@@ -1,6 +1,10 @@
 package statics;
 
 import controller.GameController;
+import controller.MenuController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.paint.Color;
 import model.*;
 
@@ -26,9 +30,13 @@ public class StaticContainer { // can be made singleton but not necessary
 
     public static Piece currentPiece = null;
 
-    private static GameController gameController = new GameController();
+    public static GameController gameController ;
 
+    public static MenuController menuController;
 
+    public static Language language = new Language("en", "US");
+
+    public static ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
 
     //TURN LOGIC STATICS
     public static int turn = 0;
@@ -198,8 +206,29 @@ public class StaticContainer { // can be made singleton but not necessary
 //
 //    }
 
+    public static void updatePoint(GameController c){
+        gameController = c;
+        c.scoreLbBlue.setText(players[0].getPoints()+"");
+        c.scoreLbYellow.setText(players[1].getPoints()+"");
+        c.scoreLbGreen.setText(players[2].getPoints()+"");
+        c.scoreLbRed.setText(players[3].getPoints()+"");
+    }
 
+    public static void changeChoiceBoxInGame(GameController c){
+        gameController = c;
+        setChoiceBox(c.languageBox);
+    }
 
+    public static void changeChoiceBoxInMenu(MenuController c){
+        menuController = c;
+        setChoiceBox(c.languageBox);
+    }
 
-
+    private static void setChoiceBox(ChoiceBox<String> choiceBox){
+        choiceBox.setItems(availableChoices);
+        if (language.getLocale().contains("en"))
+            choiceBox.setValue("English");
+        else
+            choiceBox.setValue("Tiếng Việt");
+    }
 }

@@ -73,7 +73,7 @@ public class Piece extends Circle {
                 if (globalNestId == nestId) {
                     setClicked(true);
                     handleOnClickLogic();
-//                updatePoint();
+                    updatePoint(gameController);
                 }
             }
         });
