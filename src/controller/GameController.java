@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,11 +17,12 @@ import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.StrokeType;
 import model.*;
+import helper.Map;
+import model.core.Dice;
 
 import static javafx.scene.paint.Color.BLACK;
-import static statics.StaticContainer.*;
+import static helper.StaticContainer.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,7 +34,7 @@ import static model.Sound.THEME;
  * Input listeners
  */
 
-public class GameController implements Initializable {
+public class GameController implements Initializable, Runnable {
     public Button button;
     @FXML
     private BorderPane container;
@@ -47,13 +49,6 @@ public class GameController implements Initializable {
     @FXML
     private ChoiceBox<String> languageBox;
 
-
-    Dice dice1 = new Dice();    // add dices
-    Dice dice2 = new Dice();
-    int turn = 0;
-    int id = -1;
-    int moveAmount1 = 0;
-    int moveAmount2 = 0;
     Language language = new Language("en","US");
     // Text fields that needs updating
     @FXML private Label nameLbBlue;
@@ -65,6 +60,21 @@ public class GameController implements Initializable {
     @FXML private Label scoreLbGreen;
     @FXML private Label scoreLbRed;
     @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
+
+
+    @Override
+    public void run() {
+        while (true){
+            updatePoint();
+            System.out.println("a");
+            try {
+                Thread.sleep(POLLING_INTERVAL);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,14 +93,13 @@ public class GameController implements Initializable {
         Sound.playSound(THEME);
 
         //set dice
-        topBar.getChildren().addAll(dice1, dice2);
         Dice dice1 = new Dice();
         Dice dice2 = new Dice();
+        topBar.getChildren().addAll(dice1, dice2);
         setDiceOnClick(dice1, dice2 );
 
-        //set a listener in controller to listen for end of turn event, from that we update score
-
-
+        //update points
+        updatePoint();
 
 
         //============================[test]============================
@@ -106,8 +115,6 @@ public class GameController implements Initializable {
         //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
         c.setLayoutX(x);
         c.setLayoutY(y);
-
-
 
     }
 
@@ -147,4 +154,14 @@ public class GameController implements Initializable {
     private void loadLangue(){
 
     }
+
+    void updatePoint(){
+        scoreLbBlue.setText(players[0].getPoints()+"");
+        scoreLbYellow.setText(players[1].getPoints()+"");
+        scoreLbGreen.setText(players[2].getPoints()+"");
+        scoreLbRed.setText(players[3].getPoints()+"");
+    }
+
+
+
 }

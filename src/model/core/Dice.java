@@ -1,4 +1,4 @@
-package model;
+package model.core;
 
 import javafx.animation.RotateTransition;
 import javafx.event.EventHandler;
@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import model.Sound;
 
 import java.util.Random;
 

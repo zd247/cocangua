@@ -1,8 +1,8 @@
-package statics;
+package helper;
 
-import controller.GameController;
 import javafx.scene.paint.Color;
 import model.*;
+import model.core.*;
 
 
 import java.util.HashMap;
@@ -25,6 +25,8 @@ public class StaticContainer { // can be made singleton but not necessary
     public static HashMap<Integer, House> houseMap = new HashMap<>();
 
     public static Piece currentPiece = null;
+
+    public static int POLLING_INTERVAL = 1000; //miliseconds
 
 
 

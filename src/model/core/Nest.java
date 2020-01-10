@@ -1,10 +1,10 @@
-package model;
+package model.core;
 
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import model.core.Piece;
 
 import static javafx.scene.paint.Color.GREY;
 import static javafx.scene.paint.Color.WHITE;

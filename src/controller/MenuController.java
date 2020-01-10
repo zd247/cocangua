@@ -13,8 +13,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import model.Language;
-import model.PlayerField;
-import static statics.StaticContainer.*;
+import model.core.PlayerField;
+import static helper.StaticContainer.*;
 
 
 
