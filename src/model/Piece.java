@@ -97,7 +97,7 @@ public class Piece extends Circle {
                     diceTurn = 2; //reset
                 }
             }
-            if (this.getStep() <= 48) {
+            if (this.getStep() <= 47) {
                 // case 1: piece being blocked and
                 if (!this.ableToMove(playerMoveAmount) && !this.ableToKick(playerMoveAmount)
                         && this.currentPosition != -1 && diceTurn == 1) {
@@ -129,19 +129,12 @@ public class Piece extends Circle {
                         spaceMap.get(next).setOccupancy(false);
                     }
                     //case 2.2: able to move
-                    if ((this.currentPosition != -1 || (diceValue1 == 6 || diceValue2 == 6 && diceTurn == 0))) {
+                    if ((this.currentPosition != -1 || ((diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0))) {
                         if (this.currentPosition == -1) {
                             diceTurn = 2;
                         }
-                        if (this.getStep() == 48) {
-                            if (diceValue1 < diceValue2 && diceTurn == 1) {
-                                playerMoveAmount = diceValue2;
-                                diceValue2 = diceValue1;
-                                diceValue1 = playerMoveAmount;
-                            }
-                        }
                         System.out.println("go");
-                        if (this.step <= 47) {
+                        if (this.step + playerMoveAmount <= 48) {
                             players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
                             if (initialPosition != -1) {
                                 spaceMap.get(initialPosition).setOccupancy(false);
@@ -150,41 +143,46 @@ public class Piece extends Circle {
                             spaceMap.get(this.currentPosition).setOccupancy(true);
                             spaceMap.get(this.currentPosition).setPiece(this);
                         }
-                        else{
-                            if (!this.blockHome(playerMoveAmount)){
-                                players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
-                                spaceMap.get(initialPosition).setPiece(null);
-                                spaceMap.get(initialPosition).setOccupancy(false);
-                                houseMap.get(currentPosition).setOccupancy(true);
-                                houseMap.get(currentPosition).setPiece(this);
-                            }
-                        }
                         if (currentPosition == initialPosition) {
                             diceTurn--;
                         }
                     }
                 }
                 //case 3: piece is blocked on board
-                else if ((this.isBlockedPiece(playerMoveAmount) && this.currentPosition != -1) || this.blockHome(playerMoveAmount)) {
+                else if ((this.isBlockedPiece(playerMoveAmount) && this.currentPosition != -1)) {
                     System.out.println("fuck");
                     diceTurn--; //reset turn
                 }
             }
-            else{
-                if (!this.blockHome(playerMoveAmount)){
-                    players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
+            else if (!blockHome(playerMoveAmount) && this.step >= 48) {
+                if (this.step == 48) {
+                    if (!blockHome(diceValue2) && diceValue1 < diceValue2 && diceTurn == 1) {
+                        playerMoveAmount = diceValue2;
+                        diceValue2 = diceValue1;
+                        diceValue1 = playerMoveAmount;
+                    }
+                }
+                players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
+                if (initialPosition >= 48) {
                     houseMap.get(initialPosition).setOccupancy(false);
                     houseMap.get(initialPosition).setPiece(null);
-                    houseMap.get(currentPosition).setPiece(this);
-                    houseMap.get(currentPosition).setOccupancy(true);
                 }
-                if (currentPosition == initialPosition) {
-                    diceTurn--;
+                else if (initialPosition == this.getStartPosition(nestId) - 1){
+                    spaceMap.get(initialPosition).setOccupancy(false);
+                    spaceMap.get(initialPosition).setPiece(null);
                 }
+                houseMap.get(this.step -1).setOccupancy(true);
+                houseMap.get(this.step -1 ).setPiece(this);
+            }
+            if (currentPosition == initialPosition && this.step >= 48) {
+                diceTurn--;
             }
             //case 4:
+            System.out.println( !this.ableToMove(diceValue2));
+            System.out.println( !this.ableToKick(diceValue2,nestId));
+            System.out.println(!this.ableToMoveInHome(diceValue2));
             if (this.currentPosition != -1 && !this.ableToMove(diceValue2)
-                    && !this.ableToKick(diceValue2) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2)) {
+                    && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2)) {
                 diceTurn = 3;
             }
             //reset player and dice turns
@@ -228,6 +226,19 @@ public class Piece extends Circle {
      * @param moveAmount dice value get for each dice when done rolling
      * @return
      */
+
+    boolean ableToKick(int moveAmount, int nestId){
+        Piece piece;
+        for (int i =0; i< 4; i++) {
+            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() < 49){
+                piece =getNestById(nestId).getPieceList()[i];
+                if (piece.ableToKick(moveAmount)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public boolean ableToKick(int moveAmount){
         if (this.currentPosition == -1) { //case piece inside nest
             if (nestId == 0 && spaceMap.get(BLUE_START).getOccupancy()) {
@@ -272,19 +283,20 @@ public class Piece extends Circle {
                 case 3:
                     return spaceMap.get(RED_START).getOccupancy();
             }
-        } else if (this.currentPosition <= 47){
+        } else {
             int initial = currentPosition;
-            for (int i = 0; i < amount; i++, initial++) {
-                if (initial == 47){
-                    initial = -1;
-                }
-                if (spaceMap.get(initial+1).getOccupancy()) {
-                    return true;
+            if (spaceMap.get(initial).getPiece().getStep() + amount < 49) {
+                for (int i = 0; i < amount; i++, initial++) {
+                    if (initial == 47) {
+                        initial = -1;
+                    }
+                    if (spaceMap.get(initial + 1).getOccupancy()) {
+                        return true;
+                    }
                 }
             }
-
         }
-        return false;
+            return false;
     }
 
     /**
@@ -316,51 +328,51 @@ public class Piece extends Circle {
     }
 
 
-    boolean blockHome(int diceAmount){
+    boolean blockHome(int dice){
         int start = 0;
-        if (nestId == 0){
-            start = BLUE_HOUSE_1;
+        if (nestId == 0) {
+            start = Map.BLUE_HOUSE_1;
+        } else if (nestId == 1) {
+            start = Map.YELLOW_HOUSE_1;
+        } else if (nestId == 2) {
+            start = Map.GREEN_HOUSE_1;
+        } else if (nestId == 3) {
+            start = Map.RED_HOUSE_1;
         }
-        else if (nestId == 1){
-            start = YELLOW_HOUSE_1;
-        }
-        else if (nestId == 2){
-            start = GREEN_HOUSE_1;
-        }else if (nestId == 3){
-            start = RED_HOUSE_1;
-        }
-        if (step <=  start + 5) {
-            if (step == 48){
-                for (int i = start; i < start + diceAmount; i++){
-                    if (houseMap.get(i).getOccupancy()){
+        if (this.step <= start + 5 && step > 47) {
+            if (this.step == 48) {
+                for (int i = start; i < start + dice; i++) {
+                    if (houseMap.get(i).getOccupancy()) {
+                        System.out.println(houseMap.get(i).getOccupancy());
                         return true;
                     }
                 }
-            }
-            else if (step > 48){
-                if (diceAmount == step - start + 1) {
-                    return houseMap.get(step).getOccupancy();
+            } else{
+                if (dice == (this.step - start + 1)) {
+                    System.out.println(this.step + " haaaaaaaaa");
+                    return houseMap.get(this.step).getOccupancy();
                 }
+                return false;
             }
+            return false;
         }
         return false;
     }
 
     boolean ableToMoveInHome(int diceAmount){
         int start = 0;
-        if (nestId == 0){
-            start = BLUE_HOUSE_1;
+        if (nestId == 0) {
+            start = Map.BLUE_HOUSE_1;
+        } else if (nestId == 1) {
+            start = Map.YELLOW_HOUSE_1;
+        } else if (nestId == 2) {
+            start = Map.GREEN_HOUSE_1;
+        } else if (nestId == 3) {
+            start = Map.RED_HOUSE_1;
         }
-        else if (nestId == 1){
-            start = YELLOW_HOUSE_1;
-        }
-        else if (nestId == 2){
-            start = GREEN_HOUSE_1;
-        }else if (nestId == 3){
-            start = RED_HOUSE_1;
-        }
-        for (int i = start; i < start + 6; i ++){
+        for (int i = start; i < start + 6; i++){
             if (houseMap.get(i).getOccupancy()){
+                System.out.println(i + " asdlksabdklasdlkabskld");
                 if (!houseMap.get(i).getPiece().blockHome(diceAmount)){
                     return true;
                 }

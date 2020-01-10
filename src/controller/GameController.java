@@ -103,13 +103,13 @@ public class GameController implements Initializable {
         c.setFill(BLACK);
 
         // test move
-        map.getChildren().add(c);
+       /* map.getChildren().add(c);
         double x = map.getHouseX(Map.RED_HOUSE_1 + 3);
         double y = map.getHouseY(Map.RED_HOUSE_1 + 3);
         //double x = map.getSpaceX(Map.BLUE_ARRIVAL);
         //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
         c.setLayoutX(x);
-        c.setLayoutY(y);
+        c.setLayoutY(y);*/
     }
 
 
