@@ -141,11 +141,19 @@ public class StaticContainer { // can be made singleton but not necessary
                 }
 
                 else {
-                    if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1)
-                            && !nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2)
+                    System.out.println(!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn));
+                    System.out.println( !canDeploy(globalNestId));
+                    System.out.println( !ableToKick(diceValue1,globalNestId));
+                    System.out.println( !ableToKick(diceValue2,globalNestId));
+                    System.out.println( !pieceInHouseCanMove(globalNestId,diceValue1));
+                    System.out.println( !pieceInHouseCanMove(globalNestId,diceValue2));
+                    if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn)
+                            && !nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn)
                             && !canDeploy(globalNestId)
                             && !ableToKick(diceValue1,globalNestId)
-                            && !ableToKick(diceValue2,globalNestId)) {
+                            && !ableToKick(diceValue2,globalNestId)
+                            && !pieceInHouseCanMove(globalNestId,diceValue1)
+                            && !pieceInHouseCanMove(globalNestId,diceValue2) ) {
                         players[globalNestId].resetCheck();
                         if (diceValue1 == diceValue2) {
                             globalNestId--;
@@ -166,16 +174,14 @@ public class StaticContainer { // can be made singleton but not necessary
      * @return
      */
     static boolean allAtHome(int nestId){
-        for (int i = 0; i <=  47; i++){
-            if( spaceMap.get(i).getOccupancy())
-            {
-                if (spaceMap.get(i).getPiece().getNestId() == nestId){
-                    return false;
-                }
+        for (int i = 0; i < 4; i ++){
+            if (getNestById(nestId).getPieceList()[i].getCurrentPosition() != - 1){
+                return false;
             }
         }
         return true;
     }
+
 
     public static boolean canDeploy(int nestID){
         if(diceValue1 == 6 || diceValue2 == 6) {
@@ -192,9 +198,22 @@ public class StaticContainer { // can be made singleton but not necessary
     static boolean ableToKick(int moveAmount, int nestId){
         Piece piece;
         for (int i =0; i< 4; i++) {
-            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1){
+            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() < 48){
                 piece =getNestById(nestId).getPieceList()[i];
                 if (piece.ableToKick(moveAmount)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    static boolean pieceInHouseCanMove(int nestId, int diceValue){
+        Piece piece;
+        for (int i = 0; i < 4;i++){
+            if (getNestById(nestId).getPieceList()[i].getStep() >= 48 && getNestById(nestId).getPieceList()[i].getStep() < getNestById(nestId).getPieceList()[i].getHouseArrival() + 5 && (getNestById(nestId).getPieceList()[i].getCurrentPosition()-getNestById(nestId).getPieceList()[i].getHouseArrival() + 2) == diceValue){
+                piece = getNestById(nestId).getPieceList()[i];
+                if (!piece.blockHome(diceValue)){
                     return true;
                 }
             }
