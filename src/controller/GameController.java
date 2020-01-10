@@ -60,10 +60,10 @@ public class GameController implements Initializable {
     @FXML private Label nameLbYellow;
     @FXML private Label nameLbGreen;
     @FXML private Label nameLbRed;
-    @FXML public Label scoreLbBlue;
-    @FXML public Label scoreLbYellow;
-    @FXML public Label scoreLbGreen;
-    @FXML public Label scoreLbRed;
+    @FXML private Label scoreLbBlue;
+    @FXML private Label scoreLbYellow;
+    @FXML private Label scoreLbGreen;
+    @FXML private Label scoreLbRed;
     @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
 
     @Override
@@ -74,31 +74,26 @@ public class GameController implements Initializable {
         Map map = new Map();
         container.setCenter(map);
 
-        Dice dice1 = new Dice();
-        Dice dice2 = new Dice();
-
-        setDiceOnClick(dice1, dice2 );
-
         for (int i = 0; i < players.length;i++) {
             if (players[i].getConnectionStatus() == ConnectionStatus.OFF) {
                 nestMap.get(i).setDisplayDisconnected();
             }
         }
+        //set sound
+        Sound.playSound(THEME);
 
-        /**===========================[Test code goes here]===========================*/
-
-        for (int i = 0; i < players.length; i++) {
-            System.out.println(players[i].getName());
-        }
-
-
-        /**===========================[End of view.test code]===========================*/
-        Sound.playSound(THEME); // play sound
-        // this logic can be moved to static class.
+        //set dice
         topBar.getChildren().addAll(dice1, dice2);
+        Dice dice1 = new Dice();
+        Dice dice2 = new Dice();
+        setDiceOnClick(dice1, dice2 );
 
-        // test index
-        System.out.println(spaceMap.size() + " " + houseMap.size());
+        //set a listener in controller to listen for end of turn event, from that we update score
+
+
+
+
+        //============================[test]============================
 
         Circle c = new Circle(12);
         c.setFill(BLACK);
@@ -111,6 +106,9 @@ public class GameController implements Initializable {
         //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
         c.setLayoutX(x);
         c.setLayoutY(y);
+
+
+
     }
 
 

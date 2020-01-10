@@ -1,7 +1,9 @@
 package model;
 
 
+import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import statics.StaticContainer.*;
 
 
@@ -12,15 +14,15 @@ public class Player extends Node {
     private ConnectionStatus connectionStatus;
     private int points;
     private boolean rolled;
-
-    public Player () { // can be used for interactive UI (needs getters and setters) : future implementation
-        this.nestId = -1;
-    }
+    @FXML private Label pointLabel;
+    @FXML private Label nameLabel;
 
     public Player (int nestId, String name) {
         this.nestId = nestId;
         this.name = name;
+        this.nameLabel.setText(this.name);
         points = 0;
+        this.pointLabel.setText(String.valueOf(this.points));
     }
 
 
@@ -50,12 +52,15 @@ public class Player extends Node {
 
     public void resetCheck(){rolled = false;}
 
-    public int getPoints() {
-        return points;
+
+    public void setPoints (int points) {
+        this.points += points;
+        this.pointLabel.setText(String.valueOf(this.points));
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+
+    public int getPoints() {
+        return this.points;
     }
 }
 

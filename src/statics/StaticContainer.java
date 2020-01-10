@@ -26,8 +26,6 @@ public class StaticContainer { // can be made singleton but not necessary
 
     public static Piece currentPiece = null;
 
-    private static GameController gameController = new GameController();
-
 
 
     //TURN LOGIC STATICS
@@ -199,12 +197,7 @@ public class StaticContainer { // can be made singleton but not necessary
 //
 //    }
 
-    public static void updatePoint () {
-        gameController.scoreLbBlue.setText("0");
-        gameController.scoreLbYellow.setText("0");
-        gameController.scoreLbGreen.setText("0");
-        gameController.scoreLbRed.setText("0");
-    }
+
 
 
 
