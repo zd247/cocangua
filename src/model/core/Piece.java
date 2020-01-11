@@ -407,7 +407,7 @@ public class Piece extends Circle {
             }
             this.isHouse = true;
             seq.play();
-            if (step == 54)
+            if (step == 53)
                 Sound.playSound(Sound.WIN);
         }
     }
@@ -419,8 +419,8 @@ public class Piece extends Circle {
         if (step == 48){
             currentPosition = getHouseArrival() - 1;
         }
-        currentPosition += 1;
-        step += 1;
+        currentPosition ++;
+        step ++;
         return tt;
     }
     /**
