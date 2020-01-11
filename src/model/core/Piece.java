@@ -1,4 +1,4 @@
-package model;
+package model.core;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -8,9 +8,10 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import helper.Map;
 
-import static model.Map.*;
-import static statics.StaticContainer.*;
+import static helper.Map.*;
+import static helper.StaticContainer.*;
 
 
 public class Piece extends Circle {

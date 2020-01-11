@@ -1,15 +1,16 @@
+import controller.GameController;
 import controller.MenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import statics.StaticContainer;
+import helper.StaticContainer;
 
 import java.io.IOException;
 
-import static statics.StaticContainer.playerFields;
-import static statics.StaticContainer.players;
+import static helper.StaticContainer.playerFields;
+import static helper.StaticContainer.players;
 
 public class Main extends Application {
 
@@ -37,13 +38,18 @@ public class Main extends Application {
             Parent gameDisplay = null;
             try {
                 gameDisplay = game.load();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             Scene scene = new Scene(gameDisplay, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
             scene.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
             primaryStage.setScene(scene);
         });
+
+
+
 
 
         primaryStage.setTitle("Co Ca Ngua");

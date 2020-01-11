@@ -1,5 +1,6 @@
 package controller;
 
+import helper.InputHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -13,9 +14,15 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Circle;
 import model.*;
+import helper.Map;
+import model.core.Dice;
 
-import static statics.StaticContainer.*;
+
+import static javafx.scene.paint.Color.BLACK;
+import static helper.StaticContainer.*;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,13 +50,7 @@ public class GameController implements Initializable {
     public ChoiceBox<String> languageBox;
 
 
-    Dice dice1 = new Dice();    // add dices
-    Dice dice2 = new Dice();
-    int turn = 0;
-    int id = -1;
-    int moveAmount1 = 0;
-    int moveAmount2 = 0;
-
+    Language language = new Language("en","US");
     // Text fields that needs updating
     @FXML private Label nameLbBlue;
     @FXML private Label nameLbYellow;
@@ -61,39 +62,52 @@ public class GameController implements Initializable {
     @FXML public Label scoreLbRed;
     @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chooseLanguage();
+        updateName();
+
         // draw board
         Map map = new Map();
         container.setCenter(map);
+
         Dice dice1 = new Dice();
         Dice dice2 = new Dice();
-
         setDiceOnClick(dice1, dice2 );
+        topBar.getChildren().addAll(dice1, dice2);
 
         for (int i = 0; i < players.length;i++) {
             if (players[i].getConnectionStatus() == ConnectionStatus.OFF) {
                 nestMap.get(i).setDisplayDisconnected();
             }
         }
-
-        /**===========================[Test code goes here]===========================*/
-        updateName();
-        updatePoint(this);
-
-        for (int i = 0; i < players.length; i++) {
-            System.out.println(players[i].getName());
-        }
+        //set sound
+        Sound.playSound(THEME);
 
 
-        /**===========================[End of view.test code]===========================*/
-        Sound.playSound(THEME); // play sound
-        // this logic can be moved to static class.
-        topBar.getChildren().addAll(dice1, dice2);
+
+        //============================[test]============================
 
         // test index
         System.out.println(spaceMap.size() + " " + houseMap.size());
+
+        Circle c = new Circle(12);
+        c.setFill(BLACK);
+
+        // test move
+        map.getChildren().add(c);
+        double x = map.getHouseX(Map.RED_HOUSE_1 + 3);
+        double y = map.getHouseY(Map.RED_HOUSE_1 + 3);
+        //double x = map.getSpaceX(Map.BLUE_ARRIVAL);
+        //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
+        c.setLayoutX(x);
+        c.setLayoutY(y);
+
+        InputHandler inputHandler = new InputHandler();
+        new Thread(inputHandler).start();
+
     }
 
 
@@ -140,4 +154,11 @@ public class GameController implements Initializable {
         nameLbRed.setText(players[3].getName());
     }
     /**===========================[End of view.test code]===========================*/
+    void updatePoint(){
+        scoreLbBlue.setText(players[0].getPoints()+"");
+        scoreLbYellow.setText(players[1].getPoints()+"");
+        scoreLbGreen.setText(players[2].getPoints()+"");
+        scoreLbRed.setText(players[3].getPoints()+"");
+    }
+
 }

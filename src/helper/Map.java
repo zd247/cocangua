@@ -1,12 +1,14 @@
-package model;
+package helper;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
-import java.util.HashMap;
+import model.House;
+import model.core.Nest;
+import model.core.Piece;
+import model.Space;
 
 import static javafx.scene.paint.Color.*;
-import static statics.StaticContainer.*;
+import static helper.StaticContainer.*;
 
 /* MAP CLASS THAT CONTAINS ALL GUI ELEMENTS + HASHMAP FOR INDEX */
 public class Map extends Pane {

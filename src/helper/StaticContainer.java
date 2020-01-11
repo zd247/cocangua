@@ -1,4 +1,4 @@
-package statics;
+package helper;
 
 import controller.GameController;
 import controller.MenuController;
@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.paint.Color;
 import model.*;
+import model.core.*;
 
 
 import java.util.HashMap;
@@ -31,6 +32,9 @@ public class StaticContainer { // can be made singleton but not necessary
     public static Piece currentPiece = null;
 
     public static GameController gameController ;
+
+    public static int POLLING_INTERVAL = 1000; //miliseconds
+
 
     public static MenuController menuController;
 
@@ -232,6 +236,7 @@ public class StaticContainer { // can be made singleton but not necessary
         c.scoreLbGreen.setText(players[2].getPoints()+"");
         c.scoreLbRed.setText(players[3].getPoints()+"");
     }
+
 
     public static void changeChoiceBoxInGame(GameController c){
         gameController = c;

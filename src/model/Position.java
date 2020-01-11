@@ -1,5 +1,7 @@
 package model;
 
+import model.core.Piece;
+
 // Interface for all spaces
 public interface Position {
     // Get and set occupancy state

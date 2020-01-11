@@ -1,4 +1,4 @@
-package model;
+package model.core;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
-import static statics.StaticContainer.*;
+import static helper.StaticContainer.*;
 
 /**
  * Game menu button to create new player

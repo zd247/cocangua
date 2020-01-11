@@ -1,8 +1,10 @@
-package model;
+package model.core;
 
 
+import javafx.fxml.FXML;
 import javafx.scene.Node;
-import statics.StaticContainer.*;
+import javafx.scene.control.Label;
+import helper.StaticContainer.*;
 
 
 public class Player extends Node {
@@ -12,10 +14,7 @@ public class Player extends Node {
     private ConnectionStatus connectionStatus;
     private int points;
     private boolean rolled;
-
-    public Player () { // can be used for interactive UI (needs getters and setters) : future implementation
-        this.nestId = -1;
-    }
+    private Label scoreLabel; //
 
     public Player (int nestId, String name) {
         this.nestId = nestId;
@@ -50,12 +49,14 @@ public class Player extends Node {
 
     public void resetCheck(){rolled = false;}
 
-    public int getPoints() {
-        return points;
+
+    public void setPoints (int points) {
+        this.points += points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+
+    public int getPoints() {
+        return this.points;
     }
 }
 
