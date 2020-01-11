@@ -226,7 +226,7 @@ public class Piece extends Circle {
      * @return
      */
 
-    boolean ableToKick(int moveAmount, int nestId){
+    public boolean ableToKick(int moveAmount, int nestId){
         Piece piece;
         for (int i =0; i< 4; i++) {
             if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() < 48){
@@ -270,7 +270,7 @@ public class Piece extends Circle {
      * @param amount dice value get for each dice when done rolling
      * @return is blocked by another or not
      */
-    boolean isBlockedPiece(int amount) {
+    public boolean isBlockedPiece(int amount) {
         if (this.currentPosition == -1) { // outside of nest
             switch (nestId){
                 case 0:
@@ -344,7 +344,7 @@ public class Piece extends Circle {
         return false;
     }
 
-    boolean ableToMoveInHome(int diceAmount){
+    public boolean ableToMoveInHome(int diceAmount){
         int start = getHouseArrival();
         for (int i = start; i < start + 5; i++){
             if (houseMap.get(i).getOccupancy() && (i - start) + 2 == diceAmount){
