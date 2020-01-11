@@ -15,6 +15,7 @@ public class Player extends Node {
     private int points;
     private boolean rolled;
     private Label scoreLabel; //
+    private int pointForTurn = 0;
 
     public Player (int nestId, String name) {
         this.nestId = nestId;
@@ -22,7 +23,8 @@ public class Player extends Node {
         points = 0;
     }
 
-
+    public void setPointForTurn(int point){ pointForTurn = point;}
+    public int getPointForTurn(){return pointForTurn;}
     // Player name
     public String getName() {
         return name;
