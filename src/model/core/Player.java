@@ -53,7 +53,7 @@ public class Player extends Node {
 
 
     public void setPoints (int points) {
-        this.points += points;
+        this.points = points;
     }
 
 

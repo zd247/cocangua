@@ -141,7 +141,7 @@ public class GameController implements Initializable {
         });
     }
 
-    private void loadLangue(){
+    public void loadLangue(){
 
     }
 

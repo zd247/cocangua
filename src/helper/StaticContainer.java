@@ -2,6 +2,8 @@ package helper;
 
 import controller.GameController;
 import controller.MenuController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
@@ -101,6 +103,7 @@ public class StaticContainer { // can be made singleton but not necessary
     public static void rollForGetTurn(Dice dice){
         dice.setOnMouseClicked(event -> {
             globalNestId ++;
+            dice.roll();
             while ((players[globalNestId].getConnectionStatus() == ConnectionStatus.OFF)) {
                 globalNestId++;
                 if (globalNestId == 4){
@@ -270,17 +273,21 @@ public class StaticContainer { // can be made singleton but not necessary
     public static void changeChoiceBoxInGame(GameController c){
         gameController = c;
         setChoiceBox(c.languageBox);
+        c.loadLangue(); //load language in menu
     }
 
     public static void changeChoiceBoxInMenu(MenuController c){
+        //Referene from the game controller
         menuController = c;
         setChoiceBox(c.languageBox);
+        c.loadLangue();//load language in game
     }
 
     private static void setChoiceBox(ChoiceBox<String> choiceBox){
+        //To set settings for the choice box
         choiceBox.setItems(availableChoices);
         if (language.getLocale().contains("en"))
-            choiceBox.setValue("English");
+            choiceBox.setValue("English");//Set face of the choice box
         else
             choiceBox.setValue("Tiếng Việt");
     }

@@ -70,7 +70,7 @@ public class MenuController implements Initializable {
         });
     }
 
-    private void loadLangue(){
+    public void loadLangue(){
         TitleName.setText(language.getTitleName());
         startBtn.setText(language.getStartButton());
     }

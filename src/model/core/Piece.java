@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import helper.Map;
+import model.Sound;
 
 import static helper.Map.*;
 import static helper.StaticContainer.*;
@@ -371,6 +372,7 @@ public class Piece extends Circle {
                 double x = getSpaceX(getStartPosition(nestId));
                 double y = getSpaceY(getStartPosition(nestId));
                 updatePieceMoving(x,y).play();    //move animation
+                Sound.playSound(Sound.DEPLOY);
                 currentPosition = getStartPosition(nestId) ;  //index at the start space
                 isDeployed = true;  //Piece had already move outside the nest
             }else {
@@ -382,6 +384,7 @@ public class Piece extends Circle {
                     double x = getSpaceX(currentPosition + 1);
                     double y = getSpaceY(currentPosition + 1);
                     seq.getChildren().addAll(updatePieceMoving(x,y), new PauseTransition(Duration.millis(100)));  //move animation
+                    Sound.playSound(Sound.MOVE);
                 }
             }
             seq.play();
@@ -404,6 +407,8 @@ public class Piece extends Circle {
             }
             this.isHouse = true;
             seq.play();
+            if (step == 54)
+                Sound.playSound(Sound.WIN);
         }
     }
 
@@ -514,6 +519,7 @@ public class Piece extends Circle {
         tt.setToX(0);
         tt.setToY(0);
         tt.play();
+        Sound.playSound(Sound.KICK);
     }
 
     public void setDeployed(boolean deployed) {

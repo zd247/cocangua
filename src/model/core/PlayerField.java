@@ -16,11 +16,14 @@ import static helper.StaticContainer.*;
 public class PlayerField extends Pane {
     int nestId;
     boolean isClickedOn;
+    boolean isRolled = false;
+    int numOfFace = 0;
     //display
     Text addText = new Text("Click on the pane to add new player...");
     VBox playerDisplayVBox = new VBox();
     TextField textField = new TextField();
     CheckBox toggler = new CheckBox("BOT");
+    Dice dice = new Dice();
 
 
     public PlayerField(int nestId){
@@ -42,7 +45,8 @@ public class PlayerField extends Pane {
             public void handle(MouseEvent mouseEvent) {
                 if (!isClickedOn){
                     Player player = createPlayer(nestId); //default name and status init
-                    playerDisplayVBox.getChildren().addAll(textField, toggler);
+                    playerDisplayVBox.getChildren().addAll(textField, toggler, dice);
+                    rollForGetTurn(dice);
                     isClickedOn = true;
 
                     //invisible at end of logic
@@ -66,4 +70,5 @@ public class PlayerField extends Pane {
     public boolean isClickedOn() {
         return isClickedOn;
     }
+
 }
