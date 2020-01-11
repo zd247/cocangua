@@ -204,7 +204,7 @@ public class Piece extends Circle {
      * @param moveAmount
      * @return
      */
-    public boolean ableToMove(int moveAmount, int diceTurn){
+    /*public boolean ableToMove(int moveAmount, int diceTurn){
         int check =0;
         for (int i = 0; i <=  47; i++){
             if( spaceMap.get(i).getOccupancy())
@@ -222,6 +222,23 @@ public class Piece extends Circle {
                     }
                 }
             }
+        }
+        return check == 0 && (diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0 && !this.noPieceAtHome(this.nestId);
+    }*/
+    public boolean ableToMove(int moveAmount, int diceTurn){
+        int check =0;
+        for (int i = 0; i <  4; i++){
+                if (getNestById(nestId).getPieceList()[i].getStep() <= 48 && getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1) {
+                    check ++;
+                    if (getNestById(nestId).getPieceList()[i].getStep() == 48) {
+                        if (!spaceMap.get(i).getPiece().blockHome(moveAmount)) {
+                            return true;
+                        }
+                    } else if (getNestById(nestId).getPieceList()[i].getStep() + moveAmount <= 48 && !getNestById(nestId).getPieceList()[i].isBlockedPiece(moveAmount)) {
+                        System.out.println(spaceMap.get(i).getPiece().getStep());
+                        return true;
+                    }
+                }
         }
         return check == 0 && (diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0 && !this.noPieceAtHome(this.nestId);
     }
