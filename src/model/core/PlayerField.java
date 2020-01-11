@@ -57,6 +57,12 @@ public class PlayerField extends Pane {
             }
         });
     }
+    public void rollForGetTurn(Dice dice){
+        dice.setOnMouseClicked(event -> {
+            players[nestId].setPointForTurn(dice.roll());
+            dice.setDisable(true);
+        });
+    }
 
     public TextField getTextField() {
         return textField;

@@ -83,6 +83,14 @@ public class GameController implements Initializable {
                 nestMap.get(i).setDisplayDisconnected();
             }
         }
+        int checker =0;
+        for (int i =3; i >=0; i--){
+            if (players[i].getPointForTurn() >= firstTurn){
+                firstTurn = players[i].getPointForTurn();
+                checker = i;
+            }
+        }
+        globalNestId = checker - 1;
         //set sound
         Sound.playSound(THEME);
 

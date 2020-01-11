@@ -100,31 +100,7 @@ public class StaticContainer { // can be made singleton but not necessary
      * - After selecting and indicating the name, the player consequently roll and then find out who will get the first roll (first turn).
      */
 
-    public static void rollForGetTurn(Dice dice){
-        dice.setOnMouseClicked(event -> {
-            globalNestId ++;
-            dice.roll();
-            while ((players[globalNestId].getConnectionStatus() == ConnectionStatus.OFF)) {
-                globalNestId++;
-                if (globalNestId == 4){
-                    break;
-                }
-            }
-            if (globalNestId != 4) {
-                players[globalNestId].setPoints(dice.getVal());
-            }
-            else {
-                for (int i =3; i  >=0;i--){
-                    if (players[i].getPointForTurn() >= firstTurn){
-                        firstTurn = players[i].getPointForTurn();
-                        globalNestId = i;
-                    }
-                }
-                globalNestId --;
-                dice.setDisable(true);
-            }
-        });
-    }
+
 
     /**
      *
