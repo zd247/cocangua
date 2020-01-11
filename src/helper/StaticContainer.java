@@ -313,7 +313,7 @@ public class StaticContainer { // can be made singleton but not necessary
                     diceTurn = 2; //reset
                 }
                 for (int i = 47; i >= 0; i--) {
-                    if (spaceMap.get(i).getOccupancy()) {
+                    if (spaceMap.get(i).getOccupancy()){
                         if (spaceMap.get(i).getPiece().getNestId() == globalNestId) {
                             Piece piece = spaceMap.get(i).getPiece();
                             int initialPosition = piece.getCurrentPosition();
@@ -350,7 +350,6 @@ public class StaticContainer { // can be made singleton but not necessary
                                         if (piece.getCurrentPosition() == -1) {
                                             diceTurn = 2;
                                         }
-
                                         if (piece.getStep() + playerMoveAmount <= 48) {
                                             players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
                                             i = -1;
@@ -395,6 +394,7 @@ public class StaticContainer { // can be made singleton but not necessary
                             if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2, diceTurn)
                                     && !piece.ableToKick(diceValue2, globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2)) {
                                 diceTurn = 3;
+                                break;
                             }
                             //reset player and dice turns
                         }
