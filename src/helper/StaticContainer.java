@@ -145,12 +145,6 @@ public class StaticContainer { // can be made singleton but not necessary
                 }
 
                 else {
-                    System.out.println(!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn));
-                    System.out.println( !canDeploy(globalNestId));
-                    System.out.println( !ableToKick(diceValue1,globalNestId));
-                    System.out.println( !ableToKick(diceValue2,globalNestId));
-                    System.out.println( !pieceInHouseCanMove(globalNestId,diceValue1));
-                    System.out.println( !pieceInHouseCanMove(globalNestId,diceValue2));
                     if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn)
                             && !nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn)
                             && !canDeploy(globalNestId)
