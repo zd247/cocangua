@@ -14,6 +14,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.*;
 import helper.Map;
@@ -91,6 +92,8 @@ public class GameController implements Initializable {
             }
         }
         globalNestId = checker - 1;
+        nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
+        nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
         //set sound
         Sound.playSound(THEME);
 
