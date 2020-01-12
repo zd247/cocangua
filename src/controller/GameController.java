@@ -90,8 +90,8 @@ public class GameController implements Initializable {
             }
         }
         globalNestId = checker - 1;
-//        nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
-//        nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
+        nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
+        nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
         //set sound
         Sound.playSound(THEME);
 

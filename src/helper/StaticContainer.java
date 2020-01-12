@@ -371,9 +371,14 @@ public class StaticContainer { // can be made singleton but not necessary
                                         spaceMap.get(next).setOccupancy(false);
                                     }
                                     //case 2.2: able to move
-                                    if ((piece.getCurrentPosition() != -1 || ((diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0))) {
+                                    if ((piece.getCurrentPosition() != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
                                         if (piece.getCurrentPosition() == -1) {
-                                            diceTurn = 2;
+                                            if (playerMoveAmount != 6 && diceTurn == 0){
+                                                playerMoveAmount = diceValue2;
+                                                diceValue2 = diceValue1;
+                                                diceValue1 = playerMoveAmount;
+                                            }
+                                            diceTurn ++;
                                         }
                                         if (piece.getStep() + playerMoveAmount <= 48) {
                                             players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
@@ -394,8 +399,8 @@ public class StaticContainer { // can be made singleton but not necessary
                                 else if ((piece.isBlockedPiece(playerMoveAmount) && piece.getCurrentPosition() != -1)) {
                                     diceTurn--; //reset turn
                                 }
-                            } else if ((!piece.blockHome(playerMoveAmount) || (!piece.blockHome(diceValue2) && diceTurn == 1 && diceValue1 < diceValue2)) && piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
-                                if (!piece.blockHome(diceValue2) && diceValue1 < diceValue2 && diceTurn == 1) {
+                            } else if ((!piece.blockHome(playerMoveAmount) || (!piece.blockHome(diceValue2) && diceTurn == 1 )) && piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
+                                if (!piece.blockHome(diceValue2) && (diceValue1 < diceValue2 || piece.blockHome(diceValue1)) && diceTurn == 1) {
                                     playerMoveAmount = diceValue2;
                                     diceValue2 = diceValue1;
                                     diceValue1 = playerMoveAmount;
@@ -416,10 +421,9 @@ public class StaticContainer { // can be made singleton but not necessary
                                 diceTurn--;
                             }
                             //case 4:
-                            if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2, diceTurn)
-                                    && !piece.ableToKick(diceValue2, globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2)) {
+                            if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2,diceTurn)
+                                    && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId))) {
                                 diceTurn = 3;
-                                break;
                             }
                             //reset player and dice turns
                         }

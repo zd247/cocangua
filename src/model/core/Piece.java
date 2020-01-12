@@ -187,6 +187,9 @@ public class Piece extends Circle {
             }
             //reset player and dice turns
             if (diceTurn >= 2) {
+                if (houseMap.get(this.getHouseArrival() +2).getOccupancy() && houseMap.get(this.getHouseArrival() +3).getOccupancy() && houseMap.get(this.getHouseArrival() +4).getOccupancy() && houseMap.get(this.getHouseArrival() +5).getOccupancy()){
+                    System.out.println("winnnnnnn");
+                }
                 nestMap.get(globalNestId).rect.setStrokeWidth(0);
                 if (diceValue1 == diceValue2) globalNestId--;
                 int nextTurn = globalNestId + 1;
@@ -230,7 +233,7 @@ public class Piece extends Circle {
         return check == 0 && (diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0 && !this.noPieceAtHome(this.nestId);
     }
 
-    boolean noPieceAtHome(int nestId){
+    public boolean noPieceAtHome(int nestId){
         for (int i = 0; i < 4; i ++){
             if (getNestById(nestId).getPieceList()[i].getCurrentPosition() == - 1){
                 return false;
