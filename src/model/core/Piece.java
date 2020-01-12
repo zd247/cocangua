@@ -182,7 +182,17 @@ public class Piece extends Circle {
             }
             //reset player and dice turns
             if (diceTurn >= 2) {
+                nestMap.get(globalNestId).rect.setStrokeWidth(0);
                 if (diceValue1 == diceValue2) globalNestId--;
+                int nextTurn = globalNestId + 1;
+                if (nextTurn == 4){
+                    nextTurn = 0;
+                }
+                while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
+                    nextTurn++;
+                }
+                nestMap.get(nextTurn).rect.setStroke(Color.BLACK);
+                nestMap.get(nextTurn).rect.setStrokeWidth(10);
                 turn = 0;
                 players[nestId].resetCheck();
                 diceTurn = 0;   

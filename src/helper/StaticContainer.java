@@ -147,9 +147,19 @@ public class StaticContainer { // can be made singleton but not necessary
                 //check when clean board, reset turn counter
                 if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {
                     players[globalNestId].resetCheck();
+                    nestMap.get(globalNestId).rect.setStrokeWidth(0);
                     if (diceValue1 == diceValue2) {
                         globalNestId--;
                     }
+                    int nextTurn = globalNestId + 1;
+                    if (nextTurn == 4){
+                        nextTurn = 0;
+                    }
+                    while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
+                        nextTurn++;
+                    }
+                    nestMap.get(nextTurn).rect.setStroke(Color.BLACK);
+                    nestMap.get(nextTurn).rect.setStrokeWidth(10);
                     turn = 0;
                 }
 
@@ -162,9 +172,19 @@ public class StaticContainer { // can be made singleton but not necessary
                             && !pieceInHouseCanMove(globalNestId,diceValue1)
                             && !pieceInHouseCanMove(globalNestId,diceValue2) ) {
                         players[globalNestId].resetCheck();
+                        nestMap.get(globalNestId).rect.setStrokeWidth(0);
                         if (diceValue1 == diceValue2) {
                             globalNestId--;
                         }
+                        int nextTurn = globalNestId + 1;
+                        if (nextTurn == 4){
+                            nextTurn = 0;
+                        }
+                        while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
+                            nextTurn++;
+                        }
+                        nestMap.get(nextTurn).rect.setStroke(Color.BLACK);
+                        nestMap.get(nextTurn).rect.setStrokeWidth(10);
                         turn = 0;
                     }
 
