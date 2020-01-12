@@ -154,8 +154,8 @@ public class Piece extends Circle {
                     diceTurn--; //reset turn
                 }
             }
-            else if ((!this.blockHome(playerMoveAmount) || (!this.blockHome(diceValue2) && diceTurn == 1 && diceValue1 < diceValue2)) && this.step >= 48 && this.step < 48 + 6) {
-                if (!this.blockHome(diceValue2) && diceValue1 < diceValue2 && diceTurn == 1) {
+            else if ((!this.blockHome(playerMoveAmount) || (!this.blockHome(diceValue2) && diceTurn == 1 )) && this.step >= 48 && this.step < 48 + 6) {
+                if (!this.blockHome(diceValue2) && (diceValue1 < diceValue2 || this.blockHome(playerMoveAmount)) && diceTurn == 1) {
                     playerMoveAmount = diceValue2;
                     diceValue2 = diceValue1;
                     diceValue1 = playerMoveAmount;
