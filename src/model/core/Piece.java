@@ -130,9 +130,14 @@ public class Piece extends Circle {
                         spaceMap.get(next).setOccupancy(false);
                     }
                     //case 2.2: able to move
-                    if ((this.currentPosition != -1 || ((diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0))) {
+                    if ((this.currentPosition != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
                         if (this.currentPosition == -1) {
-                            diceTurn = 2;
+                            if (playerMoveAmount != 6 && diceTurn == 0){
+                                playerMoveAmount = diceValue2;
+                                diceValue2 = diceValue1;
+                                diceValue1 = playerMoveAmount;
+                            }
+                            diceTurn ++;
                         }
 
                         if (this.step + playerMoveAmount <= 48) {
@@ -155,7 +160,7 @@ public class Piece extends Circle {
                 }
             }
             else if ((!this.blockHome(playerMoveAmount) || (!this.blockHome(diceValue2) && diceTurn == 1 )) && this.step >= 48 && this.step < 48 + 6) {
-                if (!this.blockHome(diceValue2) && (diceValue1 < diceValue2 || this.blockHome(playerMoveAmount)) && diceTurn == 1) {
+                if (!this.blockHome(diceValue2) && (diceValue1 < diceValue2 || this.blockHome(diceValue1)) && diceTurn == 1) {
                     playerMoveAmount = diceValue2;
                     diceValue2 = diceValue1;
                     diceValue1 = playerMoveAmount;
@@ -177,7 +182,7 @@ public class Piece extends Circle {
             }
             //case 4:
             if (this.currentPosition != -1 && !this.ableToMove(diceValue2,diceTurn)
-                    && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2)) {
+                    && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !this.noPieceAtHome(nestId))) {
                 diceTurn = 3;
             }
             //reset player and dice turns
@@ -190,6 +195,9 @@ public class Piece extends Circle {
                 }
                 while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
                     nextTurn++;
+                    if (nextTurn == 4){
+                        nextTurn = 0;
+                    }
                 }
                 nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                 nestMap.get(nextTurn).rect.setStrokeWidth(10);

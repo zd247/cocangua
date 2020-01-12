@@ -158,6 +158,9 @@ public class StaticContainer { // can be made singleton but not necessary
                     }
                     while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
                         nextTurn++;
+                        if (nextTurn == 4){
+                            nextTurn = 0;
+                        }
                     }
                     nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                     nestMap.get(nextTurn).rect.setStrokeWidth(10);
@@ -183,6 +186,9 @@ public class StaticContainer { // can be made singleton but not necessary
                         }
                         while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
                             nextTurn++;
+                            if (nextTurn == 4){
+                                nextTurn = 0;
+                            }
                         }
                         nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                         nestMap.get(nextTurn).rect.setStrokeWidth(10);
