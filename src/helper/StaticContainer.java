@@ -137,12 +137,12 @@ public class StaticContainer { // can be made singleton but not necessary
                 for (int i = 0; i < players.length; i++) {
                     if (i != globalNestId) {
                         players[i].resetCheck();
+                        nestMap.get(i).rect.setStrokeWidth(0);
                     } else {
-                        spaceMap.get(i).rect.setStroke(BLACK);
-                        spaceMap.get(i).rect.setStrokeWidth(10);
                         players[i].rolled();
+                        nestMap.get(i).rect.setStroke(BLACK);
+                        nestMap.get(i).rect.setStrokeWidth(10);
                     }
-                    spaceMap.get(i).rect.setStrokeWidth(0);
                 }
                 //check when clean board, reset turn counter
                 if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {

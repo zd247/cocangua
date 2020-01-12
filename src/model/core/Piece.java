@@ -185,7 +185,7 @@ public class Piece extends Circle {
                 if (diceValue1 == diceValue2) globalNestId--;
                 turn = 0;
                 players[nestId].resetCheck();
-                diceTurn = 0;
+                diceTurn = 0;   
             }
         }
     }
