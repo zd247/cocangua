@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -11,7 +15,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
+<BorderPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
    <top>
       <HBox fx:id="topBar" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -42,12 +46,12 @@
       </HBox>
    </bottom>
    <left>
-      <VBox fx:id="statusPane1" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="statusPane1" alignment="CENTER" maxWidth="200.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="nameLbBlue" text="Name" />
-            <Label fx:id="scoreLbBlue" text="Score" />
+            <Label fx:id="nameLbBlue" alignment="CENTER" text="Name" wrapText="true" />
+            <Label fx:id="scoreLbBlue" alignment="CENTER" text="Score" />
             <Region VBox.vgrow="ALWAYS" />
-            <Label fx:id="nameLbYellow" text="Name" />
+            <Label fx:id="nameLbYellow" text="Name" wrapText="true" />
             <Label fx:id="scoreLbYellow" text="Score" />
          </children>
          <BorderPane.margin>
@@ -56,12 +60,12 @@
       </VBox>
    </left>
    <right>
-      <VBox fx:id="statusPane2" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="statusPane2" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="nameLbRed" text="Name" />
+            <Label fx:id="nameLbRed" text="Name" wrapText="true" />
             <Label fx:id="scoreLbRed" text="Score" />
             <Region VBox.vgrow="ALWAYS" />
-            <Label fx:id="nameLbGreen" text="Name" />
+            <Label fx:id="nameLbGreen" text="Name" wrapText="true" />
             <Label fx:id="scoreLbGreen" text="Score" />
          </children>
          <BorderPane.margin>

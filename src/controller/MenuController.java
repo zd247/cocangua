@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import model.core.Player;
 import model.core.PlayerField;
 import static helper.StaticContainer.*;
 
@@ -32,7 +34,6 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        chooseLanguage();
         //populate the player container with default value
         for (int i = 0; i < players.length;i++) {
             players[i] = createPlayer(i);
@@ -51,28 +52,36 @@ public class MenuController implements Initializable {
                 playerFieldContainer.add(addPlayerField, i, j);
             }
         }
+
+        chooseLanguage();
     }
 
-    private void chooseLanguage(){
+    private void chooseLanguage() {
         changeChoiceBoxInMenu(this);
+
         languageBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue.equals("Tiếng Việt")){
                     language.setLanguage("vi","VN");
-                    loadLangue();
+                    loadLanguage();
                 }
                 else{
                     language.setLanguage("en","US");
-                    loadLangue();
+                    loadLanguage();
                 }
             }
         });
     }
 
-    public void loadLangue(){
+    public void loadLanguage(){
         TitleName.setText(language.getTitleName());
         startBtn.setText(language.getStartButton());
+
+        for (PlayerField pf : playerFields) {
+            pf.getAddText().setText(language.getAddPlayerMessage());
+        }
+
     }
 }
 

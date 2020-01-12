@@ -15,13 +15,11 @@ import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import model.*;
 import helper.Map;
 import model.core.Dice;
 
 
-import static javafx.scene.paint.Color.BLACK;
 import static helper.StaticContainer.*;
 
 
@@ -92,30 +90,14 @@ public class GameController implements Initializable {
             }
         }
         globalNestId = checker - 1;
-        nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
-        nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
+//        nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
+//        nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
         //set sound
         Sound.playSound(THEME);
 
 
 
         //============================[test]============================
-
-        // test index
-        System.out.println(spaceMap.size() + " " + houseMap.size());
-
-        Circle c = new Circle(12);
-        c.setFill(BLACK);
-
-        // test move
-        map.getChildren().add(c);
-        double x = map.getHouseX(Map.RED_HOUSE_1 + 3);
-        double y = map.getHouseY(Map.RED_HOUSE_1 + 3);
-        //double x = map.getSpaceX(Map.BLUE_ARRIVAL);
-        //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
-        c.setLayoutX(x);
-        c.setLayoutY(y);
-
         InputHandler inputHandler = new InputHandler();
         new Thread(inputHandler).start();
 
@@ -142,17 +124,17 @@ public class GameController implements Initializable {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue.equals("Tiếng Việt")){
                     language.setLanguage("vi","VN");
-                    loadLangue();
+                    loadLanguage();
                 }
                 else{
                     language.setLanguage("en","US");
-                    loadLangue();
+                    loadLanguage();
                 }
             }
         });
     }
 
-    public void loadLangue(){
+    public void loadLanguage(){
 
     }
 

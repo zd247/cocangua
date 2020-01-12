@@ -25,7 +25,14 @@ public class Language {
         return bundle.getString("startButton");
     }
 
+    public String getAddPlayerMessage() {
+        return bundle.getString("addPlayerMessage");
+    }
+
     public String getLocale(){
         return Locale.getDefault()+"";
     }
+
+
+
 }

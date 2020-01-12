@@ -2,8 +2,6 @@ package helper;
 
 import controller.GameController;
 import controller.MenuController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
@@ -15,7 +13,6 @@ import model.core.*;
 import java.util.HashMap;
 
 import static javafx.scene.paint.Color.BLACK;
-import static javafx.scene.paint.Color.PINK;
 
 public class StaticContainer { // can be made singleton but not necessary
     // containers
@@ -162,6 +159,7 @@ public class StaticContainer { // can be made singleton but not necessary
                             nextTurn = 0;
                         }
                     }
+                    // IS TURN, WAITING FOR INPUT
                     nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                     nestMap.get(nextTurn).rect.setStrokeWidth(10);
                     turn = 0;
@@ -276,14 +274,14 @@ public class StaticContainer { // can be made singleton but not necessary
     public static void changeChoiceBoxInGame(GameController c){
         gameController = c;
         setChoiceBox(c.languageBox);
-        c.loadLangue(); //load language in menu
+        c.loadLanguage(); //load language in menu
     }
 
     public static void changeChoiceBoxInMenu(MenuController c){
         //Referene from the game controller
         menuController = c;
         setChoiceBox(c.languageBox);
-        c.loadLangue();//load language in game
+        c.loadLanguage();//load language in game
     }
 
     private static void setChoiceBox(ChoiceBox<String> choiceBox){

@@ -32,7 +32,7 @@ public class Main extends Application {
                     players[i].setConnectionStatus(playerFields[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
                 }
                 playerFields[i].getTextField().setText(playerFields[i].getTextField().getText());
-                players[i].setName(playerFields[i].getTextField().getText() +  " ( " + players[i].getConnectionStatus() + " ) ");
+                players[i].setName(playerFields[i].getTextField().getText() +  " (" + players[i].getConnectionStatus() + ") ");
             }
             //Load main game
             Parent gameDisplay = null;
@@ -53,7 +53,7 @@ public class Main extends Application {
 
 
         primaryStage.setTitle("Co Ca Ngua");
-        Scene scene = new Scene(menuDisplay, 1000 , 900);
+        Scene scene = new Scene(menuDisplay, 1200 , 900);
         scene.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();

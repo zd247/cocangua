@@ -18,6 +18,7 @@ public class PlayerField extends Pane {
     boolean isClickedOn;
     boolean isRolled = false;
     int numOfFace = 0;
+
     //display
     Text addText = new Text("Click on the pane to add new player...");
     VBox playerDisplayVBox = new VBox();
@@ -66,6 +67,10 @@ public class PlayerField extends Pane {
 
     public TextField getTextField() {
         return textField;
+    }
+
+    public Text getAddText() {
+        return addText;
     }
 
 
