@@ -16,6 +16,7 @@ public class Player extends Node {
     private boolean rolled;
     private Label scoreLabel; //
     private int pointForTurn = 0;
+    private int getToHouse ;
 
     public Player (int nestId, String name) {
         this.nestId = nestId;
@@ -59,6 +60,18 @@ public class Player extends Node {
 
     public int getPoints() {
         return this.points;
+    }
+
+    public Boolean isGetToHouse() {
+        return getToHouse == 3;
+    }
+
+    public void increaseGetToHouse() {
+        this.getToHouse++;
+    }
+
+    public void decreaseGetToHouse(){
+        this.getToHouse--;
     }
 }
 

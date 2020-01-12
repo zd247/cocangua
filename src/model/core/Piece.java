@@ -335,8 +335,11 @@ public class Piece extends Circle {
             else {
                 //at the house destination
                     //get the position (in display board) + 1 (before postion) + 1 (index in map less than current)
-                    movePieceToHouseDestination(1);
-                    return 1;
+                if (step == 52 || step == 53){
+                    players[nestId].decreaseGetToHouse();
+                }
+                movePieceToHouseDestination(1);
+                return 1;
             }
         }
         return 0;
@@ -422,11 +425,11 @@ public class Piece extends Circle {
                 double y = getHouseY(getHouseArrival() + step - 48);
                 //move the piece to said location
                 seq.getChildren().addAll(updatePieceMoving(x,y),new PauseTransition(Duration.millis(100)));
+                Sound.playSound(Sound.HOME);
             }
             this.isHouse = true;
             seq.play();
-            if (step == 53)
-                Sound.playSound(Sound.WIN);
+            getToTheTopHouse();
         }
     }
 
@@ -530,6 +533,7 @@ public class Piece extends Circle {
         piece.setCurrentPosition(-1);
         piece.setDeployed(false);
         piece.setStep(0);
+        Sound.playSound(Sound.KICK);
     }
 
     private void kickTransition(){
@@ -554,5 +558,11 @@ public class Piece extends Circle {
 
     public boolean getClicked() {
         return isClicked;
+    }
+
+    private void getToTheTopHouse(){
+        if (step == 52 || step == 53 || step == 54){
+            players[nestId].increaseGetToHouse();    //increase by 1
+        }
     }
 }
