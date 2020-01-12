@@ -15,6 +15,7 @@ import model.core.*;
 import java.util.HashMap;
 
 import static javafx.scene.paint.Color.BLACK;
+import static javafx.scene.paint.Color.PINK;
 
 public class StaticContainer { // can be made singleton but not necessary
     // containers
@@ -158,7 +159,7 @@ public class StaticContainer { // can be made singleton but not necessary
                     while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
                         nextTurn++;
                     }
-                    nestMap.get(nextTurn).rect.setStroke(Color.BLACK);
+                    nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                     nestMap.get(nextTurn).rect.setStrokeWidth(10);
                     turn = 0;
                 }
@@ -183,7 +184,7 @@ public class StaticContainer { // can be made singleton but not necessary
                         while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
                             nextTurn++;
                         }
-                        nestMap.get(nextTurn).rect.setStroke(Color.BLACK);
+                        nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                         nestMap.get(nextTurn).rect.setStrokeWidth(10);
                         turn = 0;
                     }

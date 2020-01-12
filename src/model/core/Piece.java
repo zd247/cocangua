@@ -191,7 +191,7 @@ public class Piece extends Circle {
                 while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
                     nextTurn++;
                 }
-                nestMap.get(nextTurn).rect.setStroke(Color.BLACK);
+                nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                 nestMap.get(nextTurn).rect.setStrokeWidth(10);
                 turn = 0;
                 players[nestId].resetCheck();
