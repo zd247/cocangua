@@ -1,10 +1,9 @@
 package model.core;
 
+import javafx.animation.*;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -76,7 +75,6 @@ public class Piece extends Circle {
                     setClicked(true);
                     seq = new SequentialTransition();
                     handleOnClickLogic();
-                    seq.play();
                     updatePoint(gameController);
                 }
             }
@@ -121,15 +119,21 @@ public class Piece extends Circle {
                             if (next > 47) {
                                 next -= 48;
                             }
+                            Piece kickedPiece = spaceMap.get(next).getPiece();
+                            this.kick(kickedPiece);
+                            players[nestId].setPoints(players[nestId].getPoints() + 2);
+                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                            spaceMap.get(next).setPiece(null);
+                            spaceMap.get(next).setOccupancy(false);
                         } else if (this.currentPosition == -1 && (diceValue1 == 6 || diceValue2 == 6)){
                             next = this.getStartPosition(this.nestId);   //get the piece at start position
+                            Piece kickedPiece = spaceMap.get(next).getPiece();
+                            this.kick(kickedPiece);
+                            players[nestId].setPoints(players[nestId].getPoints() + 2);
+                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                            spaceMap.get(next).setPiece(null);
+                            spaceMap.get(next).setOccupancy(false);
                         }
-                        Piece kickedPiece = spaceMap.get(next).getPiece();
-                        this.kick(kickedPiece);
-                        players[nestId].setPoints(players[nestId].getPoints() + 2);
-                        players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                        spaceMap.get(next).setPiece(null);
-                        spaceMap.get(next).setOccupancy(false);
                     }
                     //case 2.2: able to move
                     if ((this.currentPosition != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
@@ -187,6 +191,7 @@ public class Piece extends Circle {
                     && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !this.noPieceAtHome(nestId) && this.ableToDeploy())) {
                 diceTurn = 3;
             }
+            seq.play();
             //reset player and dice turns
             if (diceTurn >= 2) {
                 nestMap.get(globalNestId).rect.setStrokeWidth(0);
@@ -201,11 +206,22 @@ public class Piece extends Circle {
                         nextTurn = 0;
                     }
                 }
+                players[nestId].resetCheck();
+                diceTurn = 0;
                 nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                 nestMap.get(nextTurn).rect.setStrokeWidth(10);
-                turn = 0;
-                players[nestId].resetCheck();
-                diceTurn = 0;   
+                if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT) {
+                    Timeline timeline = new Timeline();
+                    KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            turn = 0;
+                            diceWork();
+                        }
+                    });
+                    timeline.getKeyFrames().add(key);
+                    timeline.play();
+                }
             }
         }
     }
@@ -269,10 +285,10 @@ public class Piece extends Circle {
                 return spaceMap.get(GREEN_START).getPiece().getNestId() != nestId;
             } else if (nestId == 3 && spaceMap.get(RED_START).getOccupancy()) {
                 return spaceMap.get(RED_START).getPiece().getNestId() != nestId;
-            }
-            else{
+            }else{
                 return false;
             }
+
         }
         else { // case piece outside of board
             int next = this.currentPosition + moveAmount;

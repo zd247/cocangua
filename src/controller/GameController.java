@@ -70,9 +70,11 @@ public class GameController implements Initializable {
         Map map = new Map();
         container.setCenter(map);
 
-        Dice dice1 = new Dice();
-        Dice dice2 = new Dice();
-        setDiceOnClick(dice1, dice2);
+        dice1 = new Dice();
+        dice2 = new Dice();
+
+        setDiceOnClick();
+
         topBar.getChildren().addAll(dice1, dice2);
 
         for (int i = 0; i < players.length;i++) {

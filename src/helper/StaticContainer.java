@@ -50,6 +50,11 @@ public class StaticContainer { // can be made singleton but not necessary
     public static ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
 
     public static SequentialTransition seq;
+
+    public static Dice dice1;
+
+    public static Dice dice2;
+
     //TURN LOGIC STATICS
     public static int firstTurn = 0;
     public static int turn = 0;
@@ -113,10 +118,8 @@ public class StaticContainer { // can be made singleton but not necessary
 
     /**
      *
-     * @param dice1
-     * @param dice2
      */
-    public static void diceWork(Dice dice1, Dice dice2){
+    public static void diceWork(){
         if (turn == 0) {
             turn = 1;
             if (globalNestId >= (players.length - 1)) {
@@ -224,7 +227,7 @@ public class StaticContainer { // can be made singleton but not necessary
                 KeyFrame key = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                            diceWork(dice1, dice2);
+                            diceWork();
                     }
                 });
                 timeline.getKeyFrames().add(key);
@@ -233,9 +236,9 @@ public class StaticContainer { // can be made singleton but not necessary
         }
     }
 
-    public static void setDiceOnClick(Dice dice1, Dice dice2) {
+    public static void setDiceOnClick() {
         dice1.setOnMouseClicked(event -> {
-            diceWork(dice1,dice2);
+            diceWork();
         });
     }
 
@@ -529,15 +532,21 @@ public class StaticContainer { // can be made singleton but not necessary
                             if (next > 47) {
                                 next -= 48;
                             }
+                            Piece kickedPiece = spaceMap.get(next).getPiece();
+                            piece.kick(kickedPiece);
+                            players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
+                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                            spaceMap.get(next).setPiece(null);
+                            spaceMap.get(next).setOccupancy(false);
                         } else if (piece.getCurrentPosition() == -1 && (diceValue1 == 6 || diceValue2 == 6)){
                             next = piece.getStartPosition(globalNestId);   //get the piece at start position
+                            Piece kickedPiece = spaceMap.get(next).getPiece();
+                            piece.kick(kickedPiece);
+                            players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
+                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                            spaceMap.get(next).setPiece(null);
+                            spaceMap.get(next).setOccupancy(false);
                         }
-                        Piece kickedPiece = spaceMap.get(next).getPiece();
-                        piece.kick(kickedPiece);
-                        players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
-                        players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                        spaceMap.get(next).setPiece(null);
-                        spaceMap.get(next).setOccupancy(false);
                     }
                     //case 2.2: able to move
                     if ((piece.getCurrentPosition() != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
