@@ -92,6 +92,9 @@ public class GameController implements Initializable {
         globalNestId = checker - 1;
         nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
         nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
+        if (players[globalNestId + 1].getConnectionStatus() == ConnectionStatus.BOT){
+            diceWork();
+        }
         //set sound
         Sound.playSound(THEME);
 
