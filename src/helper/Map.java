@@ -8,6 +8,8 @@ import model.core.Nest;
 import model.core.Piece;
 import model.Space;
 
+import java.util.HashMap;
+
 import static javafx.scene.paint.Color.*;
 import static helper.StaticContainer.*;
 
@@ -49,6 +51,9 @@ public class Map extends Pane {
     // Construct a map with Spaces and Nests
     public Map() {
         // Draw all the GUI elements
+        spaceMap = new HashMap<>();
+        nestMap = new HashMap<>();
+        houseMap = new HashMap<>();
         drawSpaces();
         defineMapSize();    // Vital for future draws
         drawHouses();
