@@ -19,11 +19,9 @@ import java.util.HashMap;
 
 import static javafx.scene.paint.Color.BLACK;
 
-public class StaticContainer { // can be made singleton but not necessary
-    // containers
-    public static Player[] players ;
 
-    public static PlayerField[] playerFields ;
+public class StaticContainer {
+    public static Player[] players = new Player[4];  // player container for client
 
     // A map to store all circle positions
     public static HashMap<Integer, Space> spaceMap;
@@ -76,28 +74,11 @@ public class StaticContainer { // can be made singleton but not necessary
     //=========================================================================================
 
 
-    /**
-     * create a player on the fly globally
-     * @param nestId assigned id to the player (please use nestId)
-     * @return the player with the nestId param (since this player will be added to the global player list.)
-     */
-    public static Player createPlayer(int nestId) {
-        spaceMap = new HashMap<>();
-        nestMap  = new HashMap<>();
-        houseMap = new HashMap<>();
-       Player player = new Player(nestId, "Player" + nestId);
-       player.setConnectionStatus(ConnectionStatus.OFF);
-
-
-       return player;
-    }
-
 
     /**
      * return the color of the player reference by nestId (limit calling this function, bad logic)
      * @param nestId reference id
      */
-
     public static Color getColorByNestId(int nestId) {
         Nest ret = new Nest(nestId);
         return ret.getColor();
@@ -213,7 +194,7 @@ public class StaticContainer { // can be made singleton but not necessary
             }
             if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == ConnectionStatus.BOT && turn == 1){
                 players[globalNestId].resetCheck();
-                bot_play();
+                botPlay();
                 turn = 0;
             }
             Timeline timeline = new Timeline();
@@ -308,9 +289,6 @@ public class StaticContainer { // can be made singleton but not necessary
         return false;
     }
 
-//    public static ConnectionStatus getPlayerConnectionStatusById() {
-//
-//    }
 
     public static void updatePoint(GameController c){
         gameController = c;
@@ -343,7 +321,7 @@ public class StaticContainer { // can be made singleton but not necessary
         }
 
     }
-    private static void bot_play() {
+    private static void botPlay() {
         seq = new SequentialTransition();
         do {
             int move = diceTurn;
