@@ -71,10 +71,11 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chooseLanguage();
 
-
         // draw board
         Map map = new Map();
         container.setCenter(map);
+
+        updatePoint(this);
 
         dice1 = new Dice();
         dice2 = new Dice();
@@ -95,6 +96,7 @@ public class GameController implements Initializable {
                 checker = i;
             }
         }
+
         turn = 0;
         globalNestId = checker - 1;
         nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
@@ -115,9 +117,6 @@ public class GameController implements Initializable {
         //set sound
         Sound.playSound(THEME);
 
-        //poll every 1000ms
-//        InputHandler inputHandler = new InputHandler();
-//        new Thread(inputHandler).start();
 
         //============================[test]============================
 

@@ -126,6 +126,7 @@ public class Main extends Application {
         java.io.PrintWriter output = new java.io.PrintWriter(file);
         for (int i = 0; i < players.length; i++ ) {
             if (players[i].getConnectionStatus() != ConnectionStatus.OFF) {
+                boolean duplcated = false;
                 for (int j = 0; j < playerName.size(); j++) {
                     if (playerName.get(j).equals(players[i].getName())) {
                         int newScore = playerScore.get(j) + players[i].getPoints();
@@ -133,22 +134,13 @@ public class Main extends Application {
                         System.out.println(players[i].getName());
                         System.out.println("Yesssssssssssssss");
                         playerScore.set(j,newScore);
-                    } else if (j == playerName.size() - 1) {
+                        duplcated = true;
+                    } else if (j == playerName.size() - 1 && !duplcated) {
                         playerName.add(players[i].getName());
                         playerScore.add(players[i].getPoints());
                         System.out.println("Noooooooo");
-                        for (int a = 0; a < playerName.size() - 1; a++ ) {
-                            if (playerName.get(a) == players[i].getName()) {
-                                playerName.remove(playerName.size()-1);
-                                playerScore.remove(playerName.size()-1);
-                                break;
-                            }
-                        }
                         break;
                     }
-                }
-                if (playerName.size() == 0) {
-                    output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
                 }
             }
         }

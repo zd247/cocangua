@@ -311,7 +311,7 @@ public class Map extends Pane {
         view.setOnMouseExited(endHover -> {
             view.setTranslateY(0);
         });
-        view.setLayoutX(getHouseX(YELLOW_HOUSE_1+5) + 22);     //From the house at 6 of yellow house set right 30pixels
+        view.setLayoutX(getHouseX(YELLOW_HOUSE_1 + 5) + 22);     //From the house at 6 of yellow house set right 30pixels
         view.setLayoutY(getHouseY(BLUE_HOUSE_1 + 5 ) + 22);      //From the house at 6 of blue house set down 30 pixels
         getChildren().add(view);
     }

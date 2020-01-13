@@ -211,7 +211,8 @@ public class StaticContainer {
             if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT && turn == 0) {
                 dice1.setDisable(true);
                 dice2.setDisable(true);
-                KeyFrame key = new KeyFrame(Duration.millis(200 * (diceValue1 + diceValue2) + 100), new EventHandler<ActionEvent>() {
+                KeyFrame key = new KeyFrame(Duration.millis(200 * (diceValue1 + diceValue2) + 400), new EventHandler<ActionEvent>() {
+                    //100 for translate time, 100 for pause and 400 for waiting between the dice
                     @Override
                     public void handle(ActionEvent event) {
                         diceWork();

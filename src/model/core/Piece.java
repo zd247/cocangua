@@ -469,7 +469,7 @@ public class Piece extends Circle {
         tt.setToX(x - getLayoutX());
         tt.setToY(y - getLayoutY());
         //set the piece null when get to house
-        if (step > 49){
+        if (step > 48){
             setOpacity(0.5);
             setStroke(Color.WHITE);
             setStrokeWidth(5);
@@ -564,8 +564,6 @@ public class Piece extends Circle {
     }
 
     public void kick(Piece piece){
-
-//        piece.pieceInTheNest();
         piece.kickTransition();
         piece.setCurrentPosition(-1);
         piece.setDeployed(false);

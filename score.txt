@@ -1,5 +1,4 @@
 Player 1,18
-Player 0,102
-Player 3,18
-Player 0,18
-Player 2,12
+Player 0,176
+Player 3,66
+Player 2,53
