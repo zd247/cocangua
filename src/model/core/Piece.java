@@ -87,8 +87,8 @@ public class Piece extends Circle {
      * when click on a piece
      */
     void handleOnClickLogic() {
-        int initialPosition = this.currentPosition;
-        if (players[nestId].isRolled()) {
+        int initialPosition = this.currentPosition;          // Store the initial position
+        if (players[nestId].isRolled()) {                   // Whenever this player is rolled
             if (diceTurn == 0) { // turn 1
                 playerMoveAmount = diceValue1;
                 if (this.currentPosition != -1)
@@ -99,33 +99,33 @@ public class Piece extends Circle {
                     diceTurn = 2; //reset
                 }
             }
-            if (this.getStep() <= 47) {
-                // case 1: piece being blocked and
+            if (this.getStep() <= 47) {             // For the piece outside home
+                // case 1: piece being blocked and not able to kick in the first dice turn
                 if (!this.ableToMove(playerMoveAmount,diceTurn) && !this.ableToKick(playerMoveAmount)
                         && this.currentPosition != -1 && diceTurn == 1) {
-                    if (ableToMove(diceValue2,diceTurn) || ableToKick(diceValue2)) {
+                    if (ableToMove(diceValue2,diceTurn) || ableToKick(diceValue2)) {        // If the second dice is available to move, swap the dices
                         playerMoveAmount = diceValue2;
                         diceValue2 = diceValue1;
                         diceValue1 = playerMoveAmount;
                     }
                 }
-                //case 2: not blocked or able to kick
+                //case 2: not be blocked or able to kick
                 if (!this.isBlockedPiece(playerMoveAmount) || this.ableToKick(playerMoveAmount)) {
                     // case 2.1: check for when able to kick
-                    if (this.ableToKick(playerMoveAmount)) {
+                    if (this.ableToKick(playerMoveAmount)) {            // If it is able to kick
                         int next = 0;
-                        if (this.currentPosition != -1 && this.step + playerMoveAmount <= 48) {
-                            next = this.currentPosition + playerMoveAmount;
-                            if (next > 47) {
+                        if (this.currentPosition != -1 && this.step + playerMoveAmount <= 48) {    // Not go through homepath to check
+                            next = this.currentPosition + playerMoveAmount;             // Store the next position for checking
+                            if (next > 47) {                                            // the next position 47 is 0
                                 next -= 48;
                             }
-                            Piece kickedPiece = spaceMap.get(next).getPiece();
-                            this.kick(kickedPiece);
-                            players[nestId].setPoints(players[nestId].getPoints() + 2);
-                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                            spaceMap.get(next).setPiece(null);
+                            Piece kickedPiece = spaceMap.get(next).getPiece();          // Get the piece in the destination
+                            this.kick(kickedPiece);                                     // kick it
+                            players[nestId].setPoints(players[nestId].getPoints() + 2); // set point plus
+                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2); // set lose point
+                            spaceMap.get(next).setPiece(null);                          // reset that destination to move
                             spaceMap.get(next).setOccupancy(false);
-                        } else if (this.currentPosition == -1 && (diceValue1 == 6 || diceValue2 == 6)){
+                        } else if (this.currentPosition == -1 && (diceValue1 == 6 || diceValue2 == 6)){         // Or it is able to deploy
                             next = this.getStartPosition(this.nestId);   //get the piece at start position
                             Piece kickedPiece = spaceMap.get(next).getPiece();
                             this.kick(kickedPiece);
@@ -135,7 +135,7 @@ public class Piece extends Circle {
                             spaceMap.get(next).setOccupancy(false);
                         }
                     }
-                    //case 2.2: able to move
+                    //case 2.2: able to move or able to deploy
                     if ((this.currentPosition != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
                         if (this.currentPosition == -1) {
                             if (playerMoveAmount != 6 && diceTurn == 0){
@@ -165,38 +165,39 @@ public class Piece extends Circle {
                     diceTurn--; //reset turn
                 }
             }
+            // If this piece is standing on homepath or inside the house (not nest)
             else if ((!this.blockHome(playerMoveAmount) || (!this.blockHome(diceValue2) && diceTurn == 1 )) && this.step >= 48 && this.step < 48 + 6) {
-                if (!this.blockHome(diceValue2) && (diceValue1 < diceValue2 || this.blockHome(diceValue1)) && diceTurn == 1) {
+                if (!this.blockHome(diceValue2) && (diceValue1 < diceValue2 || this.blockHome(diceValue1)) && diceTurn == 1) {          // Take the dice has highest value to use if it is available
                     playerMoveAmount = diceValue2;
                     diceValue2 = diceValue1;
                     diceValue1 = playerMoveAmount;
                 }
-                players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
-                if (initialPosition >= 48) {
+                players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));                      // Set move with point plus
+                if (initialPosition >= 48) {                                                                                    // If this piece is inside home
                     houseMap.get(initialPosition).setOccupancy(false);
                     houseMap.get(initialPosition).setPiece(null);
                 }
-                else if (initialPosition == this.getStartPosition(nestId) - 1){
+                else if (initialPosition == this.getStartPosition(nestId) - 1){                                                 // Or it is standing on home path
                     spaceMap.get(initialPosition).setOccupancy(false);
                     spaceMap.get(initialPosition).setPiece(null);
                 }
                 houseMap.get(this.currentPosition).setOccupancy(true);
                 houseMap.get(this.currentPosition).setPiece(this);
             }
-            if (currentPosition == initialPosition && this.step >= 48) {
+            if (currentPosition == initialPosition && this.step >= 48) {                                            // If it is blocked
                 diceTurn--;
             }
             //case 4:
-            if (this.currentPosition != -1 && !this.ableToMove(diceValue2,diceTurn)
+            if (this.currentPosition != -1 && !this.ableToMove(diceValue2,diceTurn)                         // If there is no way to go
                     && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !this.noPieceAtHome(nestId) && this.ableToDeploy())) {
                 diceTurn = 3;
             }
             seq.play();
             //reset player and dice turns
-            if (diceTurn >= 2) {
+            if (diceTurn >= 2) {                            // If used all dice turns
                 nestMap.get(globalNestId).rect.setStrokeWidth(0);
-                if (diceValue1 == diceValue2) globalNestId--;
-                int nextTurn = globalNestId + 1;
+                if (diceValue1 == diceValue2) globalNestId--;               // Re roll if there is the same dice value
+                int nextTurn = globalNestId + 1;                            // Get the next player id
                 if (nextTurn == 4){
                     nextTurn = 0;
                 }
@@ -206,11 +207,11 @@ public class Piece extends Circle {
                         nextTurn = 0;
                     }
                 }
-                players[nestId].resetCheck();
+                players[nestId].resetCheck();                               // Reset the roll
                 diceTurn = 0;
                 nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
                 nestMap.get(nextTurn).rect.setStrokeWidth(10);
-                if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT) {
+                if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT) {              // Auto roll if the next one is a bot
                     Timeline timeline = new Timeline();
                     KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
                         @Override
@@ -223,7 +224,7 @@ public class Piece extends Circle {
                     timeline.play();
                 }
                 else{
-                    turn = 0;
+                    turn = 0;                                       // Else allow to roll
                     dice1.setDisable(false);
                     dice2.setDisable(false);
                 }
@@ -253,6 +254,12 @@ public class Piece extends Circle {
         return check == 0 && (diceValue1 == 6 || diceValue2 == 6) && diceTurn == 0 && !this.noPieceAtHome(this.nestId);
     }
 
+
+    /**
+     * check whether there is a piece at home or not
+     * @param nestId
+     * @return
+     */
     public boolean noPieceAtHome(int nestId){
         for (int i = 0; i < 4; i ++){
             if (getNestById(nestId).getPieceList()[i].getCurrentPosition() == - 1){
@@ -263,9 +270,7 @@ public class Piece extends Circle {
     }
 
     /**
-     *
-     * @param moveAmount dice value get for each dice when done rolling
-     * @return
+     * Check whether it is able to kick (is used for checking in advance)
      */
 
     public boolean ableToKick(int moveAmount, int nestId){
@@ -280,6 +285,12 @@ public class Piece extends Circle {
         }
         return false;
     }
+
+    /**
+     * Overload function (is used for checking the specific piece)
+     * @param moveAmount
+     * @return
+     */
     public boolean ableToKick(int moveAmount){
         if (this.currentPosition == -1) { //case piece inside nest
             if (nestId == 0 && spaceMap.get(BLUE_START).getOccupancy()) {
@@ -368,7 +379,11 @@ public class Piece extends Circle {
         return 0;
     }
 
-
+    /**
+     * Check whether there is a block at home or not
+     * @param dice
+     * @return
+     */
     public boolean blockHome(int dice){
         int start = getHouseArrival();
         if (this.step <= start + 5 && this.step > 47) {
@@ -389,6 +404,11 @@ public class Piece extends Circle {
         return false;
     }
 
+    /**
+     * For checking in advance, check if there is a piece is able to move at home
+     * @param diceAmount
+     * @return
+     */
     public boolean ableToMoveInHome(int diceAmount){
         int start = getHouseArrival();
         for (int i = start; i < start + 5; i++){
@@ -400,6 +420,12 @@ public class Piece extends Circle {
         }
         return false;
     }
+
+
+    /**
+     * For checking in advance, check if there is a piece can be deploy
+     * @return
+     */
     public boolean ableToDeploy(){
         for (int i =0;i <4; i++){
             if (getNestById(nestId).getPieceList()[i].getCurrentPosition() == -1){
