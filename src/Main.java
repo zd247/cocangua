@@ -41,23 +41,24 @@ public class Main extends Application {
         //TODO: go to main game, if no players is null then the game plays itself
         menuController.startBtn.setOnAction(actionEvent -> {
             // Pre-process the static array of Player
-            for (int i = 0 ; i < players.length;i++){
-                if (players[i].isClickedOn()){
-                    players[i].setConnectionStatus(players[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
+            if (numberOfPlayer > 1){
+                for (int i = 0 ; i < players.length;i++){
+                    if (players[i].isClickedOn()){
+                        players[i].setConnectionStatus(players[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
+                    }
                 }
-            }
-            //Load main game
-            Parent gameDisplay = null;
-            try {
-                gameDisplay = game.load();
+                //Load main game
+                Parent gameDisplay = null;
+                try {
+                    gameDisplay = game.load();
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene scene = new Scene(gameDisplay, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
+                scene.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
+                primaryStage.setScene(scene);
             }
-
-            Scene scene = new Scene(gameDisplay, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
-            scene.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
-            primaryStage.setScene(scene);
         });
 
 
@@ -130,18 +131,16 @@ public class Main extends Application {
                 for (int j = 0; j < playerName.size(); j++) {
                     if (playerName.get(j).equals(players[i].getName())) {
                         int newScore = playerScore.get(j) + players[i].getPoints();
-                        System.out.println(playerName.get(j));
-                        System.out.println(players[i].getName());
-                        System.out.println("Yesssssssssssssss");
                         playerScore.set(j,newScore);
                         duplcated = true;
                     } else if (j == playerName.size() - 1 && !duplcated) {
                         playerName.add(players[i].getName());
                         playerScore.add(players[i].getPoints());
-                        System.out.println("Noooooooo");
                         break;
                     }
                 }
+                if (playerName.size() == 0)
+                    output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
             }
         }
         for (int j = 0; j < playerName.size(); j++) {

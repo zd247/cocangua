@@ -57,6 +57,8 @@ public class StaticContainer {
 
     public static Stage window;
 
+    public static int numberOfPlayer;
+
     //TURN LOGIC STATICS
     public static int firstTurn = 0;
     public static int turn = 0;

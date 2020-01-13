@@ -58,6 +58,9 @@ public class Player extends Pane {
         //Game menu set up
         //Set default value when first clicked
         isClickedOn = false;
+
+        numberOfPlayer = 0;
+
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -65,12 +68,11 @@ public class Player extends Pane {
                     playerDisplayVBox.getChildren().addAll(textField, toggler, dice);
                     rollForGetTurn(dice);
                     isClickedOn = true;
-
+                    numberOfPlayer++;
                     //invisible at end of logic
                     addText.setVisible(false);
                    /* connectToServer(); // populate the csc
                     csc.sendNestId(nestId);*/
-
                 }
             }
         });
@@ -101,7 +103,9 @@ public class Player extends Pane {
     }
 
     public void setPointForTurn(int point){ pointForTurn = point;}
+
     public int getPointForTurn(){return pointForTurn;}
+
     // Player name
     public String getName() {
         return name;
