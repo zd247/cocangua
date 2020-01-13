@@ -93,6 +93,7 @@ public class GameController implements Initializable {
                 checker = i;
             }
         }
+        turn = 0;
         globalNestId = checker - 1;
         nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
         nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);

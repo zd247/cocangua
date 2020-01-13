@@ -2,16 +2,14 @@ package helper;
 
 import controller.GameController;
 import controller.MenuController;
-import javafx.animation.KeyFrame;
-import javafx.animation.RotateTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
 import model.core.*;
@@ -54,6 +52,12 @@ public class StaticContainer { // can be made singleton but not necessary
     public static Dice dice1;
 
     public static Dice dice2;
+
+    public static Stage alertBox;
+
+    public static AnimationTimer timer;
+
+    public static Stage window;
 
     //TURN LOGIC STATICS
     public static int firstTurn = 0;

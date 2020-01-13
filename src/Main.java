@@ -2,6 +2,7 @@ import controller.GameController;
 import controller.MenuController;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,8 +21,8 @@ import java.io.IOException;
 import static helper.StaticContainer.*;
 
 public class Main extends Application {
-    private Stage window;
-    public static AnimationTimer timer;
+
+    public Label notifier;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -72,14 +73,21 @@ public class Main extends Application {
 
     /**===========================[Test code goes here]===========================*/
 
-
+    /**
+     * once all the piece of nest reach 6-5-4-3
+     */
     private void gameStop(){
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 for (int i = 0; i < players.length ; i++){
                     if (players[i].isGetToHouse()){
-                        displayMessage(i);
+                        try {
+                            displayMessage(i);
+                            turn = 2;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         timer.stop();
                     }
                 }
@@ -87,41 +95,42 @@ public class Main extends Application {
         };
         timer.start();
     }
-    private void displayMessage(int player){
-        Stage alertBox = new Stage();
 
+    /**
+     * load the end UI
+     * @param player
+     * @throws IOException
+     */
+    private void displayMessage(int player) throws IOException {
+        alertBox = new Stage();
         alertBox.initModality(Modality.APPLICATION_MODAL);
         alertBox.setTitle("WIN");
         alertBox.setMinWidth(250);
 
-        Label label = new Label(players[player].getName() + " has reached to all of the house");
-
-        HBox hBox = new HBox(30);
-
-        Button closeButton = quitGameBtn();
-
-        Button newGameBtn = new Button("New Game");
-        newGameBtn.setOnAction(actionEvent -> {
-            alertBox.close();
-            try {
-                start(window);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });;
-
-        hBox.getChildren().addAll(closeButton, newGameBtn);
-
-        VBox vBox = new VBox(20);
-        vBox.getChildren().addAll(label,hBox);
-        alertBox.setScene(new Scene(vBox));
+        FXMLLoader end = new FXMLLoader(getClass().getResource("view/end.fxml"));
+        Parent root = end.load();
+//        notifier.setText(players[player].getName() + " has reached to all of the house");
+        alertBox.setScene(new Scene(root));
+        alertBox.setTitle("WIN");
         alertBox.show();
     }
 
-    public Button quitGameBtn() {
-        Button closeButton = new Button("Quit");
-        closeButton.setOnAction(e -> System.exit(0));
-        return closeButton;
+    /**
+     * restart new game
+     * @throws Exception
+     */
+    @FXML
+    public void loadNewGame() throws Exception {
+        alertBox.close();
+        start(window);      //call the start in main
+    }
+
+    /**
+     * quit game
+     */
+    @FXML
+    public void quitGame(){
+        System.exit(0);
     }
 
     /**===========================[End of view.test code]===========================*/
