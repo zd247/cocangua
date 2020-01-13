@@ -71,7 +71,12 @@ public class Player extends Pane {
                     addText.setVisible(false);
                    /* connectToServer(); // populate the csc
                     csc.sendNestId(nestId);*/
-
+                }
+                else {
+                    playerDisplayVBox.getChildren().clear();
+                    isClickedOn = false;
+                    numberOfPlayer--;
+                    addText.setVisible(true);
                 }
             }
         });

@@ -62,8 +62,6 @@ public class Main extends Application {
             }
         });
 
-
-
         gameStop();
 
         primaryStage.setTitle("Co Ca Ngua");
