@@ -63,7 +63,7 @@ public class Player extends Node {
     }
 
     public Boolean isGetToHouse() {
-        return getToHouse == 3;
+        return getToHouse == 4;
     }
 
     public void increaseGetToHouse() {

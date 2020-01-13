@@ -338,7 +338,7 @@ public class Piece extends Circle {
             else {
                 //at the house destination
                     //get the position (in display board) + 1 (before postion) + 1 (index in map less than current)
-                if (step == 51 || step == 52 || step == 53){
+                if (step == 51 || step == 52 || step == 53){    //3-4-5
                     players[nestId].decreaseGetToHouse();
                 }
                 movePieceToHouseDestination(1);
@@ -564,8 +564,8 @@ public class Piece extends Circle {
     }
 
     private void getToTheTopHouse(){
-        if (step == 52 || step == 53 || step == 54 || step == 51){
-            //4-5-6-3
+        if (step == 51 || step == 52 || step == 53 || step == 54){
+            //3-4-5-6
             players[nestId].increaseGetToHouse();    //increase by 1
         }
     }
