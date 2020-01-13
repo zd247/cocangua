@@ -225,7 +225,6 @@ public class StaticContainer { // can be made singleton but not necessary
                     @Override
                     public void handle(ActionEvent event) {
                             diceWork(dice1, dice2);
-
                     }
                 });
                 timeline.getKeyFrames().add(key);
@@ -593,7 +592,7 @@ public class StaticContainer { // can be made singleton but not necessary
             }
             //case 4:
             if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2,diceTurn)
-                    && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId))) {
+                    && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId) && piece.ableToDeploy())) {
                 diceTurn = 3;
             }
             //reset player and dice turns
