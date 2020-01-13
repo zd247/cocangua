@@ -55,6 +55,7 @@ public class Player extends Pane {
         textField.setText("Player " + nestId);
         this.name = textField.getText(); //set name
 
+        numberOfPlayer = 0;
         //Game menu set up
         //Set default value when first clicked
         isClickedOn = false;
@@ -65,7 +66,7 @@ public class Player extends Pane {
                     playerDisplayVBox.getChildren().addAll(textField, toggler, dice);
                     rollForGetTurn(dice);
                     isClickedOn = true;
-
+                    numberOfPlayer++;
                     //invisible at end of logic
                     addText.setVisible(false);
                    /* connectToServer(); // populate the csc
