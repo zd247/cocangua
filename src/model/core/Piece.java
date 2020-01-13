@@ -187,11 +187,6 @@ public class Piece extends Circle {
                 diceTurn--;
             }
             //case 4:
-            System.out.println("-----------------------");;
-            System.out.println(!this.ableToMove(diceValue2,diceTurn));
-            System.out.println(!this.ableToKick(diceValue2,nestId));
-            System.out.println( !this.ableToMoveInHome(diceValue2));
-            System.out.println(!(diceValue2 == 6 && !this.noPieceAtHome(nestId) && this.ableToDeploy()));
             if (this.currentPosition != -1 && !this.ableToMove(diceValue2,diceTurn)
                     && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !this.noPieceAtHome(nestId) && this.ableToDeploy())) {
                 diceTurn = 3;
