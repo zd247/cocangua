@@ -338,9 +338,6 @@ public class StaticContainer { // can be made singleton but not necessary
         }
 
     }
-
-
-
     private static void bot_play() {
         seq = new SequentialTransition();
         do {

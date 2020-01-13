@@ -98,6 +98,7 @@ public class GameController implements Initializable {
         nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
         nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
         if (players[globalNestId + 1].getConnectionStatus() == ConnectionStatus.BOT){
+            dice1.setDisable(true);
             Timeline timeline = new Timeline();
             KeyFrame key = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
                 @Override
