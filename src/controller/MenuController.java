@@ -35,6 +35,8 @@ public class MenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //populate the player container with default value
+        players = new Player[4];
+        playerFields = new PlayerField[4];
         for (int i = 0; i < players.length;i++) {
             players[i] = createPlayer(i);
         }
@@ -64,6 +66,7 @@ public class MenuController implements Initializable {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue.equals("Tiếng Việt")){
                     language.setLanguage("vi","VN");
+                    System.out.println(language.getLocale());
                     loadLanguage();
                 }
                 else{

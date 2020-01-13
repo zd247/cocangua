@@ -16,18 +16,18 @@ import static javafx.scene.paint.Color.BLACK;
 
 public class StaticContainer { // can be made singleton but not necessary
     // containers
-    public static Player[] players = new Player[4];
+    public static Player[] players ;
 
-    public static PlayerField[] playerFields = new PlayerField[4];
+    public static PlayerField[] playerFields ;
 
     // A map to store all circle positions
-    public static HashMap<Integer, Space> spaceMap = new HashMap<>();
+    public static HashMap<Integer, Space> spaceMap;
 
     // A map to store all nests with colors as their key
-    public static HashMap<Integer, Nest> nestMap = new HashMap<>();
+    public static HashMap<Integer, Nest> nestMap;
 
     // Maps to store all houses
-    public static HashMap<Integer, House> houseMap = new HashMap<>();
+    public static HashMap<Integer, House> houseMap ;
 
     public static Piece currentPiece = null;
 
@@ -38,7 +38,7 @@ public class StaticContainer { // can be made singleton but not necessary
 
     public static MenuController menuController;
 
-    public static Language language = new Language("en", "US");
+    public static Language language;
 
     public static ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
 
@@ -65,6 +65,9 @@ public class StaticContainer { // can be made singleton but not necessary
      * @return the player with the nestId param (since this player will be added to the global player list.)
      */
     public static Player createPlayer(int nestId) {
+        spaceMap = new HashMap<>();
+        nestMap  = new HashMap<>();
+        houseMap = new HashMap<>();;
        Player player = new Player(nestId, "Player" + nestId);
        player.setConnectionStatus(ConnectionStatus.OFF);
 
@@ -274,14 +277,13 @@ public class StaticContainer { // can be made singleton but not necessary
     public static void changeChoiceBoxInGame(GameController c){
         gameController = c;
         setChoiceBox(c.languageBox);
-        c.loadLanguage(); //load language in menu
     }
 
     public static void changeChoiceBoxInMenu(MenuController c){
+        language = new Language("en", "US");
         //Referene from the game controller
         menuController = c;
         setChoiceBox(c.languageBox);
-        c.loadLanguage();//load language in game
     }
 
     private static void setChoiceBox(ChoiceBox<String> choiceBox){
@@ -289,8 +291,10 @@ public class StaticContainer { // can be made singleton but not necessary
         choiceBox.setItems(availableChoices);
         if (language.getLocale().contains("en"))
             choiceBox.setValue("English");//Set face of the choice box
-        else
+        else{
             choiceBox.setValue("Tiếng Việt");
+        }
+
     }
 
 

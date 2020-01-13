@@ -48,8 +48,6 @@ public class GameController implements Initializable {
     @FXML
     public ChoiceBox<String> languageBox;
 
-
-    Language language = new Language("en","US");
     // Text fields that needs updating
     @FXML private Label nameLbBlue;
     @FXML private Label nameLbYellow;
@@ -128,6 +126,7 @@ public class GameController implements Initializable {
                 }
                 else{
                     language.setLanguage("en","US");
+                    System.out.println(language.getLocale());
                     loadLanguage();
                 }
             }

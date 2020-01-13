@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import helper.StaticContainer;
+import model.core.Player;
+import model.core.PlayerField;
 
 import java.io.IOException;
 
