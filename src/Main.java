@@ -133,21 +133,27 @@ public class Main extends Application {
                         System.out.println(players[i].getName());
                         System.out.println("Yesssssssssssssss");
                         playerScore.set(j,newScore);
-                    } else if (j == playerName.size() -1) {
+                    } else if (j == playerName.size() - 1) {
                         playerName.add(players[i].getName());
                         playerScore.add(players[i].getPoints());
                         System.out.println("Noooooooo");
+                        for (int a = 0; a < playerName.size() - 1; a++ ) {
+                            if (playerName.get(a) == players[i].getName()) {
+                                playerName.remove(playerName.size()-1);
+                                playerScore.remove(playerName.size()-1);
+                                break;
+                            }
+                        }
                         break;
                     }
                 }
                 if (playerName.size() == 0) {
                     output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
-                } else {
-                    for (int j = 0; j < playerName.size(); j++) {
-                        output.write(playerName.get(j) + "," + playerScore.get(j) + '\n');
-                    }
                 }
             }
+        }
+        for (int j = 0; j < playerName.size(); j++) {
+            output.write(playerName.get(j) + "," + playerScore.get(j) + '\n');
         }
         output.close();
 
