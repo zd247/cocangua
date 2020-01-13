@@ -68,6 +68,7 @@ public class GameServer {
                 while (true){
                     nestId = dataIn.readInt();
                     System.out.println("Received Nest Id #" + nestId);
+                    sscPlayers[nestId] = this;
                     sendNestId();//send to other player (what comes around goes around)
                 }
 
@@ -76,14 +77,13 @@ public class GameServer {
             }
         }
 
-        void assignToPlayerContainer () {
-
-        }
 
         //server send msg to all other players
         public void sendNestId() {
             for (int i = 0; i < sscPlayers.length;i++){
-                
+                if (i != nestId){
+//                    sscPlayers[] // look at this home
+                }
             }
         }
 
