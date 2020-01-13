@@ -198,11 +198,10 @@ public class StaticContainer { // can be made singleton but not necessary
 
                     System.out.println("--------------");
                 }
-                if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == ConnectionStatus.BOT){
+                if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == ConnectionStatus.BOT && turn == 1){
                     players[globalNestId].resetCheck();
                     bot_play();
                     turn = 0;
-                    if (diceValue1 == diceValue2) globalNestId--;
                 }
             }
         });
@@ -301,13 +300,18 @@ public class StaticContainer { // can be made singleton but not necessary
 
     private static void bot_play() {
         do {
+            int move = diceTurn;
             for (int i = 0; i < 4; i++) {
                 handleOnClickLogic(getNestById(globalNestId).getPieceList()[i]);
+                if (diceTurn != move){
+                    break;
+                }
             }
         }while (diceTurn < 2);
         System.out.println(diceTurn);
         if (diceTurn >= 2) {
             nestMap.get(globalNestId).rect.setStrokeWidth(0);
+            players[globalNestId].resetCheck();
             if (diceValue1 == diceValue2) globalNestId--;
             int nextTurn = globalNestId + 1;
             if (nextTurn == 4){
