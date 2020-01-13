@@ -224,14 +224,18 @@ public class StaticContainer { // can be made singleton but not necessary
                 }
             }
             if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT && turn == 0) {
+                dice1.setDisable(true);
                 KeyFrame key = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                            diceWork();
+                        diceWork();
                     }
                 });
                 timeline.getKeyFrames().add(key);
                 timeline.play();
+            }
+            else if (players[nextTurn].getConnectionStatus() == ConnectionStatus.PLAYER){
+                dice1.setDisable(false);
             }
         }
     }
