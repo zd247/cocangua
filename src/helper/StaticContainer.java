@@ -163,6 +163,12 @@ public class StaticContainer {
             }
 
             else {
+                System.out.println(!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn));
+                System.out.println(!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn));
+                System.out.println(!canDeploy(globalNestId));
+                System.out.println(!ableToKick(diceValue1,globalNestId));
+                System.out.println(!pieceInHouseCanMove(globalNestId,diceValue1));
+                System.out.println(!pieceInHouseCanMove(globalNestId,diceValue2));
                 if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn)
                         && !nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn)
                         && !canDeploy(globalNestId)
@@ -280,7 +286,7 @@ public class StaticContainer {
     static boolean pieceInHouseCanMove(int nestId, int diceValue){
         Piece piece;
         for (int i = 0; i < 4;i++){
-            if (getNestById(nestId).getPieceList()[i].getStep() >= 48 && getNestById(nestId).getPieceList()[i].getStep() < getNestById(nestId).getPieceList()[i].getHouseArrival() + 5 && (getNestById(nestId).getPieceList()[i].getCurrentPosition()-getNestById(nestId).getPieceList()[i].getHouseArrival() + 2) == diceValue){
+            if (getNestById(nestId).getPieceList()[i].getStep() >= 48 && (getNestById(nestId).getPieceList()[i].getCurrentPosition()-getNestById(nestId).getPieceList()[i].getHouseArrival() + 2) == diceValue){
                 piece = getNestById(nestId).getPieceList()[i];
                 if (!piece.blockHome(diceValue)){
                     return true;

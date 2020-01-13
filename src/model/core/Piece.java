@@ -187,6 +187,11 @@ public class Piece extends Circle {
                 diceTurn--;
             }
             //case 4:
+            System.out.println("-----------------------");;
+            System.out.println(!this.ableToMove(diceValue2,diceTurn));
+            System.out.println(!this.ableToKick(diceValue2,nestId));
+            System.out.println( !this.ableToMoveInHome(diceValue2));
+            System.out.println(!(diceValue2 == 6 && !this.noPieceAtHome(nestId) && this.ableToDeploy()));
             if (this.currentPosition != -1 && !this.ableToMove(diceValue2,diceTurn)
                     && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !this.noPieceAtHome(nestId) && this.ableToDeploy())) {
                 diceTurn = 3;
@@ -271,7 +276,7 @@ public class Piece extends Circle {
     public boolean ableToKick(int moveAmount, int nestId){
         Piece piece;
         for (int i =0; i< 4; i++) {
-            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() < 48){
+            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() + moveAmount <= 48){
                 piece =getNestById(nestId).getPieceList()[i];
                 if (piece.ableToKick(moveAmount)){
                     return true;
@@ -371,7 +376,7 @@ public class Piece extends Circle {
 
     public boolean blockHome(int dice){
         int start = getHouseArrival();
-        if (this.step <= start + 5 && step > 47) {
+        if (this.step <= start + 5 && this.step > 47) {
             if (this.step == 48) {
                 for (int i = start; i < start + dice; i++) {
                     if (houseMap.get(i).getOccupancy()) {
