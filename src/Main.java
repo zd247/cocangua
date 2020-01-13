@@ -35,12 +35,9 @@ public class Main extends Application {
         menuController.startBtn.setOnAction(actionEvent -> {
             // Pre-process the static array of Player
             for (int i = 0 ; i < players.length;i++){
-                //finialize the player field to pass it to player in game
-                if (playerFields[i].isClickedOn()){
-                    players[i].setConnectionStatus(playerFields[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
+                if (players[i].isClickedOn()){
+                    players[i].setConnectionStatus(players[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
                 }
-                playerFields[i].getTextField().setText(playerFields[i].getTextField().getText());
-                players[i].setName(playerFields[i].getTextField().getText() +  " (" + players[i].getConnectionStatus() + ") ");
             }
             //Load main game
             Parent gameDisplay = null;

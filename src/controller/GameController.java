@@ -15,6 +15,7 @@ import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import model.*;
 import helper.Map;
 import model.core.Dice;
@@ -26,6 +27,7 @@ import static helper.StaticContainer.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static javafx.scene.paint.Color.BLACK;
 import static model.Sound.THEME;
 
 
@@ -66,7 +68,7 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chooseLanguage();
-        updateName();
+
 
         // draw board
         Map map = new Map();
@@ -95,11 +97,29 @@ public class GameController implements Initializable {
         //set sound
         Sound.playSound(THEME);
 
-
+        //poll every 1000ms
+//        InputHandler inputHandler = new InputHandler();
+//        new Thread(inputHandler).start();
 
         //============================[test]============================
-        InputHandler inputHandler = new InputHandler();
-        new Thread(inputHandler).start();
+
+        // test index
+        System.out.println(spaceMap.size() + " " + houseMap.size());
+
+        Circle c = new Circle(12);
+        c.setFill(BLACK);
+
+        // test move
+        map.getChildren().add(c);
+        double x = map.getHouseX(Map.RED_HOUSE_1 + 3);
+        double y = map.getHouseY(Map.RED_HOUSE_1 + 3);
+        //double x = map.getSpaceX(Map.BLUE_ARRIVAL);
+        //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
+        c.setLayoutX(x);
+        c.setLayoutY(y);
+
+        //test client-server
+        updateName();
 
     }
 
@@ -114,8 +134,6 @@ public class GameController implements Initializable {
             Sound.playSound(THEME);
         }
     }
-
-
 
     private void chooseLanguage(){
         changeChoiceBoxInGame(this);
@@ -138,20 +156,12 @@ public class GameController implements Initializable {
 
     }
 
-    /**===========================[Test code goes here]===========================*/
-
     private void updateName(){
         nameLbBlue.setText(players[0].getName());
         nameLbYellow.setText(players[1].getName());
         nameLbGreen.setText(players[2].getName());
         nameLbRed.setText(players[3].getName());
     }
-    /**===========================[End of view.test code]===========================*/
-    void updatePoint(){
-        scoreLbBlue.setText(players[0].getPoints()+"");
-        scoreLbYellow.setText(players[1].getPoints()+"");
-        scoreLbGreen.setText(players[2].getPoints()+"");
-        scoreLbRed.setText(players[3].getPoints()+"");
-    }
+
 
 }

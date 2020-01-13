@@ -14,11 +14,8 @@ import java.util.HashMap;
 
 import static javafx.scene.paint.Color.BLACK;
 
-public class StaticContainer { // can be made singleton but not necessary
-    // containers
-    public static Player[] players = new Player[4];
-
-    public static PlayerField[] playerFields = new PlayerField[4];
+public class StaticContainer {
+    public static Player[] players = new Player[4];  // player container for client
 
     // A map to store all circle positions
     public static HashMap<Integer, Space> spaceMap = new HashMap<>();
@@ -58,26 +55,10 @@ public class StaticContainer { // can be made singleton but not necessary
 
     //=========================================================================================
 
-
-    /**
-     * create a player on the fly globally
-     * @param nestId assigned id to the player (please use nestId)
-     * @return the player with the nestId param (since this player will be added to the global player list.)
-     */
-    public static Player createPlayer(int nestId) {
-       Player player = new Player(nestId, "Player" + nestId);
-       player.setConnectionStatus(ConnectionStatus.OFF);
-
-
-       return player;
-    }
-
-
     /**
      * return the color of the player reference by nestId (limit calling this function, bad logic)
      * @param nestId reference id
      */
-
     public static Color getColorByNestId(int nestId) {
         Nest ret = new Nest(nestId);
         return ret.getColor();
@@ -258,9 +239,6 @@ public class StaticContainer { // can be made singleton but not necessary
         return false;
     }
 
-//    public static ConnectionStatus getPlayerConnectionStatusById() {
-//
-//    }
 
     public static void updatePoint(GameController c){
         gameController = c;
@@ -297,30 +275,30 @@ public class StaticContainer { // can be made singleton but not necessary
 
     private static void bot_play() {
         int check = 0;
-        if ((diceValue1 == 6 || diceValue2 == 6)) {
-            for (int ii = 0; ii < 4; ii++) {
-                if (getNestById(globalNestId).getPieceList()[ii].getCurrentPosition() == -1) {
-                    if (getNestById(globalNestId).getPieceList()[ii].isBlockedPiece(playerMoveAmount)) {
-                        if (getNestById(globalNestId).getPieceList()[ii].ableToKick(playerMoveAmount)) {
-                            int next = getNestById(globalNestId).getPieceList()[ii].getStartPosition(getNestById(globalNestId).getPieceList()[ii].getNestId());   //get the piece at start position
-                            Piece kickedPiece = spaceMap.get(next).getPiece();
-                            getNestById(globalNestId).getPieceList()[ii].kick(kickedPiece);
-                            players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
-                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                            spaceMap.get(next).setPiece(null);
-                            spaceMap.get(next).setOccupancy(false);
-                            getNestById(globalNestId).getPieceList()[ii].movePiece(diceValue1);
-                            spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setOccupancy(true);
-                            spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setPiece(getNestById(globalNestId).getPieceList()[ii]);
-                            diceTurn = 0;
-                            check++;
-                            break;
-                        }
-                    }
-                    else {
-                        getNestById(globalNestId).getPieceList()[ii].movePiece(diceValue1);
-                        spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setOccupancy(true);
-                        spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setPiece(getNestById(globalNestId).getPieceList()[ii]);
+                        if ((diceValue1 == 6 || diceValue2 == 6)) {
+                            for (int ii = 0; ii < 4; ii++) {
+                                if (getNestById(globalNestId).getPieceList()[ii].getCurrentPosition() == -1) {
+                                    if (getNestById(globalNestId).getPieceList()[ii].isBlockedPiece(playerMoveAmount)) {
+                                        if (getNestById(globalNestId).getPieceList()[ii].ableToKick(playerMoveAmount)) {
+                                            int next = getNestById(globalNestId).getPieceList()[ii].getStartPosition(getNestById(globalNestId).getPieceList()[ii].getNestId());   //get the piece at start position
+                                            Piece kickedPiece = spaceMap.get(next).getPiece();
+                                            getNestById(globalNestId).getPieceList()[ii].kick(kickedPiece);
+                                            players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
+                                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                                            spaceMap.get(next).setPiece(null);
+                                            spaceMap.get(next).setOccupancy(false);
+                                            getNestById(globalNestId).getPieceList()[ii].movePiece(diceValue1);
+                                            spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setOccupancy(true);
+                                            spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setPiece(getNestById(globalNestId).getPieceList()[ii]);
+                                            diceTurn = 0;
+                                            check++;
+                                            break;
+                                        }
+                                    }
+                                    else {
+                                        getNestById(globalNestId).getPieceList()[ii].movePiece(diceValue1);
+                                        spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setOccupancy(true);
+                                        spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setPiece(getNestById(globalNestId).getPieceList()[ii]);
                         diceTurn = 0;
                         check++;
                         break;

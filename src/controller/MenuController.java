@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import model.core.Player;
-import model.core.PlayerField;
+
 import static helper.StaticContainer.*;
 
 
@@ -36,7 +36,7 @@ public class MenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //populate the player container with default value
         for (int i = 0; i < players.length;i++) {
-            players[i] = createPlayer(i);
+            players[i] = new Player(i);
         }
         // populate the player container display field
         for (int i = 0; i < playerFieldContainer.getRowCount();i++) {
@@ -47,9 +47,9 @@ public class MenuController implements Initializable {
                     if (j == 0) id = 3;
                     if (j == 1) id = 2;
                 }
-                PlayerField addPlayerField = new PlayerField(id); // nestId
-                playerFields[id] = addPlayerField;
-                playerFieldContainer.add(addPlayerField, i, j);
+                Player player = new Player(id);
+                players[id] = player; // register player to the client player container
+                playerFieldContainer.add(player, i, j);
             }
         }
 
@@ -78,8 +78,8 @@ public class MenuController implements Initializable {
         TitleName.setText(language.getTitleName());
         startBtn.setText(language.getStartButton());
 
-        for (PlayerField pf : playerFields) {
-            pf.getAddText().setText(language.getAddPlayerMessage());
+        for (Player p : players) {
+            p.getAddText().setText(language.getAddPlayerMessage());
         }
 
     }
