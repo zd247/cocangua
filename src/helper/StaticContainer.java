@@ -84,7 +84,7 @@ public class StaticContainer { // can be made singleton but not necessary
     public static Player createPlayer(int nestId) {
         spaceMap = new HashMap<>();
         nestMap  = new HashMap<>();
-        houseMap = new HashMap<>();;
+        houseMap = new HashMap<>();
        Player player = new Player(nestId, "Player" + nestId);
        player.setConnectionStatus(ConnectionStatus.OFF);
 
@@ -229,6 +229,7 @@ public class StaticContainer { // can be made singleton but not necessary
             }
             if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT && turn == 0) {
                 dice1.setDisable(true);
+                dice2.setDisable(true);
                 KeyFrame key = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -240,11 +241,15 @@ public class StaticContainer { // can be made singleton but not necessary
             }
             else if (players[nextTurn].getConnectionStatus() == ConnectionStatus.PLAYER){
                 dice1.setDisable(false);
+                dice2.setDisable(false);
             }
         }
     }
 
     public static void setDiceOnClick() {
+        dice2.setOnMouseClicked(event->{
+            diceWork();
+        });
         dice1.setOnMouseClicked(event -> {
             diceWork();
         });

@@ -222,6 +222,11 @@ public class Piece extends Circle {
                     timeline.getKeyFrames().add(key);
                     timeline.play();
                 }
+                else{
+                    turn = 0;
+                    dice1.setDisable(false);
+                    dice2.setDisable(false);
+                }
             }
         }
     }
