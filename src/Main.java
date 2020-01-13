@@ -18,12 +18,15 @@ import model.core.Player;
 import model.core.PlayerField;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import static helper.StaticContainer.*;
 
 public class Main extends Application {
 
     public Label notifier;
+    static java.io.File file = new java.io.File("score.txt");
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -112,6 +115,45 @@ public class Main extends Application {
         FXMLLoader end = new FXMLLoader(getClass().getResource("view/end.fxml"));
         Parent root = end.load();
 //        notifier.setText(players[player].getName() + " has reached to all of the house");
+        ArrayList<String> playerName = new ArrayList<>();
+        ArrayList<Integer> playerScore = new ArrayList<>();
+        Scanner fileInput = new Scanner(file);
+        fileInput.useDelimiter(",|\n");
+        while (fileInput.hasNext()) {
+            playerName.add(fileInput.next());
+            playerScore.add(fileInput.nextInt());
+        }
+        fileInput.close();
+
+        System.out.println(playerName.size() + " playerName.size()");
+        java.io.PrintWriter output = new java.io.PrintWriter(file);
+        for (int i = 0; i < players.length; i++ ) {
+            if (players[i].getConnectionStatus() != ConnectionStatus.OFF) {
+                for (int j = 0; j < playerName.size(); j++) {
+                    if (playerName.get(j).equals(players[i].getName())) {
+                        int newScore = playerScore.get(j) + players[i].getPoints();
+                        System.out.println(playerName.get(j));
+                        System.out.println(players[i].getName());
+                        System.out.println("Yesssssssssssssss");
+                        playerScore.set(j,newScore);
+                    } else if (j == playerName.size() -1) {
+                        playerName.add(players[i].getName());
+                        playerScore.add(players[i].getPoints());
+                        System.out.println("Noooooooo");
+                        break;
+                    }
+                }
+                if (playerName.size() == 0) {
+                    output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
+                } else {
+                    for (int j = 0; j < playerName.size(); j++) {
+                        output.write(playerName.get(j) + "," + playerScore.get(j) + '\n');
+                    }
+                }
+            }
+        }
+        output.close();
+
         alertBox.setScene(new Scene(root));
         alertBox.setTitle("WIN");
         alertBox.show();
