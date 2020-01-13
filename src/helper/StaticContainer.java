@@ -165,12 +165,6 @@ public class StaticContainer {
             }
 
             else {
-                System.out.println(!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn));
-                System.out.println(!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn));
-                System.out.println(!canDeploy(globalNestId));
-                System.out.println(!ableToKick(diceValue1,globalNestId));
-                System.out.println(!pieceInHouseCanMove(globalNestId,diceValue1));
-                System.out.println(!pieceInHouseCanMove(globalNestId,diceValue2));
                 if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn)
                         && !nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn)
                         && !canDeploy(globalNestId)
@@ -275,7 +269,7 @@ public class StaticContainer {
     static boolean ableToKick(int moveAmount, int nestId){
         Piece piece;
         for (int i =0; i< 4; i++) {
-            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() < 48){
+            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() + moveAmount <= 48){
                 piece =getNestById(nestId).getPieceList()[i];
                 if (piece.ableToKick(moveAmount)){
                     return true;
