@@ -122,7 +122,6 @@ public class GameController implements Initializable {
 
         //test client-server
         updateName();
-
     }
 
 

@@ -301,6 +301,7 @@ public class Map extends Pane {
         ImageView view = new ImageView("images/stop.jpg");
         view.setFitWidth(HOUSE_LONG_SIDE);
         view.setFitHeight(HOUSE_LONG_SIDE);
+
         view.setOnMouseClicked(actionEvent -> {
             System.exit(0);
         });
@@ -311,8 +312,9 @@ public class Map extends Pane {
         view.setOnMouseExited(endHover -> {
             view.setTranslateY(0);
         });
-        view.setLayoutX(getHouseX(YELLOW_HOUSE_1 + 5) + 22);     //From the house at 6 of yellow house set right 30pixels
-        view.setLayoutY(getHouseY(BLUE_HOUSE_1 + 5 ) + 22);      //From the house at 6 of blue house set down 30 pixels
+
+        view.setLayoutX(getHouseX(YELLOW_HOUSE_1 + 5) + HOUSE_SHORT_SIDE/2 + 5);     //From the house at 6 of yellow house set right 30pixels
+        view.setLayoutY(getHouseY(BLUE_HOUSE_1 + 5 ) + HOUSE_SHORT_SIDE/2 + 5) ;      //From the house at 6 of blue house set down 30 pixels
         getChildren().add(view);
     }
 }
