@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import helper.StaticContainer;
+import model.Sound;
 import model.core.Player;
 import model.core.PlayerField;
 
@@ -83,6 +84,7 @@ public class Main extends Application {
                 for (int i = 0; i < players.length ; i++){
                     if (players[i].isGetToHouse()){
                         try {
+                            Sound.playSound(Sound.WIN);
                             displayMessage(i);
                             turn = 2;
                         } catch (IOException e) {

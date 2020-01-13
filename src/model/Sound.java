@@ -32,7 +32,7 @@ public class Sound {
     public static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("data/audio/kick.wav").toURI().toString()));
     public static MediaPlayer HOME_AUDIO = new MediaPlayer(new Media(new File("data/audio/home.wav").toURI().toString()));
     public static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("data/audio/roll.wav").toURI().toString()));
-    public static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("data/audio/roll.wav").toURI().toString()));
+    public static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("data/audio/win.mp3").toURI().toString()));
 
     // Constructor : Perhaps add sounds to List
     public Sound() {

@@ -454,6 +454,12 @@ public class Piece extends Circle {
             for (int i = 0; i < moveAmount ; i++){
                 double x = getHouseX(getHouseArrival() + step - 48);     //start at the first and jump to the moveamount and ghe currentt
                 double y = getHouseY(getHouseArrival() + step - 48);
+                //set the piece null when get to house
+                if (step > 49){
+                    setOpacity(0.5);
+                    setStroke(Color.WHITE);
+                    setStrokeWidth(5);
+                }
                 //move the piece to said location
                 seq.getChildren().addAll(updatePieceMoving(x,y),new PauseTransition(Duration.millis(100)));
                 Sound.playSound(Sound.HOME);

@@ -1,5 +1,6 @@
 package helper;
 
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import model.House;
@@ -52,7 +53,7 @@ public class Map extends Pane {
         defineMapSize();    // Vital for future draws
         drawHouses();
         drawNests();
-
+        stopButton();
         // Add css file
         getStylesheets().add(getClass().getResource("/cocangua.css").toExternalForm());
         this.setId("map");
@@ -290,5 +291,13 @@ public class Map extends Pane {
         return space.getLayoutY();
     }
 
-
+    private void stopButton(){
+        Button stopBtn = new Button("STOP");
+        stopBtn.setOnAction(actionEvent -> {
+            System.exit(0);
+        });
+        stopBtn.setLayoutX(getHouseX(YELLOW_HOUSE_1+5) + 20);     //From the house at 6 of yellow house set right 30pixels
+        stopBtn.setLayoutY(getHouseY(BLUE_HOUSE_1 + 5 ) + 35);      //From the house at 6 of blue house set down 30 pixels
+        getChildren().add(stopBtn);
+    }
 }
