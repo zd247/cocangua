@@ -2,6 +2,7 @@ package helper;
 
 import controller.GameController;
 import controller.MenuController;
+import javafx.animation.SequentialTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
@@ -42,6 +43,7 @@ public class StaticContainer { // can be made singleton but not necessary
 
     public static ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
 
+    public static SequentialTransition seq;
     //TURN LOGIC STATICS
     public static int firstTurn = 0;
     public static int turn = 0;
@@ -299,6 +301,7 @@ public class StaticContainer { // can be made singleton but not necessary
 
 
     private static void bot_play() {
+        seq = new SequentialTransition();
         do {
             int move = diceTurn;
             for (int i = 0; i < 4; i++) {
@@ -328,6 +331,7 @@ public class StaticContainer { // can be made singleton but not necessary
             turn = 0;
             diceTurn = 0;
         }
+        seq.play();
         /*int check = 0;
         if ((diceValue1 == 6 || diceValue2 == 6)) {
             for (int ii = 0; ii < 4; ii++) {

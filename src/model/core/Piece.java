@@ -74,7 +74,9 @@ public class Piece extends Circle {
             public void handle(MouseEvent mouseEvent) {
                 if (globalNestId == nestId) {
                     setClicked(true);
+                    seq = new SequentialTransition();
                     handleOnClickLogic();
+                    seq.play();
                     updatePoint(gameController);
                 }
             }
@@ -385,7 +387,6 @@ public class Piece extends Circle {
     // Move a specified circle a certain amount
     private void movePieceToSpace(int moveAmount) {
         if (!isBlocked){
-            SequentialTransition seq = new SequentialTransition();
             //deploying
             if (!isDeployed && canDeploy) {
                 //Move the piece from nest
@@ -408,7 +409,6 @@ public class Piece extends Circle {
                     Sound.playSound(Sound.MOVE);
                 }
             }
-            seq.play();
         }
     }
 
