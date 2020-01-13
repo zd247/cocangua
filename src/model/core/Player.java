@@ -55,12 +55,10 @@ public class Player extends Pane {
         textField.setText("Player " + nestId);
         this.name = textField.getText(); //set name
 
+        numberOfPlayer = 0;
         //Game menu set up
         //Set default value when first clicked
         isClickedOn = false;
-
-        numberOfPlayer = 0;
-
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -73,6 +71,12 @@ public class Player extends Pane {
                     addText.setVisible(false);
                    /* connectToServer(); // populate the csc
                     csc.sendNestId(nestId);*/
+                }
+                else {
+                    playerDisplayVBox.getChildren().clear();
+                    isClickedOn = false;
+                    numberOfPlayer--;
+                    addText.setVisible(true);
                 }
             }
         });
@@ -103,9 +107,7 @@ public class Player extends Pane {
     }
 
     public void setPointForTurn(int point){ pointForTurn = point;}
-
     public int getPointForTurn(){return pointForTurn;}
-
     // Player name
     public String getName() {
         return name;

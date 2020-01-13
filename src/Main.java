@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import static helper.StaticContainer.*;
+import static helper.StaticContainer.numberOfPlayer;
 
 public class Main extends Application {
 
@@ -60,8 +61,6 @@ public class Main extends Application {
                 primaryStage.setScene(scene);
             }
         });
-
-
 
         gameStop();
 

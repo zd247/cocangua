@@ -64,4 +64,5 @@ public class Dice extends ImageView {
         });
         return num;
     }
+
 }

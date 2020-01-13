@@ -257,7 +257,7 @@ public class StaticContainer {
     public static boolean canDeploy(int nestID){
         if(diceValue1 == 6 || diceValue2 == 6) {
             for (int i = 0; i < 4; i ++){
-                if (nestMap.get(nestID).getPieceList()[i].getCurrentPosition() == -1){
+                if (nestMap.get(nestID).getPieceList()[i].getCurrentPosition() == -1  && (!nestMap.get(nestID).getPieceList()[i].isBlockedPiece(1) ||nestMap.get(nestID).getPieceList()[i].ableToKick(1))){
                     return true;
                 }
             }
@@ -330,7 +330,7 @@ public class StaticContainer {
             int move = diceTurn;
             for (int i = 0; i < 4; i++) {
                 if (getNestById(globalNestId).getPieceList()[i].getStep()< 54) {
-                    handleOnClickLogic(getNestById(globalNestId).getPieceList()[i]);
+                    botLogic(getNestById(globalNestId).getPieceList()[i]);
                     if (move != diceTurn) {
                         break;
                     }
@@ -356,7 +356,7 @@ public class StaticContainer {
         diceTurn = 0;
         seq.play();
     }
-    public static void handleOnClickLogic(Piece piece) {
+    public static void botLogic(Piece piece) {
         int initialPosition = piece.getCurrentPosition();
             if (diceTurn == 0) { // turn 1
                 playerMoveAmount = diceValue1;
