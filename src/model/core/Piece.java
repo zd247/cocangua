@@ -320,7 +320,7 @@ public class Piece extends Circle {
                     return spaceMap.get(RED_START).getOccupancy();
             }
         } else {
-            int initial = currentPosition;
+            int initial = this.currentPosition;
             if (spaceMap.get(initial).getPiece().getStep() + amount < 49) {
                 for (int i = 0; i < amount; i++, initial++) {
                     if (initial == 47) {
