@@ -1,9 +1,12 @@
 package controller;
 
 import helper.InputHandler;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -15,6 +18,7 @@ import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.*;
 import helper.Map;
 import model.core.Dice;
@@ -93,7 +97,15 @@ public class GameController implements Initializable {
         nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
         nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
         if (players[globalNestId + 1].getConnectionStatus() == ConnectionStatus.BOT){
-            diceWork();
+            Timeline timeline = new Timeline();
+            KeyFrame key = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    diceWork();
+                }
+            });
+            timeline.getKeyFrames().add(key);
+            timeline.play();
         }
         //set sound
         Sound.playSound(THEME);

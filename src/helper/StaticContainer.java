@@ -342,9 +342,11 @@ public class StaticContainer { // can be made singleton but not necessary
         do {
             int move = diceTurn;
             for (int i = 0; i < 4; i++) {
-                handleOnClickLogic(getNestById(globalNestId).getPieceList()[i]);
-                if (diceTurn != move){
-                    break;
+                if (getNestById(globalNestId).getPieceList()[i].getStep()< 54) {
+                    handleOnClickLogic(getNestById(globalNestId).getPieceList()[i]);
+                    if (move != diceTurn) {
+                        break;
+                    }
                 }
             }
         }while (diceTurn < 2);
@@ -366,143 +368,6 @@ public class StaticContainer { // can be made singleton but not necessary
         nestMap.get(nextTurn).rect.setStrokeWidth(10);
         diceTurn = 0;
         seq.play();
-        /*int check = 0;
-        if ((diceValue1 == 6 || diceValue2 == 6)) {
-            for (int ii = 0; ii < 4; ii++) {
-                if (getNestById(globalNestId).getPieceList()[ii].getCurrentPosition() == -1) {
-                    if (getNestById(globalNestId).getPieceList()[ii].isBlockedPiece(playerMoveAmount)) {
-                        if (getNestById(globalNestId).getPieceList()[ii].ableToKick(playerMoveAmount)) {
-                            int next = getNestById(globalNestId).getPieceList()[ii].getStartPosition(getNestById(globalNestId).getPieceList()[ii].getNestId());   //get the piece at start position
-                            Piece kickedPiece = spaceMap.get(next).getPiece();
-                            getNestById(globalNestId).getPieceList()[ii].kick(kickedPiece);
-                            players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
-                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                            spaceMap.get(next).setPiece(null);
-                            spaceMap.get(next).setOccupancy(false);
-                            getNestById(globalNestId).getPieceList()[ii].movePiece(diceValue1);
-                            spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setOccupancy(true);
-                            spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setPiece(getNestById(globalNestId).getPieceList()[ii]);
-                            diceTurn = 0;
-                            check++;
-                            break;
-                        }
-                    }
-                    else {
-                        getNestById(globalNestId).getPieceList()[ii].movePiece(diceValue1);
-                        spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setOccupancy(true);
-                        spaceMap.get(getNestById(globalNestId).getPieceList()[ii].getCurrentPosition()).setPiece(getNestById(globalNestId).getPieceList()[ii]);
-                        diceTurn = 0;
-                        check++;
-                        break;
-                    }
-                }
-            }
-        }
-        if (check == 0) {
-            while (diceTurn < 2) {
-                if (diceTurn == 0) { // turn 1
-                    playerMoveAmount = diceValue1;
-                    diceTurn = 1;
-                } else if (diceTurn == 1) { // turn 2
-                    playerMoveAmount = diceValue2;
-                    diceTurn = 2; //reset
-                }
-                for (int i = 47; i >= 0; i--) {
-                    if (spaceMap.get(i).getOccupancy()){
-                        if (spaceMap.get(i).getPiece().getNestId() == globalNestId) {
-                            Piece piece = spaceMap.get(i).getPiece();
-                            int initialPosition = piece.getCurrentPosition();
-                            if (piece.getStep() <= 47) {
-                                // case 1: piece being blocked and
-                                if (!piece.ableToMove(playerMoveAmount, diceTurn) && !piece.ableToKick(playerMoveAmount)
-                                        && piece.getCurrentPosition() != -1 && diceTurn == 1) {
-                                    if (piece.ableToMove(diceValue2, diceTurn) || piece.ableToKick(diceValue2)) {
-                                        playerMoveAmount = diceValue2;
-                                        diceValue2 = diceValue1;
-                                        diceValue1 = playerMoveAmount;
-                                    }
-                                }
-                                //case 2: not blocked or able to kick
-                                if (!piece.isBlockedPiece(playerMoveAmount) || piece.ableToKick(playerMoveAmount)) {
-                                    // case 2.1: check for when able to kick
-                                    if (piece.ableToKick(playerMoveAmount)) {
-                                        int next = 0;
-                                        if (piece.getCurrentPosition() != -1 && piece.getStep() + playerMoveAmount <= 48) {
-                                            next = piece.getCurrentPosition() + playerMoveAmount;
-                                            if (next > 47) {
-                                                next -= 48;
-                                            }
-                                        }
-                                        Piece kickedPiece = spaceMap.get(next).getPiece();
-                                        piece.kick(kickedPiece);
-                                        players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
-                                        players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                                        spaceMap.get(next).setPiece(null);
-                                        spaceMap.get(next).setOccupancy(false);
-                                    }
-                                    //case 2.2: able to move
-                                    if ((piece.getCurrentPosition() != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
-                                        if (piece.getCurrentPosition() == -1) {
-                                            if (playerMoveAmount != 6 && diceTurn == 0){
-                                                playerMoveAmount = diceValue2;
-                                                diceValue2 = diceValue1;
-                                                diceValue1 = playerMoveAmount;
-                                            }
-                                            diceTurn ++;
-                                        }
-                                        if (piece.getStep() + playerMoveAmount <= 48) {
-                                            players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
-                                            i = -1;
-                                            if (initialPosition != -1) {
-                                                spaceMap.get(initialPosition).setOccupancy(false);
-                                                spaceMap.get(initialPosition).setPiece(null);
-                                            }
-                                            spaceMap.get(piece.getCurrentPosition()).setOccupancy(true);
-                                            spaceMap.get(piece.getCurrentPosition()).setPiece(piece);
-                                        }
-                                        if (piece.getCurrentPosition() == initialPosition) {
-                                            diceTurn--;
-                                        }
-                                    }
-                                }
-                                //case 3: piece is blocked on board
-                                else if ((piece.isBlockedPiece(playerMoveAmount) && piece.getCurrentPosition() != -1)) {
-                                    diceTurn--; //reset turn
-                                }
-                            } else if ((!piece.blockHome(playerMoveAmount) || (!piece.blockHome(diceValue2) && diceTurn == 1 )) && piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
-                                if (!piece.blockHome(diceValue2) && (diceValue1 < diceValue2 || piece.blockHome(diceValue1)) && diceTurn == 1) {
-                                    playerMoveAmount = diceValue2;
-                                    diceValue2 = diceValue1;
-                                    diceValue1 = playerMoveAmount;
-                                }
-                                players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
-                                i = -1;
-                                if (initialPosition >= 48) {
-                                    houseMap.get(initialPosition).setOccupancy(false);
-                                    houseMap.get(initialPosition).setPiece(null);
-                                } else if (initialPosition == piece.getStartPosition(globalNestId) - 1) {
-                                    spaceMap.get(initialPosition).setOccupancy(false);
-                                    spaceMap.get(initialPosition).setPiece(null);
-                                }
-                                houseMap.get(piece.getCurrentPosition()).setOccupancy(true);
-                                houseMap.get(piece.getCurrentPosition()).setPiece(piece);
-                            }
-                            if (piece.getCurrentPosition() == initialPosition && piece.getStep() >= 48) {
-                                diceTurn--;
-                            }
-                            //case 4:
-                            if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2,diceTurn)
-                                    && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId))) {
-                                diceTurn = 3;
-                            }
-                            //reset player and dice turns
-                        }
-                    }
-                }
-            }
-            turn = 0;
-            diceTurn = 0;
-        }*/
     }
     public static void handleOnClickLogic(Piece piece) {
         int initialPosition = piece.getCurrentPosition();
