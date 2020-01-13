@@ -184,7 +184,7 @@ public class Piece extends Circle {
             }
             //case 4:
             if (this.currentPosition != -1 && !this.ableToMove(diceValue2,diceTurn)
-                    && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !this.noPieceAtHome(nestId))) {
+                    && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !this.noPieceAtHome(nestId) && this.ableToDeploy())) {
                 diceTurn = 3;
             }
             //reset player and dice turns
@@ -373,6 +373,16 @@ public class Piece extends Circle {
         for (int i = start; i < start + 5; i++){
             if (houseMap.get(i).getOccupancy() && (i - start) + 2 == diceAmount){
                 if (!houseMap.get(i).getPiece().blockHome(diceAmount)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean ableToDeploy(){
+        for (int i =0;i <4; i++){
+            if (getNestById(nestId).getPieceList()[i].getCurrentPosition() == -1){
+                if (!getNestById(nestId).getPieceList()[i].isBlockedPiece(1)){
                     return true;
                 }
             }
