@@ -2,11 +2,17 @@ package helper;
 
 import controller.GameController;
 import controller.MenuController;
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.*;
 import model.core.*;
 
@@ -149,7 +155,6 @@ public class StaticContainer { // can be made singleton but not necessary
                 }
                 //check when clean board, reset turn counter
                 if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {
-                    players[globalNestId].resetCheck();
                     nestMap.get(globalNestId).rect.setStrokeWidth(0);
                     if (diceValue1 == diceValue2) {
                         globalNestId--;
@@ -203,7 +208,19 @@ public class StaticContainer { // can be made singleton but not necessary
                 if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == ConnectionStatus.BOT && turn == 1){
                     players[globalNestId].resetCheck();
                     bot_play();
-                    turn = 0;
+                    int nextTurn = globalNestId + 1;
+                    if (nextTurn == 4){
+                        nextTurn = 0;
+                    }
+                    while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
+                        nextTurn++;
+                        if (nextTurn == 4){
+                            nextTurn = 0;
+                        }
+                    }
+                    if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT){
+                        ;
+                    }
                 }
             }
         });
@@ -301,6 +318,7 @@ public class StaticContainer { // can be made singleton but not necessary
 
 
     private static void bot_play() {
+        Timeline timeline = new Timeline();
         seq = new SequentialTransition();
         do {
             int move = diceTurn;
@@ -311,27 +329,33 @@ public class StaticContainer { // can be made singleton but not necessary
                 }
             }
         }while (diceTurn < 2);
-        System.out.println(diceTurn);
-        if (diceTurn >= 2) {
-            nestMap.get(globalNestId).rect.setStrokeWidth(0);
-            players[globalNestId].resetCheck();
-            if (diceValue1 == diceValue2) globalNestId--;
-            int nextTurn = globalNestId + 1;
+
+        nestMap.get(globalNestId).rect.setStrokeWidth(0);
+        players[globalNestId].resetCheck();
+        if (diceValue1 == diceValue2) globalNestId--;
+        int nextTurn = globalNestId + 1;
+        if (nextTurn == 4){
+            nextTurn = 0;
+        }
+        while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
+            nextTurn++;
             if (nextTurn == 4){
                 nextTurn = 0;
             }
-            while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
-                nextTurn++;
-                if (nextTurn == 4){
-                    nextTurn = 0;
-                }
-            }
-            nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
-            nestMap.get(nextTurn).rect.setStrokeWidth(10);
-            turn = 0;
-            diceTurn = 0;
         }
+        nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
+        nestMap.get(nextTurn).rect.setStrokeWidth(10);
+        diceTurn = 0;
         seq.play();
+        int next = nextTurn;
+        KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                turn = 0;
+            }
+        });
+        timeline.getKeyFrames().add(key);
+        timeline.play();
         /*int check = 0;
         if ((diceValue1 == 6 || diceValue2 == 6)) {
             for (int ii = 0; ii < 4; ii++) {
