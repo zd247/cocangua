@@ -211,7 +211,7 @@ public class StaticContainer {
             if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT && turn == 0) {
                 dice1.setDisable(true);
                 dice2.setDisable(true);
-                KeyFrame key = new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
+                KeyFrame key = new KeyFrame(Duration.millis(200 * (diceValue1 + diceValue2) + 100), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         diceWork();

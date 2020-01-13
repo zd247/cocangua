@@ -1,6 +1,7 @@
 package helper;
 
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import model.House;
@@ -297,12 +298,21 @@ public class Map extends Pane {
     }
 
     private void stopButton(){
-        Button stopBtn = new Button("STOP");
-        stopBtn.setOnAction(actionEvent -> {
+        ImageView view = new ImageView("images/stop.jpg");
+        view.setFitWidth(HOUSE_LONG_SIDE);
+        view.setFitHeight(HOUSE_LONG_SIDE);
+        view.setOnMouseClicked(actionEvent -> {
             System.exit(0);
         });
-        stopBtn.setLayoutX(getHouseX(YELLOW_HOUSE_1+5) + 20);     //From the house at 6 of yellow house set right 30pixels
-        stopBtn.setLayoutY(getHouseY(BLUE_HOUSE_1 + 5 ) + 35);      //From the house at 6 of blue house set down 30 pixels
-        getChildren().add(stopBtn);
+        view.setOnMouseEntered(hover -> {
+            view.setTranslateY(-5);
+        });
+
+        view.setOnMouseExited(endHover -> {
+            view.setTranslateY(0);
+        });
+        view.setLayoutX(getHouseX(YELLOW_HOUSE_1+5) + 22);     //From the house at 6 of yellow house set right 30pixels
+        view.setLayoutY(getHouseY(BLUE_HOUSE_1 + 5 ) + 22);      //From the house at 6 of blue house set down 30 pixels
+        getChildren().add(view);
     }
 }

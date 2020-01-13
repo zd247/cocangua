@@ -121,21 +121,6 @@ public class GameController implements Initializable {
 
         //============================[test]============================
 
-        // test index
-        System.out.println(spaceMap.size() + " " + houseMap.size());
-
-        Circle c = new Circle(12);
-        c.setFill(BLACK);
-
-        // test move
-        map.getChildren().add(c);
-        double x = map.getHouseX(Map.RED_HOUSE_1 + 3);
-        double y = map.getHouseY(Map.RED_HOUSE_1 + 3);
-        //double x = map.getSpaceX(Map.BLUE_ARRIVAL);
-        //double y = map.getSpaceY(Map.BLUE_ARRIVAL);
-        c.setLayoutX(x);
-        c.setLayoutY(y);
-
         //test client-server
         updateName();
 
