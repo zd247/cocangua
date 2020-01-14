@@ -64,6 +64,10 @@ public class StaticContainer {
 
     public static int numberOfPlayer;
 
+    public static Score score;
+
+    public static String addIn;
+
     //TURN LOGIC STATICS
     public static int firstTurn = 0;
     public static int turn = 0;
@@ -72,7 +76,7 @@ public class StaticContainer {
     public static int playerMoveAmount = 0;
     public static int diceValue1 = 0;
     public static int diceValue2 = 0;
-    public static boolean pieceIsMoving ;
+    public static boolean pieceIsMoving;
 
     public enum ConnectionStatus {
         PLAYER, BOT, OFF
@@ -110,7 +114,7 @@ public class StaticContainer {
 
 
     /**
-     * Dice get on mouse click handler
+     * Dice get on mouse click handler, For rolling and getting the value of each dice, then handle the logic from there
      */
     public static void diceWork(){
         pieceIsMoving = false;
@@ -139,7 +143,7 @@ public class StaticContainer {
             //draw indicator
             for (int i = 0; i < players.length; i++) {          // Setting the nest highlight for indicating its turn
                 if (i != globalNestId) {
-                    players[i].resetCheck();
+                    players[i].resetRolled();
 
                     // MUST ROLL INDICATOR
                     //nestMap.get(i).circle.setStroke(nestMustRollColor);
@@ -154,7 +158,7 @@ public class StaticContainer {
             }
             //check when clean board, reset turn counter
             if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {        // If it is impossible to move, skip this turn
-
+                gameController.activityLog.setText(language.getStatusNextTurn());
                 // WAITING FOR TURN (DEFAULT) INDICATOR
                 nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
 
@@ -178,15 +182,14 @@ public class StaticContainer {
             }
 
             else {
-                if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn)            // If it is impossible to move, skip this turn
+                if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn)            // If it is impossible to move, kick or deploy, skip this turn
                         && !nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn)
                         && !canDeploy(globalNestId)
                         && !ableToKick(diceValue1,globalNestId)
                         && !ableToKick(diceValue2,globalNestId)
                         && !pieceInHouseCanMove(globalNestId,diceValue1)
                         && !pieceInHouseCanMove(globalNestId,diceValue2) ) {
-                    players[globalNestId].resetCheck();
-
+                    players[globalNestId].resetRolled();
                     // WAITING FOR TURN (DEFAULT) INDICATOR
                     nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
 
@@ -206,14 +209,14 @@ public class StaticContainer {
 
                     // MUST ROLL INDICATOR
                     nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
-
+                    gameController.activityLog.setText("Next Turn!");
                     turn = 0;
                 }
 
                 System.out.println("--------------");
             }
             if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 1){            // If there is a bot's turn
-                players[globalNestId].resetCheck();
+                players[globalNestId].resetRolled();
                 botPlay();                              // Bot will play by itself
                 turn = 0;
             }
@@ -228,7 +231,7 @@ public class StaticContainer {
                     nextTurn = 0;
                 }
             }
-            if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 0) {         //Whenever the next turn is a bot, it will auto roll.
+            if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 0) {         //Whenever the next turn is a bot, it will auto roll, and disable the dices handler
                 dice1.setDisable(true);
                 dice2.setDisable(true);
                 if (pieceIsMoving){
@@ -254,7 +257,7 @@ public class StaticContainer {
                 }
                 timeline.play();
             }
-            else if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.PLAYER){
+            else if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.PLAYER){           // Otherwise, dices are allowed to click for rolling
                 dice1.setDisable(false);
                 dice2.setDisable(false);
             }
@@ -289,7 +292,7 @@ public class StaticContainer {
 
 
     /**
-     * Check whether it is possible to deploy or not
+     * Check whether it is possible to deploy or not by looking at 2 dices value
      * @param nestID
      * @return
      */
@@ -343,6 +346,10 @@ public class StaticContainer {
     }
 
 
+    /**
+     * Updating points
+     * @param c
+     */
     public static void updatePoint(GameController c){
         gameController = c;
         c.scoreLbBlue.setText(players[0].getPoints()+"");
@@ -351,12 +358,19 @@ public class StaticContainer {
         c.scoreLbRed.setText(players[3].getPoints()+"");
     }
 
-
+    /**
+     *
+     * @param c
+     */
     public static void changeChoiceBoxInGame(GameController c){
         gameController = c;
         setChoiceBox(c.languageBox);
     }
 
+    /**
+     *
+     * @param c
+     */
     public static void changeChoiceBoxInMenu(MenuController c){
         language = new Language("en", "US");
         //Referene from the game controller
@@ -364,6 +378,10 @@ public class StaticContainer {
         setChoiceBox(c.languageBox);
     }
 
+    /**
+     *
+     * @param choiceBox
+     */
     private static void setChoiceBox(ChoiceBox<String> choiceBox){
         //To set settings for the choice box
         choiceBox.setItems(availableChoices);
@@ -375,7 +393,7 @@ public class StaticContainer {
     }
 
     /**
-     * Bot play function
+     * Bot play function, will be called whenever there is bot's turn
      */
     public static void botPlay() {
         seq = new SequentialTransition();
@@ -395,7 +413,7 @@ public class StaticContainer {
         //Reset all the things
         nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
 
-        players[globalNestId].resetCheck();
+        players[globalNestId].resetRolled();
 
         if (diceValue1 == diceValue2) globalNestId--;
         int nextTurn = globalNestId + 1;
@@ -420,6 +438,8 @@ public class StaticContainer {
      * @param piece
      */
     public static void botLogic(Piece piece) {
+        int enemyId = 0;
+        int kicked = 0;
         int initialPosition = piece.getCurrentPosition();
         if (diceTurn == 0) { // turn 1
             playerMoveAmount = diceValue1;
@@ -443,28 +463,32 @@ public class StaticContainer {
             }
             //case 2: not blocked or able to kick
             if (!piece.isBlockedPiece(playerMoveAmount) || piece.ableToKick(playerMoveAmount)) {
+                int next = 0;
                 // case 2.1: check for when able to kick
                 if (piece.ableToKick(playerMoveAmount)) {
-                    int next = 0;
                     if (piece.getCurrentPosition() != -1 && piece.getStep() + playerMoveAmount <= 48) {
                         next = piece.getCurrentPosition() + playerMoveAmount;
                         if (next > 47) {
                             next -= 48;
                         }
                         Piece kickedPiece = spaceMap.get(next).getPiece();
+                        enemyId = spaceMap.get(next).getPiece().getNestId();
                         piece.kick(kickedPiece);
                         players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
                         players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
                         spaceMap.get(next).setPiece(null);
                         spaceMap.get(next).setOccupancy(false);
+                        kicked= 1;
                     } else if (piece.getCurrentPosition() == -1 && (diceValue1 == 6 || diceValue2 == 6)){
                         next = piece.getStartPosition(globalNestId);   //get the piece at start position
+                        enemyId = spaceMap.get(next).getPiece().getNestId();
                         Piece kickedPiece = spaceMap.get(next).getPiece();
                         piece.kick(kickedPiece);
                         players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
                         players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
                         spaceMap.get(next).setPiece(null);
                         spaceMap.get(next).setOccupancy(false);
+                        kicked = 1;
                     }
                 }
                 //case 2.2: able to move
@@ -480,6 +504,17 @@ public class StaticContainer {
 
                     if (piece.getStep() + playerMoveAmount <= 48) {
                         players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
+                        if (kicked == 1){
+                            updateStatus(players[globalNestId].getName() ,players[enemyId].getName(),0,1);
+                        }
+                        else{
+                            if (initialPosition == -1){
+                                updateStatus(players[globalNestId].getName() ,"",0,2);
+                            }
+                            else {
+                                updateStatus(players[globalNestId].getName() ,"",playerMoveAmount,3);
+                            }
+                        }
                         if (initialPosition != -1) {
                             spaceMap.get(initialPosition).setOccupancy(false);
                             spaceMap.get(initialPosition).setPiece(null);
@@ -507,10 +542,13 @@ public class StaticContainer {
             if (initialPosition >= 48) {
                 houseMap.get(initialPosition).setOccupancy(false);
                 houseMap.get(initialPosition).setPiece(null);
+                updateStatus(players[globalNestId].getName(),"",0,4);
             }
             else if (initialPosition == piece.getStartPosition(globalNestId) - 1){
                 spaceMap.get(initialPosition).setOccupancy(false);
                 spaceMap.get(initialPosition).setPiece(null);
+                updateStatus(players[globalNestId].getName(),"",playerMoveAmount,5);
+
             }
             houseMap.get(piece.getCurrentPosition()).setOccupancy(true);
             houseMap.get(piece.getCurrentPosition()).setPiece(piece);
@@ -518,11 +556,53 @@ public class StaticContainer {
         if (piece.getCurrentPosition() == initialPosition && piece.getStep() >= 48) {
             diceTurn--;
         }
-        //case 4:
+        //case 4: auto check whether it is possible to use the next dice's value for moving or not
         if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2,diceTurn)
                 && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId) && piece.ableToDeploy())) {
             diceTurn = 3;
         }
     }
 
+    /**
+     *
+     * @param namePlayer
+     * @param enemyName
+     * @param playerMoveAmount
+     * @param type
+     */
+    public static void updateStatus(String namePlayer, String enemyName, int playerMoveAmount, int type){
+        addIn = "";
+        switch (type){
+            case 1:{
+                addIn = namePlayer + " " + language.getStatusKick() +" " + enemyName;
+                System.out.println("1");
+                break;
+            }
+            case 2:{
+                addIn = namePlayer + " " + language.getStatusDeployed();
+                System.out.println("2");
+                break;
+            }
+            case 3:{
+                addIn = namePlayer + " " + language.getStatusMove() + " " + Integer.toString(playerMoveAmount) + " " + language.getStatusSteps();
+                System.out.println("3");
+                break;
+            }
+            case 4:{
+                addIn = namePlayer + " " + language.getStatusAtHome();
+                System.out.println("4");
+                break;
+            }
+            case 5:{
+                addIn = namePlayer + " " + language.getStatusMove() + " " + Integer.toString(playerMoveAmount) + " " + language.getStatusToHome();
+                System.out.println("5");
+                break;
+            }
+            default:{
+                addIn = "";
+                break;
+            }
+        }
+        gameController.activityLog.setText(addIn);
+    }
 }

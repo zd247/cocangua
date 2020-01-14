@@ -48,4 +48,20 @@ public class Language {
     public String getQuit(){
         return bundle.getString("quit");
     }
+
+    public String getStatusKick() {return bundle.getString("statusKick");}
+
+    public String getStatusDeployed(){return bundle.getString("deploy");}
+
+    public String getStatusMove(){return bundle.getString("move");}
+
+    public String getStatusSteps(){return bundle.getString("steps");}
+
+    public String getStatusAtHome(){return bundle.getString("atHome");}
+
+    public String getStatusToHome(){return  bundle.getString("toHome");}
+
+    public String getStatusNextTurn(){return bundle.getString("nextTurn");}
+
+    public String getDefault(){return bundle.getString("default");}
 }

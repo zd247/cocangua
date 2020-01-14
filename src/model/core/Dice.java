@@ -1,26 +1,22 @@
 package model.core;
 
-import helper.StaticContainer;
-import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import model.Sound;
 
 import java.util.Random;
 
-// Dice class
+
 public class Dice extends ImageView {
     Image diceFace = new Image("images/dice1.png");
     int val;
 
-    // Constructor
+    /**
+     * Create GUI layout for Dice and setEventHandlers for each
+     */
     public Dice() {
         setFitWidth(85);
         setFitHeight(85);
@@ -37,7 +33,10 @@ public class Dice extends ImageView {
 
     }
 
-    // Roll a dice and return rolled number
+    /**
+     * Roll a dice, handle GUI display animation
+     * @return rolled number
+     */
     public int roll() {
         Random rand = new Random();
         int num = rand.nextInt(6) + 1;

@@ -5,14 +5,13 @@ import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import helper.StaticContainer.*;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -40,13 +39,14 @@ public class Player extends Pane {
     private VBox playerDisplayVBox = new VBox();
     private TextField textField = new TextField();
     private CheckBox toggler = new CheckBox("BOT");
-    Dice dice = new Dice();
-    boolean isRolled = false;
-    int numOfFace = 0;
+    private Dice dice = new Dice();
 
     private ClientSideConnection csc;
 
-
+    /**
+     * Constructor for player
+     * @param nestId
+     */
     public Player (int nestId) {
 
         this.nestId = nestId;
@@ -55,10 +55,11 @@ public class Player extends Pane {
 
         //Add to the player field before click
         this.getChildren().add(addText);
-        touchThis();
+        displayHandEffect();
 
-        addText.setLayoutX(70);
+        addText.setLayoutX(50);
         addText.setLayoutY(50);
+        addText.setStyle("-fx-font-size: 16");
 
         //Set default layout
         this.setBackground(new Background(new BackgroundFill(getColorByNestId(nestId), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -74,16 +75,11 @@ public class Player extends Pane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (!isClickedOn){
-                    //When
+                    //When the pane is clicked, clear all the children before adding more
                     getChildren().clear();
                     getChildren().add(playerDisplayVBox);
-                    BorderPane containDice = new BorderPane();
-                    BorderPane.setAlignment(dice, Pos.CENTER);
-                    containDice.setPrefHeight(200);
-                    containDice.setPrefWidth(200);
-                    containDice.setRight(dice);
-                    playerDisplayVBox.setSpacing(30);
-                    playerDisplayVBox.getChildren().addAll(textField, toggler, containDice);
+
+                    playerDisplayVBox.getChildren().addAll(textField, toggler, dice);
                     rollForGetTurn(dice);
                     isClickedOn = true;
                     numberOfPlayer++;   //increase number of player
@@ -93,7 +89,7 @@ public class Player extends Pane {
                     csc.sendNestId(nestId);*/
                 }
                 else {
-                    touchThis();
+                    displayHandEffect();
                     getChildren().add(addText);
                     playerDisplayVBox.getChildren().clear();
                     isClickedOn = false;
@@ -105,11 +101,19 @@ public class Player extends Pane {
 
     }
 
+    /**
+     * roll to get the first move
+     * @param dice
+     */
     public void rollForGetTurn(Dice dice){
         players[nestId].setPointForTurn(dice.roll());
         dice.setDisable(true);
     }
 
+    /**
+     * get TextField in playerfield
+     * @return
+     */
     public TextField getTextField() {
         return textField;
     }
@@ -155,7 +159,7 @@ public class Player extends Pane {
 
     public boolean isRolled(){ return rolled;}
 
-    public void resetCheck(){rolled = false;}
+    public void resetRolled(){rolled = false;}
 
     public void setPoints (int points) {
         this.points = points;
@@ -182,31 +186,11 @@ public class Player extends Pane {
      * To set point if the player in the file
      * @throws Exception
      */
-    public void checkExistedPlayer() throws Exception{
-        java.io.File file = new java.io.File("score.txt");
-        ArrayList<String> playerName = new ArrayList<>();
-        ArrayList<Integer> playerScore = new ArrayList<>();
-        Scanner fileInput = new Scanner(file);
-        fileInput.useDelimiter(",|\n");
-
-        while (fileInput.hasNext()) {
-            playerName.add(fileInput.next());
-            playerScore.add(fileInput.nextInt());
-        }
-        fileInput.close();
-
-        for (int i =0; i < playerName.size(); i++) {
-            if (name.equals(playerName.get(i))) {
-                points = playerScore.get(i);
-                break;
-            }
-        }
-    }
 
     /**
      * set the animation for making it nicely
      */
-    private void touchThis(){
+    private void displayHandEffect(){
         ImageView touchHand = new ImageView("images/touch.png");
         touchHand.setFitWidth(150);
         touchHand.setPreserveRatio(true);

@@ -18,6 +18,7 @@ import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.shape.Circle;
 import model.*;
@@ -40,7 +41,6 @@ import static model.Sound.THEME;
  */
 
 public class GameController implements Initializable {
-    public Button button;
     @FXML
     private BorderPane container;
     @FXML
@@ -63,7 +63,7 @@ public class GameController implements Initializable {
     @FXML public Label scoreLbYellow;
     @FXML public Label scoreLbGreen;
     @FXML public Label scoreLbRed;
-    @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
+    @FXML public Text activityLog;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -139,6 +139,7 @@ public class GameController implements Initializable {
 
     private void chooseLanguage(){
         changeChoiceBoxInGame(this);
+        loadLanguage();
         languageBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -156,7 +157,26 @@ public class GameController implements Initializable {
     }
 
     public void loadLanguage(){
-
+        gameController.activityLog.setText(language.getStartButton());
+        //change langauge of default 
+        for (int i = 0; i< players.length; i++){
+            if (players[i].getConnectionStatus() == ConnectionStatus.OFF){
+                switch (i){
+                    case 0:
+                        nameLbBlue.setText(language.getDefault());
+                        break;
+                    case 1:
+                        nameLbYellow.setText(language.getDefault());
+                        break;
+                    case 2:
+                        nameLbGreen.setText(language.getDefault());
+                        break;
+                    case 3:
+                        nameLbRed.setText(language.getDefault());
+                        break;
+                }
+            }
+        }
     }
 
     private void updateName(){

@@ -11,11 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import helper.StaticContainer;
+import model.Score;
 import model.Sound;
 import model.core.Player;
 
@@ -30,12 +32,11 @@ import static helper.StaticContainer.*;
 import static helper.StaticContainer.numberOfPlayer;
 
 public class Main extends Application implements Initializable{
-    static java.io.File file = new java.io.File("score.txt");
 
     public Label endGameLb;
-    public Text winner;
-    public Button newGame;
-    public Button quit;
+    public Button newGameBtn;
+    public Button quitBtn;
+    public Text winnerText;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -55,15 +56,16 @@ public class Main extends Application implements Initializable{
                     if (players[i].isClickedOn()){
                         players[i].setConnectionStatus(players[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
                         players[i].setName(players[i].getTextField().getText());
-                        try {
-                            players[i].checkExistedPlayer();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
                     else {
                         players[i].setName("Default");
                     }
+                }
+                try {
+                    score = new Score();
+                    score.getPoint();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 //Load main game
                 Parent gameDisplay = null;
@@ -129,44 +131,6 @@ public class Main extends Application implements Initializable{
 
         FXMLLoader end = new FXMLLoader(getClass().getResource("view/end.fxml"));
         Parent root = end.load();
-
-        ArrayList<String> playerName = new ArrayList<>();
-        ArrayList<Integer> playerScore = new ArrayList<>();
-        Scanner fileInput = new Scanner(file);
-        fileInput.useDelimiter(",|\n");
-
-        while (fileInput.hasNext()) {
-            playerName.add(fileInput.next());
-            playerScore.add(fileInput.nextInt());
-        }
-
-        fileInput.close();
-
-        System.out.println(playerName.size() + " playerName.size()");
-        java.io.PrintWriter output = new java.io.PrintWriter(file);
-        for (int i = 0; i < players.length; i++ ) {
-            if (players[i].getConnectionStatus() != ConnectionStatus.OFF) {
-                boolean duplcated = false;
-                for (int j = 0; j < playerName.size(); j++) {
-                    if (playerName.get(j).equals(players[i].getName())) {
-                        int newScore = playerScore.get(j) + players[i].getPoints();
-                        playerScore.set(j,newScore);
-                        duplcated = true;
-                    } else if (j == playerName.size() - 1 && !duplcated) {
-                        playerName.add(players[i].getName());
-                        playerScore.add(players[i].getPoints());
-                        break;
-                    }
-                }
-                if (playerName.size() == 0)
-                    output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
-            }
-        }
-        for (int j = 0; j < playerName.size(); j++) {
-            output.write(playerName.get(j) + "," + playerScore.get(j) + '\n');
-        }
-        output.close();
-
         root.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
         alertBox.setScene(new Scene(root));
         alertBox.setTitle(language.getWinScreenTitle());
@@ -175,8 +139,8 @@ public class Main extends Application implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        newGame.setText(language.getNewGame());
-        quit.setText(language.getQuit());
+        newGameBtn.setText(language.getNewGame());
+        quitBtn.setText(language.getQuit());
         endGameLb.setText(language.getEndGameLabel());
 
         String max_person = players[0].getName();
@@ -187,7 +151,7 @@ public class Main extends Application implements Initializable{
                 max_score = players[i].getPoints();
             }
         }
-        winner.setText(max_person + " " + language.getResultStatement() + " " + max_score);
+        winnerText.setText(max_person + " " + language.getResultStatement() + " " + max_score);
     }
 
     /**
@@ -197,6 +161,8 @@ public class Main extends Application implements Initializable{
     @FXML
     public void loadNewGame() throws Exception {
         alertBox.close();
+        score = new Score();
+        score.savePoint();
         start(window);      //call the start in main
     }
 
