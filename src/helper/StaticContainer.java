@@ -143,15 +143,13 @@ public class StaticContainer {
             //draw indicator
             for (int i = 0; i < players.length; i++) {          // Setting the nest highlight for indicating its turn
                 if (i != globalNestId) {
-                    players[i].resetRolled();
-
+                    players[i].resetRolled();                   // Not allow another players use their piece
                     // MUST ROLL INDICATOR
                     //nestMap.get(i).circle.setStroke(nestMustRollColor);
 
                 } else {
                     nestMap.get(i).circle.setStrokeWidth(10);
                     players[i].rolled();
-
                     // MUST MOVE INDICATOR
                     nestMap.get(i).circle.setStroke(nestMustMoveColor);
                 }
@@ -189,18 +187,17 @@ public class StaticContainer {
                         && !ableToKick(diceValue2,globalNestId)
                         && !pieceInHouseCanMove(globalNestId,diceValue1)
                         && !pieceInHouseCanMove(globalNestId,diceValue2) ) {
-                    players[globalNestId].resetRolled();
+                    players[globalNestId].resetRolled();                                                    // reset checker which means not allow that user to use their piece anymore
                     // WAITING FOR TURN (DEFAULT) INDICATOR
                     nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
-
-                    if (diceValue1 == diceValue2) {
+                    if (diceValue1 == diceValue2) {                                                         // got 2 dices have the same value, can roll 1 more time
                         globalNestId--;
                     }
-                    int nextTurn = globalNestId + 1;
+                    int nextTurn = globalNestId + 1;                                                        // Store the player's id of next turn
                     if (nextTurn == 4){
                         nextTurn = 0;
                     }
-                    while (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF){
+                    while (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF){        // Until there is not a offline player
                         nextTurn++;
                         if (nextTurn == 4){
                             nextTurn = 0;
@@ -209,17 +206,22 @@ public class StaticContainer {
 
                     // MUST ROLL INDICATOR
                     nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
+                    nestMap.get(nextTurn).circle.setStrokeWidth(10);
                     gameController.activityLog.setText("Next Turn!");
                     turn = 0;
                 }
 
                 System.out.println("--------------");
             }
+
+            //Bot's turn
             if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 1){            // If there is a bot's turn
                 players[globalNestId].resetRolled();
                 botPlay();                              // Bot will play by itself
                 turn = 0;
             }
+
+            // Bot's auto roll function
             Timeline timeline = new Timeline();
             int nextTurn = globalNestId + 1;
             if (nextTurn == 4){
@@ -268,6 +270,7 @@ public class StaticContainer {
      * set dice on click for rolling
      */
     public static void setDiceOnClick() {
+        // only this to click on 1 dice, it will roll 2 dices. Then, the dices will be disabled until there is a new turn
         dice2.setOnMouseClicked(event->{
             diceWork();
         });
@@ -296,7 +299,7 @@ public class StaticContainer {
      * @param nestID
      * @return
      */
-    public static boolean canDeploy(int nestID){
+    private static boolean canDeploy(int nestID){
         if(diceValue1 == 6 || diceValue2 == 6) {
             for (int i = 0; i < 4; i ++){
                 if (nestMap.get(nestID).getPieceList()[i].getCurrentPosition() == -1  && (!nestMap.get(nestID).getPieceList()[i].isBlockedPiece(1) ||nestMap.get(nestID).getPieceList()[i].ableToKick(1))){
@@ -316,7 +319,7 @@ public class StaticContainer {
     static boolean ableToKick(int moveAmount, int nestId){
         Piece piece;
         for (int i =0; i< 4; i++) {
-            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() + moveAmount <= 48){
+            if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() + moveAmount <= 48){ // Cannot check through the house arrival
                 piece = getNestById(nestId).getPieceList()[i];
                 if (piece.ableToKick(moveAmount)){
                     return true;
@@ -335,6 +338,7 @@ public class StaticContainer {
     static boolean pieceInHouseCanMove(int nestId, int diceValue){
         Piece piece;
         for (int i = 0; i < 4;i++){
+            // Check for the dice value first, then check whether there is a piece in its destination or not
             if (getNestById(nestId).getPieceList()[i].getStep() >= 48 && (getNestById(nestId).getPieceList()[i].getCurrentPosition()-getNestById(nestId).getPieceList()[i].getHouseArrival() + 2) == diceValue){
                 piece = getNestById(nestId).getPieceList()[i];
                 if (!piece.blockHome(diceValue)){
@@ -395,7 +399,7 @@ public class StaticContainer {
     /**
      * Bot play function, will be called whenever there is bot's turn
      */
-    public static void botPlay() {
+    private static void botPlay() {
         seq = new SequentialTransition();
         do {                                    // Play until 2 dices are used or there is no way to move
             int move = diceTurn;

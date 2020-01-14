@@ -89,7 +89,6 @@ public class Piece extends Circle {
     void handleOnClickLogic() {
         if (players[nestId].isRolled()) {                   // Whenever this player is rolled
             handleGameLogic(this);
-
             seq.play();
             //reset player and dice turns
             if (diceTurn >= 2) {                            // If used all dice turns
