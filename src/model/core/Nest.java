@@ -18,16 +18,15 @@ public class Nest extends StackPane {
 
     final public static double NEST_SIZE = 200;
 
-    // Constructor based on ID
     public Nest(int id) {
         this.id = id;
         initNest();
-
-        //register event handler
-
     }
 
-    // Set Nest appearance and create 4 pieces to add to Nest
+
+    /**
+     * Set Nest appearance and create 4 pieces to add to Nest
+     */
     public void initNest() {
         // Add css file
         getStylesheets().add(getClass().getResource("/cocangua.css").toExternalForm());
@@ -71,7 +70,10 @@ public class Nest extends StackPane {
         return color;
     }
 
-    // Color nest gray if disconnected
+
+    /**
+     * Set coonection and color nest gray if disconnected
+     */
     public void setDisplayDisconnected() {
         this.setId("nest-disconnected");
         for (Piece piece : pieceList) {

@@ -401,7 +401,7 @@ public class StaticContainer {
             int move = diceTurn;
             for (int i = 0; i < 4; i++) {
                 if (getNestById(globalNestId).getPieceList()[i].getStep()< 54) {
-                    botLogic(getNestById(globalNestId).getPieceList()[i]);
+                    handleGameLogic(getNestById(globalNestId).getPieceList()[i]); // cycle through turns (globalNestId)
                     if (move != diceTurn) {
                         updatePoint(gameController);
                         break;
@@ -434,10 +434,10 @@ public class StaticContainer {
     }
 
     /**
-     * Bot logic on moving, behaviour, it is applied almost the condition with the "player" when clicked on piece, modify a bit to make it smarter
+     * Game behaviour, it is applied almost the condition with the "player" when clicked on piece, modify a bit to make it smarter
      * @param piece
      */
-    public static void botLogic(Piece piece) {
+    public static void handleGameLogic(Piece piece) {
         int enemyId = 0;
         int kicked = 0;
         int initialPosition = piece.getCurrentPosition();
@@ -532,7 +532,9 @@ public class StaticContainer {
                 diceTurn--; //reset turn
             }
         }
-        else if ((!piece.blockHome(playerMoveAmount) || (!piece.blockHome(diceValue2) && diceTurn == 1 )) && piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
+        else if ((!piece.blockHome(playerMoveAmount) ||
+                (!piece.blockHome(diceValue2) && diceTurn == 1 )) &&
+                piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
             if (!piece.blockHome(diceValue2) && (diceValue1 < diceValue2 || piece.blockHome(diceValue1)) && diceTurn == 1) {
                 playerMoveAmount = diceValue2;
                 diceValue2 = diceValue1;
@@ -557,8 +559,13 @@ public class StaticContainer {
             diceTurn--;
         }
         //case 4: auto check whether it is possible to use the next dice's value for moving or not
-        if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2,diceTurn)
-                && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId) && piece.ableToDeploy())) {
+        if (piece.getCurrentPosition() != -1
+                && !piece.ableToMove(diceValue2,diceTurn)
+                && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1
+                && !piece.ableToMoveInHome(diceValue2)
+                && !(diceValue2 == 6
+                && !piece.noPieceAtHome(globalNestId)
+                && piece.ableToDeploy())) {
             diceTurn = 3;
         }
     }
