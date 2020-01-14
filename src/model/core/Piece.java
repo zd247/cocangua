@@ -497,6 +497,10 @@ public class Piece extends Circle {
         return step;
     }
 
+    /**
+     * Kick piece
+     * @param piece
+     */
     public void kick(Piece piece){
         piece.kickTransition();
         piece.setCurrentPosition(-1);
