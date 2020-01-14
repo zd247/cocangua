@@ -13,12 +13,13 @@ Team members:
 
 
 1. INTRODUCTION
-Our team is tasked with India Game called Pachisi make through Java. The 
-project takes 4 weeks to finish.
+Our team is tasked with India Game called Pachisi make through Java program.
+The project takes 4 weeks to finish. 
+
 2. FEATURES
-- The map contains 48 circle spaces, 16 rectangle home paths, 4 different 
-color nests, and each nest has 4 pieces  
-- Roll dices: 
+        - The map contains 48 circle spaces, 16 rectangle home paths, 4 different 
+color nests, and each nest has 4 pieces. 4 different colors are used in this maps are blue, yellow, green and red
+        - Roll dices: 
 +In the beginning ,the turn of the player will be decided by
 the rolling dice. and the turn will be made clock-wise, 
 +In each player turn , there are 2 colors of the nest-circle notifies the turn
@@ -26,12 +27,13 @@ of the user. (orange is the turn of the player to roll, green is the turn
 of the player to move)
 +User may choose one dice for this piece or another, however dice value will
 be set by order
-- Move:
-+ click a piece of player and make it move 
-+ the piece moves throgh the dice display
+        - Move:
++ click a piece of player and make it move by the dice value display
++ The piece will move by order of the dice. 
++ The piece will move 1 dice if it has only 50 percentage
 + The piece is moving by the pause transition and translate transition
-- Stop : The player will choose an image in the center to stop the game immediately
-- Score : 
+        - Stop : The player will choose an image in the center to stop the game immediately
+        - Score : 
 + At the beginning, the score of all player on the nest is 0
 + The score will be updated when the piece of players moves from the house arrival to
 tthe home path
@@ -41,22 +43,24 @@ step
 kicks the opponent's piece
 + The score of player will be decreased by 2 when tthe piece of the player 
 was kicked and sent to home
-- Sound : music and SFXs are turned on by default. User can choose to muste 
+        - Sound : music and SFXs are turned on by default. User can choose to muste 
 /unmute them.
 + when the piece is deployed 
 + when the piece is moving 
 + when the piece is kicked
 + when the piece moves inside the hosue path
 + when the game finished
-- Play again or Quit :the game finishes when all the piece of player reaches 
+        - Play again or Quit :the game finishes when all the piece of player reaches 
 by order 6-5-4-3, player can replay or quit the game
 If user replays , the score from all previous rounds are stacked up
 I not , the point will not be updated
-- Game status: during the game, context such as dice value, status of moving
+        - Game status: during the game, context such as dice value, status of moving
 and updated score are displayed
--Language : the language can be changed from vietnamese to english
+        -Language : the language can be changed from vietnamese to english
+
 3. DESIGN
 Describe major design decisions and major algorithms.
+
 4. INSTALLATION
 - Unzip "cocangua.zip"
 - Make sure folders such as "data" and src and out are in the project
@@ -67,8 +71,8 @@ Describe major design decisions and major algorithms.
 
 
 6. ACKNOWLEDGEMENT
-List the resources and help that you used to complete this project. Failing to do so might be considered as plagiarism.
-
+* https://beginnersbook.com/2013/12/hashmap-in-java-with-example/
+* https://www.javatpoint.com/javafx-translate-transition
 Pseudo code fore turn dice logic:
 - Use dice by dice
    - If the first dice turn which use the first dice not able to move any piece and the second dice is possible, change to use the second dice first, then the next turn dice will use the value of dice 1 to move (if it is possible - this will be checked by auto checking).  
