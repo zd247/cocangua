@@ -24,14 +24,17 @@ Provide instructions on how to install and run the software.
 List the unfixed bugs and the workarounds, if any.
 6. ACKNOWLEDGEMENT
 List the resources and help that you used to complete this project. Failing to do so might be considered as plagiarism.
-
+Pseudo code fore turn dice logic:
+- Use dice by dice
+   - If the first dice turn which use the first dice not able to move any piece and the second dice is possible, change to use the second dice first, then the next turn dice will use the value of dice 1 to move (if it is possible - this will be checked by auto checking).  
+   - Piece in nest will use the dice which has value of 6, and leave another one to the next turn
+   - Piece in home or at home arrival, it will use the dice has higher value (in case that dice is able to use to move piece).
 
 Pseudo code for Machine Player:
 Machine algorithm:
 
 + How to win this game: 
-- After researching, there is a simple way to win this game easily. More specifically, firstly, after deploying the first piece, you should let it move until there is a block, after that, if there is a block, move to use another piece. Then, whenever the piece is at home,
-try to let it move to the highest position if it is possible. Therefore, this machine player is just applied the same logic with what we found out. 
+- After researching, there is a simple way to win this game easily. More specifically, firstly, after deploying the first piece, you should let it move until there is a block, after that, if there is a block, move to use another piece. Then, whenever the piece is at home, try to let it move to the highest position if it is possible. Therefore, this machine player is just applied the same logic with what we found out. 
 
 
 + Logic:
