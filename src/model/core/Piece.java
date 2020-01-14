@@ -199,6 +199,7 @@ public class Piece extends Circle {
             //reset player and dice turns
             if (diceTurn >= 2) {                            // If used all dice turns
                 nestMap.get(globalNestId).rect.setStrokeWidth(0);
+                nestMap.get(globalNestId).circle.setStrokeWidth(0);
                 if (diceValue1 == diceValue2) globalNestId--;               // Re roll if there is the same dice value
                 int nextTurn = globalNestId + 1;                            // Get the next player id
                 if (nextTurn == 4){

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -18,7 +19,9 @@ import model.core.Player;
 
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import static helper.StaticContainer.*;
@@ -28,6 +31,8 @@ public class Main extends Application {
 
     public Label notifier;
     static java.io.File file = new java.io.File("score.txt");
+
+    public TextField winner;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -63,6 +68,7 @@ public class Main extends Application {
         });
 
         gameStop();
+
 
         primaryStage.setTitle("Co Ca Ngua");
         Scene scene = new Scene(menuDisplay, 1200 , 900);
