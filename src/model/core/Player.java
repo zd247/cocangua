@@ -13,6 +13,8 @@ import javafx.scene.text.Text;
 
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import static helper.StaticContainer.*;
 
@@ -54,6 +56,11 @@ public class Player extends Pane {
         this.setBackground(new Background(new BackgroundFill(getColorByNestId(nestId), CornerRadii.EMPTY, Insets.EMPTY)));
         textField.setText("Player " + nestId);
         this.name = textField.getText(); //set name
+        try {
+            checkExistedPlayer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         numberOfPlayer = 0;
         //Game menu set up
@@ -85,6 +92,27 @@ public class Player extends Pane {
                 }
             }
         });
+    }
+
+    private void checkExistedPlayer() throws IOException{
+        java.io.File file = new java.io.File("score.txt");
+        ArrayList<String> playerName = new ArrayList<>();
+        ArrayList<Integer> playerScore = new ArrayList<>();
+        Scanner fileInput = new Scanner(file);
+        fileInput.useDelimiter(",|\n");
+
+        while (fileInput.hasNext()) {
+            playerName.add(fileInput.next());
+            playerScore.add(fileInput.nextInt());
+        }
+        fileInput.close();
+
+        for (int i = 0; i < playerName.size(); i++) {
+            if (name.equals(playerName.get(i))) {
+                points = playerScore.get(i);
+                break;
+            }
+        }
     }
 
     public void rollForGetTurn(Dice dice){

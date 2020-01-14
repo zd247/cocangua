@@ -1,4 +1,4 @@
-Player 0,190
-Player 1,93
-Player 2,106
-Player 3,160
+Player 0,23
+Player 3,49
+Player 1,3
+Player 2,24
