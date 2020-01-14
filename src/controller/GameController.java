@@ -105,6 +105,8 @@ public class GameController implements Initializable {
                 nestMap.get(i).setDisplayDisconnected();
             }
         }
+        gameController.activityLog.setText(language.getStartButton());
+
         int checker = 0;
         for (int i =3; i >= 0; i--){
             if (players[i].getPointForTurn() >= firstTurn && players[i].getConnectionStatus() != ConnectionStatus.OFF){     // Get the first player's turn for whom has the highest value when rolling before starting game
@@ -161,29 +163,18 @@ public class GameController implements Initializable {
      */
     private void chooseLanguage(){
         changeChoiceBoxInGame(this);
-        loadLanguage();
         languageBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue.equals("Tiếng Việt")){
                     language.setLanguage("vi","VN");
-                    loadLanguage();
                 }
                 else{
                     language.setLanguage("en","US");
                     System.out.println(language.getLocale());
-                    loadLanguage();
                 }
             }
         });
-    }
-
-    /**
-     * Load language
-     */
-    public void loadLanguage(){
-        //change langauge of default
-        gameController.activityLog.setText(language.getStartButton());
     }
 
     /**
