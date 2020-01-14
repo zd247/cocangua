@@ -508,6 +508,7 @@ public class Piece extends Circle {
         if (step == 48){
             currentPosition = getHouseArrival() - 1;
         }
+        pieceIsMoving = true;
         currentPosition ++;
         step ++;
         return tt;

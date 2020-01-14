@@ -72,6 +72,7 @@ public class StaticContainer {
     public static int playerMoveAmount = 0;
     public static int diceValue1 = 0;
     public static int diceValue2 = 0;
+    public static boolean pieceIsMoving ;
 
     public enum ConnectionStatus {
         PLAYER, BOT, OFF
@@ -112,6 +113,7 @@ public class StaticContainer {
      * Dice get on mouse click handler
      */
     public static void diceWork(){
+        pieceIsMoving = false;
         if (turn == 0) {                // If the current turn is done
             turn = 1;
             if (globalNestId >= (players.length - 1)) {     // Move to the next player's turn
@@ -229,14 +231,27 @@ public class StaticContainer {
             if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT && turn == 0) {         //Whenever the next turn is a bot, it will auto roll.
                 dice1.setDisable(true);
                 dice2.setDisable(true);
-                KeyFrame key = new KeyFrame(Duration.millis(200 * (diceValue1 + diceValue2) + 400), new EventHandler<ActionEvent>() {
-                    //100 for translate time, 100 for pause and 400 for waiting between the dice
-                    @Override
-                    public void handle(ActionEvent event) {
-                        diceWork();                     // roll dice automatically after a fixed duration
-                    }
-                });
-                timeline.getKeyFrames().add(key);
+                if (pieceIsMoving){
+                    KeyFrame key = new KeyFrame(Duration.millis(200 * (diceValue1 + diceValue2) + 400), new EventHandler<ActionEvent>() {
+                        //100 for translate time, 100 for pause and 400 for waiting between the dice
+                        @Override
+                        public void handle(ActionEvent event) {
+                            diceWork();                     // roll dice automatically after a fixed duration
+                        }
+                    });
+                    timeline.getKeyFrames().add(key);
+                }
+                else
+                {
+                    KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+                        //100 for translate time, 100 for pause and 400 for waiting between the dice
+                        @Override
+                        public void handle(ActionEvent event) {
+                            diceWork();                     // roll dice automatically after a fixed duration
+                        }
+                    });
+                    timeline.getKeyFrames().add(key);
+                }
                 timeline.play();
             }
             else if (players[nextTurn].getConnectionStatus() == ConnectionStatus.PLAYER){
