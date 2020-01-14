@@ -41,6 +41,8 @@ import static model.Sound.THEME;
 
 public class GameController implements Initializable {
     public Button button;
+
+    public TextField status;
     @FXML
     private BorderPane container;
     @FXML

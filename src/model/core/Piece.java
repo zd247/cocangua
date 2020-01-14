@@ -88,6 +88,8 @@ public class Piece extends Circle {
      */
     void handleOnClickLogic() {
         int initialPosition = this.currentPosition;          // Store the initial position
+        int kicked = 0;
+        int enemyId = 0;
         if (players[nestId].isRolled()) {                   // Whenever this player is rolled
             if (diceTurn == 0) { // turn 1
                 playerMoveAmount = diceValue1;
@@ -111,28 +113,32 @@ public class Piece extends Circle {
                 }
                 //case 2: not be blocked or able to kick
                 if (!this.isBlockedPiece(playerMoveAmount) || this.ableToKick(playerMoveAmount)) {
+                    int next =0;
                     // case 2.1: check for when able to kick
                     if (this.ableToKick(playerMoveAmount)) {            // If it is able to kick
-                        int next = 0;
                         if (this.currentPosition != -1 && this.step + playerMoveAmount <= 48) {    // Not go through homepath to check
                             next = this.currentPosition + playerMoveAmount;             // Store the next position for checking
                             if (next > 47) {                                            // the next position 47 is 0
                                 next -= 48;
                             }
                             Piece kickedPiece = spaceMap.get(next).getPiece();          // Get the piece in the destination
+                            enemyId = spaceMap.get(next).getPiece().getNestId();
                             this.kick(kickedPiece);                                     // kick it
                             players[nestId].setPoints(players[nestId].getPoints() + 2); // set point plus
                             players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2); // set lose point
                             spaceMap.get(next).setPiece(null);                          // reset that destination to move
                             spaceMap.get(next).setOccupancy(false);
+                            kicked = 1;
                         } else if (this.currentPosition == -1 && (diceValue1 == 6 || diceValue2 == 6)){         // Or it is able to deploy
                             next = this.getStartPosition(this.nestId);   //get the piece at start position
+                            enemyId = spaceMap.get(next).getPiece().getNestId();
                             Piece kickedPiece = spaceMap.get(next).getPiece();
                             this.kick(kickedPiece);
                             players[nestId].setPoints(players[nestId].getPoints() + 2);
                             players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
                             spaceMap.get(next).setPiece(null);
                             spaceMap.get(next).setOccupancy(false);
+                            kicked = 1;
                         }
                     }
                     //case 2.2: able to move or able to deploy
@@ -148,6 +154,17 @@ public class Piece extends Circle {
 
                         if (this.step + playerMoveAmount <= 48) {
                             players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
+                            if (kicked == 1){
+                                updateStatus(players[nestId].getName() +" has kicked " + players[enemyId].getName());
+                            }
+                            else{
+                                if (initialPosition == -1){
+                                    updateStatus(players[nestId].getName() + " has deployed!");
+                                }
+                                else {
+                                    updateStatus(players[nestId].getName() + " has moved " + Integer.toString(playerMoveAmount) + " steps!");
+                                }
+                            }
                             if (initialPosition != -1) {
                                 spaceMap.get(initialPosition).setOccupancy(false);
                                 spaceMap.get(initialPosition).setPiece(null);
@@ -176,10 +193,13 @@ public class Piece extends Circle {
                 if (initialPosition >= 48) {                                                                                    // If this piece is inside home
                     houseMap.get(initialPosition).setOccupancy(false);
                     houseMap.get(initialPosition).setPiece(null);
+                    updateStatus(players[nestId].getName() + " has moved 1 step at home!");
+
                 }
                 else if (initialPosition == this.getStartPosition(nestId) - 1){                                                 // Or it is standing on home path
                     spaceMap.get(initialPosition).setOccupancy(false);
                     spaceMap.get(initialPosition).setPiece(null);
+                    updateStatus(players[nestId].getName() + " has moved "+ Integer.toString(playerMoveAmount) + " steps to home!");
                 }
                 houseMap.get(this.currentPosition).setOccupancy(true);
                 houseMap.get(this.currentPosition).setPiece(this);

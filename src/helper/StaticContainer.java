@@ -64,6 +64,8 @@ public class StaticContainer {
 
     public static int numberOfPlayer;
 
+    public static Score score;
+
     //TURN LOGIC STATICS
     public static int firstTurn = 0;
     public static int turn = 0;
@@ -418,6 +420,8 @@ public class StaticContainer {
      * @param piece
      */
     public static void botLogic(Piece piece) {
+        int enemyId = 0;
+        int kicked = 0;
         int initialPosition = piece.getCurrentPosition();
         if (diceTurn == 0) { // turn 1
             playerMoveAmount = diceValue1;
@@ -441,28 +445,32 @@ public class StaticContainer {
             }
             //case 2: not blocked or able to kick
             if (!piece.isBlockedPiece(playerMoveAmount) || piece.ableToKick(playerMoveAmount)) {
+                int next = 0;
                 // case 2.1: check for when able to kick
                 if (piece.ableToKick(playerMoveAmount)) {
-                    int next = 0;
                     if (piece.getCurrentPosition() != -1 && piece.getStep() + playerMoveAmount <= 48) {
                         next = piece.getCurrentPosition() + playerMoveAmount;
                         if (next > 47) {
                             next -= 48;
                         }
                         Piece kickedPiece = spaceMap.get(next).getPiece();
+                        enemyId = spaceMap.get(next).getPiece().getNestId();
                         piece.kick(kickedPiece);
                         players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
                         players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
                         spaceMap.get(next).setPiece(null);
                         spaceMap.get(next).setOccupancy(false);
+                        kicked= 1;
                     } else if (piece.getCurrentPosition() == -1 && (diceValue1 == 6 || diceValue2 == 6)){
                         next = piece.getStartPosition(globalNestId);   //get the piece at start position
+                        enemyId = spaceMap.get(next).getPiece().getNestId();
                         Piece kickedPiece = spaceMap.get(next).getPiece();
                         piece.kick(kickedPiece);
                         players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
                         players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
                         spaceMap.get(next).setPiece(null);
                         spaceMap.get(next).setOccupancy(false);
+                        kicked = 1;
                     }
                 }
                 //case 2.2: able to move
@@ -478,6 +486,17 @@ public class StaticContainer {
 
                     if (piece.getStep() + playerMoveAmount <= 48) {
                         players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
+                        if (kicked == 1){
+                            updateStatus(players[globalNestId].getName() +" has kicked " + players[enemyId].getName());
+                        }
+                        else{
+                            if (initialPosition == -1){
+                                updateStatus(players[globalNestId].getName() + " has deployed!");
+                            }
+                            else {
+                                updateStatus(players[globalNestId].getName() + " has moved " + Integer.toString(playerMoveAmount) + " steps!");
+                            }
+                        }
                         if (initialPosition != -1) {
                             spaceMap.get(initialPosition).setOccupancy(false);
                             spaceMap.get(initialPosition).setPiece(null);
@@ -505,10 +524,13 @@ public class StaticContainer {
             if (initialPosition >= 48) {
                 houseMap.get(initialPosition).setOccupancy(false);
                 houseMap.get(initialPosition).setPiece(null);
+                updateStatus(players[globalNestId].getName() + " has moved 1 step at home!");
             }
             else if (initialPosition == piece.getStartPosition(globalNestId) - 1){
                 spaceMap.get(initialPosition).setOccupancy(false);
                 spaceMap.get(initialPosition).setPiece(null);
+                updateStatus(players[globalNestId].getName() + " has moved "+ Integer.toString(playerMoveAmount) + " steps to home!");
+
             }
             houseMap.get(piece.getCurrentPosition()).setOccupancy(true);
             houseMap.get(piece.getCurrentPosition()).setPiece(piece);
@@ -523,4 +545,7 @@ public class StaticContainer {
         }
     }
 
+    public  static void updateStatus(String context){
+        gameController.status.setText(context);
+    }
 }
