@@ -62,7 +62,10 @@ Describe major design decisions and major algorithms.
 - Make sure folders such as "data" and src and out are in the project
 - Execute Main.class on JVM
 5. KNOWN BUGS
-List the unfixed bugs and the workarounds, if any.
+- For the bot player, very little cases, there is a lag animation(if sout is applied for checking, we can confirm that it move correctly), and lead to the piece image is displayed wrong place (only from home arrival).
+- score.txt file should be empty before starting game because some how it can read the line correctly (only first run happened), for any next run, it will be okay and read the file correctly.
+
+
 6. ACKNOWLEDGEMENT
 List the resources and help that you used to complete this project. Failing to do so might be considered as plagiarism.
 
