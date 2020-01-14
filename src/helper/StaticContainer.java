@@ -1,22 +1,21 @@
 package helper;
 
-import controller.GameController;
+
 import controller.MenuController;
 import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
 import model.core.*;
 
-
 import java.util.HashMap;
 
+import static helper.LayoutContainer.*;
 import static javafx.scene.paint.Color.*;
 import static javafx.scene.paint.Color.GREENYELLOW;
 
@@ -40,13 +39,12 @@ public class StaticContainer {
 
     public static Piece currentPiece = null;
 
-    public static GameController gameController ;
+
 
     public static int POLLING_INTERVAL = 1000; //miliseconds
 
     public static MenuController menuController;
 
-    public static Language language;
 
     public static ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
 
@@ -86,35 +84,9 @@ public class StaticContainer {
     //=========================================================================================
 
 
-
-    /**
-     * return the color of the player reference by nestId (limit calling this function, bad logic)
-     * @param nestId reference id
-     */
-    public static Color getColorByNestId(int nestId) {
-        Nest ret = new Nest(nestId);
-        return ret.getColor();
-    }
-
-    /**
-     * return nest by id, only call this function after Map is initialized
-     * @param nestId
-     * @return
-     */
-    public static Nest getNestById(int nestId) {
-        return nestMap.get(nestId);
-    }
-
-    /**
-     *
-     * @param dice
-     * - After selecting and indicating the name, the player consequently roll and then find out who will get the first roll (first turn).
-     */
-
-
-
     /**
      * Dice get on mouse click handler, For rolling and getting the value of each dice, then handle the logic from there
+     * After selecting and indicating the name, the player consequently roll and then find out who will get the first roll (first turn).
      */
     public static void diceWork(){
         pieceIsMoving = false;
@@ -347,52 +319,6 @@ public class StaticContainer {
 
 
     /**
-     * Updating points
-     * @param c
-     */
-    public static void updatePoint(GameController c){
-        gameController = c;
-        c.scoreLbBlue.setText(players[0].getPoints()+"");
-        c.scoreLbYellow.setText(players[1].getPoints()+"");
-        c.scoreLbGreen.setText(players[2].getPoints()+"");
-        c.scoreLbRed.setText(players[3].getPoints()+"");
-    }
-
-    /**
-     *
-     * @param c
-     */
-    public static void changeChoiceBoxInGame(GameController c){
-        gameController = c;
-        setChoiceBox(c.languageBox);
-    }
-
-    /**
-     *
-     * @param c
-     */
-    public static void changeChoiceBoxInMenu(MenuController c){
-        language = new Language("en", "US");
-        //Referene from the game controller
-        menuController = c;
-        setChoiceBox(c.languageBox);
-    }
-
-    /**
-     *
-     * @param choiceBox
-     */
-    private static void setChoiceBox(ChoiceBox<String> choiceBox){
-        //To set settings for the choice box
-        choiceBox.setItems(availableChoices);
-        if (language.getLocale().contains("en"))
-            choiceBox.setValue("English");//Set face of the choice box
-        else {
-            choiceBox.setValue("Tiếng Việt");
-        }
-    }
-
-    /**
      * Bot play function, will be called whenever there is bot's turn
      */
     public static void botPlay() {
@@ -401,7 +327,7 @@ public class StaticContainer {
             int move = diceTurn;
             for (int i = 0; i < 4; i++) {
                 if (getNestById(globalNestId).getPieceList()[i].getStep()< 54) {
-                    botLogic(getNestById(globalNestId).getPieceList()[i]);
+                    handleGameLogic(getNestById(globalNestId).getPieceList()[i]); // cycle through turns (globalNestId)
                     if (move != diceTurn) {
                         updatePoint(gameController);
                         break;
@@ -434,10 +360,10 @@ public class StaticContainer {
     }
 
     /**
-     * Bot logic on moving, behaviour, it is applied almost the condition with the "player" when clicked on piece, modify a bit to make it smarter
+     * Game behaviour, it is applied almost the condition with the "player" when clicked on piece, modify a bit to make it smarter
      * @param piece
      */
-    public static void botLogic(Piece piece) {
+    public static void handleGameLogic(Piece piece) {
         int enemyId = 0;
         int kicked = 0;
         int initialPosition = piece.getCurrentPosition();
@@ -532,7 +458,9 @@ public class StaticContainer {
                 diceTurn--; //reset turn
             }
         }
-        else if ((!piece.blockHome(playerMoveAmount) || (!piece.blockHome(diceValue2) && diceTurn == 1 )) && piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
+        else if ((!piece.blockHome(playerMoveAmount) ||
+                (!piece.blockHome(diceValue2) && diceTurn == 1 )) &&
+                piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
             if (!piece.blockHome(diceValue2) && (diceValue1 < diceValue2 || piece.blockHome(diceValue1)) && diceTurn == 1) {
                 playerMoveAmount = diceValue2;
                 diceValue2 = diceValue1;
@@ -557,52 +485,35 @@ public class StaticContainer {
             diceTurn--;
         }
         //case 4: auto check whether it is possible to use the next dice's value for moving or not
-        if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2,diceTurn)
-                && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId) && piece.ableToDeploy())) {
+        if (piece.getCurrentPosition() != -1
+                && !piece.ableToMove(diceValue2,diceTurn)
+                && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1
+                && !piece.ableToMoveInHome(diceValue2)
+                && !(diceValue2 == 6
+                && !piece.noPieceAtHome(globalNestId)
+                && piece.ableToDeploy())) {
             diceTurn = 3;
         }
     }
 
+
     /**
-     *
-     * @param namePlayer
-     * @param enemyName
-     * @param playerMoveAmount
-     * @param type
+     * return the color of the player reference by nestId (limit calling this function, bad logic)
+     * @param nestId reference id
      */
-    public static void updateStatus(String namePlayer, String enemyName, int playerMoveAmount, int type){
-        addIn = "";
-        switch (type){
-            case 1:{
-                addIn = namePlayer + " " + language.getStatusKick() +" " + enemyName;
-                System.out.println("1");
-                break;
-            }
-            case 2:{
-                addIn = namePlayer + " " + language.getStatusDeployed();
-                System.out.println("2");
-                break;
-            }
-            case 3:{
-                addIn = namePlayer + " " + language.getStatusMove() + " " + Integer.toString(playerMoveAmount) + " " + language.getStatusSteps();
-                System.out.println("3");
-                break;
-            }
-            case 4:{
-                addIn = namePlayer + " " + language.getStatusAtHome();
-                System.out.println("4");
-                break;
-            }
-            case 5:{
-                addIn = namePlayer + " " + language.getStatusMove() + " " + Integer.toString(playerMoveAmount) + " " + language.getStatusToHome();
-                System.out.println("5");
-                break;
-            }
-            default:{
-                addIn = "";
-                break;
-            }
-        }
-        gameController.activityLog.setText(addIn);
+    public static Color getColorByNestId(int nestId) {
+        Nest ret = new Nest(nestId);
+        return ret.getColor();
     }
+
+    /**
+     * return nest by id, only call this function after Map is initialized
+     * @param nestId
+     * @return
+     */
+    public static Nest getNestById(int nestId) {
+        return nestMap.get(nestId);
+    }
+
+
 }

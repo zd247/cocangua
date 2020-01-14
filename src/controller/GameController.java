@@ -27,12 +27,12 @@ import model.core.Dice;
 
 
 import static helper.StaticContainer.*;
+import static helper.LayoutContainer.*;
 
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static javafx.scene.paint.Color.BLACK;
 import static model.Sound.THEME;
 
 

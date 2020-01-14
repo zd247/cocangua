@@ -11,6 +11,7 @@ import model.Sound;
 
 import static helper.Map.*;
 import static helper.StaticContainer.*;
+import static helper.LayoutContainer.*;
 import static javafx.scene.paint.Color.*;
 
 
@@ -84,134 +85,12 @@ public class Piece extends Circle {
     //=================================[Move]=====================================
 
     /**
-     * when click on a piece
+     * when click on a piece, game logic is applied to that piece.
      */
     void handleOnClickLogic() {
-        int initialPosition = this.currentPosition;          // Store the initial position
-        int kicked = 0;
-        int enemyId = 0;
         if (players[nestId].isRolled()) {                   // Whenever this player is rolled
-            if (diceTurn == 0) { // turn 1
-                playerMoveAmount = diceValue1;
-                if (this.currentPosition != -1)
-                    diceTurn = 1;
-            } else if (diceTurn == 1) { // turn 2
-                playerMoveAmount = diceValue2;
-                if (this.currentPosition != -1) {
-                    diceTurn = 2; //reset
-                }
-            }
-            if (this.getStep() <= 47) {             // For the piece outside home
-                // case 1: piece being blocked and not able to kick in the first dice turn
-                if (!this.ableToMove(playerMoveAmount,diceTurn) && !this.ableToKick(playerMoveAmount)
-                        && this.currentPosition != -1 && diceTurn == 1) {
-                    if (ableToMove(diceValue2,diceTurn) || ableToKick(diceValue2)) {        // If the second dice is available to move, swap the dices
-                        playerMoveAmount = diceValue2;
-                        diceValue2 = diceValue1;
-                        diceValue1 = playerMoveAmount;
-                    }
-                }
-                //case 2: not be blocked or able to kick
-                if (!this.isBlockedPiece(playerMoveAmount) || this.ableToKick(playerMoveAmount)) {
-                    int next =0;
-                    // case 2.1: check for when able to kick
-                    if (this.ableToKick(playerMoveAmount)) {            // If it is able to kick
-                        if (this.currentPosition != -1 && this.step + playerMoveAmount <= 48) {    // Not go through homepath to check
-                            next = this.currentPosition + playerMoveAmount;             // Store the next position for checking
-                            if (next > 47) {                                            // the next position 47 is 0
-                                next -= 48;
-                            }
-                            Piece kickedPiece = spaceMap.get(next).getPiece();          // Get the piece in the destination
-                            enemyId = spaceMap.get(next).getPiece().getNestId();
-                            this.kick(kickedPiece);                                     // kick it
-                            players[nestId].setPoints(players[nestId].getPoints() + 2); // set point plus
-                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2); // set lose point
-                            spaceMap.get(next).setPiece(null);                          // reset that destination to move
-                            spaceMap.get(next).setOccupancy(false);
-                            kicked = 1;
-                        } else if (this.currentPosition == -1 && (diceValue1 == 6 || diceValue2 == 6)){         // Or it is able to deploy
-                            next = this.getStartPosition(this.nestId);   //get the piece at start position
-                            enemyId = spaceMap.get(next).getPiece().getNestId();
-                            Piece kickedPiece = spaceMap.get(next).getPiece();
-                            this.kick(kickedPiece);
-                            players[nestId].setPoints(players[nestId].getPoints() + 2);
-                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                            spaceMap.get(next).setPiece(null);
-                            spaceMap.get(next).setOccupancy(false);
-                            kicked = 1;
-                        }
-                    }
-                    //case 2.2: able to move or able to deploy
-                    if ((this.currentPosition != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
-                        if (this.currentPosition == -1) {
-                            if (playerMoveAmount != 6 && diceTurn == 0){
-                                playerMoveAmount = diceValue2;
-                                diceValue2 = diceValue1;
-                                diceValue1 = playerMoveAmount;
-                            }
-                            diceTurn ++;
-                        }
+            handleGameLogic(this);
 
-                        if (this.step + playerMoveAmount <= 48) {
-                            players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
-                            if (kicked == 1){
-                                updateStatus(players[nestId].getName() , players[enemyId].getName(),0,1);
-                            }
-                            else{
-                                if (initialPosition == -1){
-                                    updateStatus(players[nestId].getName(),"",0,2);
-                                }
-                                else {
-                                    updateStatus(players[nestId].getName() ,"",playerMoveAmount,3);
-                                }
-                            }
-                            if (initialPosition != -1) {
-                                spaceMap.get(initialPosition).setOccupancy(false);
-                                spaceMap.get(initialPosition).setPiece(null);
-                            }
-                            spaceMap.get(this.currentPosition).setOccupancy(true);
-                            spaceMap.get(this.currentPosition).setPiece(this);
-                        }
-                        if (currentPosition == initialPosition) {
-                            diceTurn--;
-                        }
-                    }
-                }
-                //case 3: piece is blocked on board
-                else if ((this.isBlockedPiece(playerMoveAmount) && this.currentPosition != -1)) {
-                    diceTurn--; //reset turn
-                }
-            }
-            // If this piece is standing on homepath or inside the house (not nest)
-            else if ((!this.blockHome(playerMoveAmount) || (!this.blockHome(diceValue2) && diceTurn == 1 )) && this.step >= 48 && this.step < 48 + 6) {
-                if (!this.blockHome(diceValue2) && (diceValue1 < diceValue2 || this.blockHome(diceValue1)) && diceTurn == 1) {          // Take the dice has highest value to use if it is available
-                    playerMoveAmount = diceValue2;
-                    diceValue2 = diceValue1;
-                    diceValue1 = playerMoveAmount;
-                }
-                players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));                      // Set move with point plus
-                if (initialPosition >= 48) {                                                                                    // If this piece is inside home
-                    houseMap.get(initialPosition).setOccupancy(false);
-                    houseMap.get(initialPosition).setPiece(null);
-                    updateStatus(players[nestId].getName() ,"",0,4);
-
-                }
-                else if (initialPosition == this.getStartPosition(nestId) - 1){                                                 // Or it is standing on home path
-                    spaceMap.get(initialPosition).setOccupancy(false);
-                    spaceMap.get(initialPosition).setPiece(null);
-                    updateStatus(players[nestId].getName() ,"", playerMoveAmount ,5);
-                }
-                houseMap.get(this.currentPosition).setOccupancy(true);
-                houseMap.get(this.currentPosition).setPiece(this);
-            }
-            if (currentPosition == initialPosition && this.step >= 48) {                                            // If it is blocked
-                diceTurn--;
-            }
-            //case 4:
-            if (this.currentPosition != -1 && !this.ableToMove(diceValue2,diceTurn)                         // If there is no way to go
-                    && !this.ableToKick(diceValue2,nestId) && diceTurn == 1 && !this.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !this.noPieceAtHome(nestId) && this.ableToDeploy())) {
-                diceTurn = 3;
-            }
             seq.play();
             //reset player and dice turns
             if (diceTurn >= 2) {                            // If used all dice turns
