@@ -155,10 +155,12 @@ public class Player extends Pane {
         return this.connectionStatus;
     }
 
+    // If this player already rolled
     public void rolled(){rolled = true;}
 
     public boolean isRolled(){ return rolled;}
 
+    // If this player's turn is done
     public void resetRolled(){rolled = false;}
 
     public void setPoints (int points) {

@@ -332,7 +332,7 @@ public class StaticContainer {
             for (int i = 0; i < 4; i++) {
                 if (getNestById(globalNestId).getPieceList()[i].getStep()< 54) {
                     handleGameLogic(getNestById(globalNestId).getPieceList()[i]); // cycle through turns (globalNestId)
-                    if (move != diceTurn) {
+                    if (move != diceTurn) {         // If there is a piece which is move successfully
                         updatePoint(gameController);
                         break;
                     }
@@ -342,10 +342,9 @@ public class StaticContainer {
 
         //Reset all the things
         nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
-
         players[globalNestId].resetRolled();
 
-        if (diceValue1 == diceValue2) globalNestId--;
+        if (diceValue1 == diceValue2) globalNestId--;       // bonus 1 more turn if there is the same in dice's value
         int nextTurn = globalNestId + 1;
         if (nextTurn == 4){
             nextTurn = 0;
@@ -357,7 +356,7 @@ public class StaticContainer {
             }
         }
         // Must roll
-        nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
+        nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);          // Set the warning color
         nestMap.get(nextTurn).circle.setStrokeWidth(10);
         diceTurn = 0;
         seq.play();
@@ -368,26 +367,26 @@ public class StaticContainer {
      * @param piece
      */
     public static void handleGameLogic(Piece piece) {
-        int enemyId = 0;
-        int kicked = 0;
-        int initialPosition = piece.getCurrentPosition();
+        int enemyId = 0;                                // Get enemyId, in case the piece is able to kick
+        int kicked = 0;                                 // If it is able to kick
+        int initialPosition = piece.getCurrentPosition();   // Store the initial position for reset the occupancy of that space
         if (diceTurn == 0) { // turn 1
-            playerMoveAmount = diceValue1;
+            playerMoveAmount = diceValue1;              // Store the first dice value
             if (piece.getCurrentPosition() != -1)
                 diceTurn = 1;
         } else if (diceTurn == 1) { // turn 2
-            playerMoveAmount = diceValue2;
+            playerMoveAmount = diceValue2;              // Store the second dice value
             if (piece.getCurrentPosition() != -1) {
-                diceTurn = 2; //reset
+                diceTurn = 2;
             }
         }
-        if (piece.getStep() <= 47) {
-            // case 1: piece being blocked and
+        if (piece.getStep() <= 47) {                    // If the step is lower than 48 which means that the piece only able to move on space (not to house)
+            // case 1: piece being blocked and not able to move with the first dice with first turn
             if (!piece.ableToMove(playerMoveAmount,diceTurn) && !piece.ableToKick(playerMoveAmount)
                     && piece.getCurrentPosition() != -1 && diceTurn == 1) {
-                if (piece.ableToMove(diceValue2,diceTurn) || piece.ableToKick(diceValue2)) {
-                    playerMoveAmount = diceValue2;
-                    diceValue2 = diceValue1;
+                if (piece.ableToMove(diceValue2,diceTurn) || piece.ableToKick(diceValue2)) {        // If a piece can do one of above actions with dice 2, use dice 2 for moving
+                    playerMoveAmount = diceValue2;                      // Store the value of dice 2
+                    diceValue2 = diceValue1;                            // Swap value of dice 2 and dice 1, dice 1 will be used for next dice turn
                     diceValue1 = playerMoveAmount;
                 }
             }
@@ -395,21 +394,21 @@ public class StaticContainer {
             if (!piece.isBlockedPiece(playerMoveAmount) || piece.ableToKick(playerMoveAmount)) {
                 int next = 0;
                 // case 2.1: check for when able to kick
-                if (piece.ableToKick(playerMoveAmount)) {
-                    if (piece.getCurrentPosition() != -1 && piece.getStep() + playerMoveAmount <= 48) {
-                        next = piece.getCurrentPosition() + playerMoveAmount;
+                if (piece.ableToKick(playerMoveAmount)) {           // If there is able to kick case
+                    if (piece.getCurrentPosition() != -1 && piece.getStep() + playerMoveAmount <= 48) { // If the piece is outsider (not in nest)
+                        next = piece.getCurrentPosition() + playerMoveAmount;                       // store the destination
                         if (next > 47) {
                             next -= 48;
                         }
-                        Piece kickedPiece = spaceMap.get(next).getPiece();
-                        enemyId = spaceMap.get(next).getPiece().getNestId();
-                        piece.kick(kickedPiece);
-                        players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
-                        players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                        Piece kickedPiece = spaceMap.get(next).getPiece();                          // Get the enemy's piece
+                        enemyId = spaceMap.get(next).getPiece().getNestId();                        // Store enemy's id for displaying status
+                        piece.kick(kickedPiece);                                                    // Kick
+                        players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);     // Add point
+                        players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);   // Lose point
                         spaceMap.get(next).setPiece(null);
                         spaceMap.get(next).setOccupancy(false);
                         kicked= 1;
-                    } else if (piece.getCurrentPosition() == -1 && (diceValue1 == 6 || diceValue2 == 6)){
+                    } else if (piece.getCurrentPosition() == -1 && (diceValue1 == 6 || diceValue2 == 6)){       // If there is the piece in nest with the dice value
                         next = piece.getStartPosition(globalNestId);   //get the piece at start position
                         enemyId = spaceMap.get(next).getPiece().getNestId();
                         Piece kickedPiece = spaceMap.get(next).getPiece();
@@ -421,19 +420,20 @@ public class StaticContainer {
                         kicked = 1;
                     }
                 }
-                //case 2.2: able to move
+                //case 2.2: able to move or able to deploy
                 if ((piece.getCurrentPosition() != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
-                    if (piece.getCurrentPosition() == -1) {
-                        if (playerMoveAmount != 6 && diceTurn == 0){
-                            playerMoveAmount = diceValue2;
-                            diceValue2 = diceValue1;
+                    if (piece.getCurrentPosition() == -1) {     // For piece in nest
+                        if (playerMoveAmount != 6 && diceTurn == 0){        // Use the dice has value of 6 ( no mater dice 1 or 2 )
+                            playerMoveAmount = diceValue2;                  // If use dice 2, store the dice 2 value
+                            diceValue2 = diceValue1;                        // Swap its value, dice 1 will be used for the next dice turn
                             diceValue1 = playerMoveAmount;
                         }
                         diceTurn ++;
                     }
 
-                    if (piece.getStep() + playerMoveAmount <= 48) {
-                        players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
+                    if (piece.getStep() + playerMoveAmount <= 48) {         // If the piece move without passing its home arrival
+                        players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount)); // It is allowed to move
+                        // Update status for the user
                         if (kicked == 1){
                             updateStatus(players[globalNestId].getName() ,players[enemyId].getName(),0,1);
                         }
@@ -445,6 +445,7 @@ public class StaticContainer {
                                 updateStatus(players[globalNestId].getName() ,"",playerMoveAmount,3);
                             }
                         }
+                        // Set occupancy for both old and new position
                         if (initialPosition != -1) {
                             spaceMap.get(initialPosition).setOccupancy(false);
                             spaceMap.get(initialPosition).setPiece(null);
@@ -458,19 +459,20 @@ public class StaticContainer {
                 }
             }
             //case 3: piece is blocked on board
-            else if ((piece.isBlockedPiece(playerMoveAmount) && piece.getCurrentPosition() != -1)) {
+            else if ((piece.isBlockedPiece(playerMoveAmount) && piece.getCurrentPosition() != -1)) {        // If this piece is not able to move, keep that dice turn and its value for another piece which is able to move
                 diceTurn--; //reset turn
             }
         }
-        else if ((!piece.blockHome(playerMoveAmount) ||
+        else if ((!piece.blockHome(playerMoveAmount) ||     // If this piece is already at home arrival or inside its home, and there is no block
                 (!piece.blockHome(diceValue2) && diceTurn == 1 )) &&
                 piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
-            if (!piece.blockHome(diceValue2) && (diceValue1 < diceValue2 || piece.blockHome(diceValue1)) && diceTurn == 1) {
-                playerMoveAmount = diceValue2;
-                diceValue2 = diceValue1;
+            if (!piece.blockHome(diceValue2) && (diceValue1 < diceValue2 || piece.blockHome(diceValue1)) && diceTurn == 1) {        // Use the higher dice's value to move if it is available
+                playerMoveAmount = diceValue2;                      // Store the dice 2's value
+                diceValue2 = diceValue1;                            // swap dice 1 and dice 2
                 diceValue1 = playerMoveAmount;
             }
-            players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
+            players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));             // Move the piece
+            // Set the occupancy
             if (initialPosition >= 48) {
                 houseMap.get(initialPosition).setOccupancy(false);
                 houseMap.get(initialPosition).setPiece(null);
@@ -480,15 +482,14 @@ public class StaticContainer {
                 spaceMap.get(initialPosition).setOccupancy(false);
                 spaceMap.get(initialPosition).setPiece(null);
                 updateStatus(players[globalNestId].getName(),"",playerMoveAmount,5);
-
             }
             houseMap.get(piece.getCurrentPosition()).setOccupancy(true);
             houseMap.get(piece.getCurrentPosition()).setPiece(piece);
         }
-        if (piece.getCurrentPosition() == initialPosition && piece.getStep() >= 48) {
+        if (piece.getCurrentPosition() == initialPosition && piece.getStep() >= 48) {           // If it cannot move
             diceTurn--;
         }
-        //case 4: auto check whether it is possible to use the next dice's value for moving or not
+        //case 4: after successfully using the first dice turn, auto check whether it is possible to use the next dice's value for moving or not
         if (piece.getCurrentPosition() != -1
                 && !piece.ableToMove(diceValue2,diceTurn)
                 && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1
