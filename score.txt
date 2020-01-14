@@ -1,4 +1,4 @@
-Player 0,190
-Player 1,93
-Player 2,106
-Player 3,160
+Han,38
+Quang,20
+Bao,20
+Player 2,16

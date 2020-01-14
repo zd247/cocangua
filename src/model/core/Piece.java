@@ -214,7 +214,7 @@ public class Piece extends Circle {
 
                 // BOT MUST ROLL
                 nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
-
+                nestMap.get(nextTurn).circle.setStrokeWidth(10);
                 if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT) {              // Auto roll if the next one is a bot
                     Timeline timeline = new Timeline();
                     KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {

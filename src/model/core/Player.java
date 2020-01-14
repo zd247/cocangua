@@ -13,6 +13,8 @@ import javafx.scene.text.Text;
 
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import static helper.StaticContainer.*;
 
@@ -31,7 +33,7 @@ public class Player extends Pane {
     boolean isClickedOn;
     Text addText = new Text("Click on the pane to add new player...");
     VBox playerDisplayVBox = new VBox();
-    TextField textField = new TextField();
+    public TextField textField = new TextField();
     CheckBox toggler = new CheckBox("BOT");
     Dice dice = new Dice();
     boolean isRolled = false;
@@ -49,11 +51,11 @@ public class Player extends Pane {
         addText.setLayoutX(70);
         addText.setLayoutY(50);
 
+        this.name = textField.getText(); //set name
         //Set default layout
         this.getChildren().add(playerDisplayVBox);
         this.setBackground(new Background(new BackgroundFill(getColorByNestId(nestId), CornerRadii.EMPTY, Insets.EMPTY)));
         textField.setText("Player " + nestId);
-        this.name = textField.getText(); //set name
 
         numberOfPlayer = 0;
         //Game menu set up
@@ -85,6 +87,7 @@ public class Player extends Pane {
                 }
             }
         });
+
     }
 
     public void rollForGetTurn(Dice dice){
@@ -158,6 +161,26 @@ public class Player extends Pane {
         this.getToHouse--;
     }
 
+    public void checkExistedPlayer() throws Exception{
+        java.io.File file = new java.io.File("score.txt");
+        ArrayList<String> playerName = new ArrayList<>();
+        ArrayList<Integer> playerScore = new ArrayList<>();
+        Scanner fileInput = new Scanner(file);
+        fileInput.useDelimiter(",|\n");
+
+        while (fileInput.hasNext()) {
+            playerName.add(fileInput.next());
+            playerScore.add(fileInput.nextInt());
+        }
+        fileInput.close();
+
+        for (int i =0; i < playerName.size(); i++) {
+            if (name.equals(playerName.get(i))) {
+                points = playerScore.get(i);
+                break;
+            }
+        }
+    }
 
     /**
      * Establish ClientSideConnection to listen to server's messages

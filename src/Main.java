@@ -55,6 +55,15 @@ public class Main extends Application implements Initializable{
                 for (int i = 0 ; i < players.length;i++){
                     if (players[i].isClickedOn()){
                         players[i].setConnectionStatus(players[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
+                        players[i].setName(players[i].textField.getText());
+                        try {
+                            players[i].checkExistedPlayer();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        players[i].setName("Default");
                     }
                 }
                 //Load main game
@@ -120,42 +129,42 @@ public class Main extends Application implements Initializable{
         FXMLLoader end = new FXMLLoader(getClass().getResource("view/end.fxml"));
         Parent load = end.load();
 
-//        ArrayList<String> playerName = new ArrayList<>();
-//        ArrayList<Integer> playerScore = new ArrayList<>();
-//        Scanner fileInput = new Scanner(file);
-//        fileInput.useDelimiter(",|\n");
-//
-//        while (fileInput.hasNext()) {
-//            playerName.add(fileInput.next());
-//            playerScore.add(fileInput.nextInt());
-//        }
-//
-//        fileInput.close();
-//
-//        System.out.println(playerName.size() + " playerName.size()");
-//        java.io.PrintWriter output = new java.io.PrintWriter(file);
-//        for (int i = 0; i < players.length; i++ ) {
-//            if (players[i].getConnectionStatus() != ConnectionStatus.OFF) {
-//                boolean duplcated = false;
-//                for (int j = 0; j < playerName.size(); j++) {
-//                    if (playerName.get(j).equals(players[i].getName())) {
-//                        int newScore = playerScore.get(j) + players[i].getPoints();
-//                        playerScore.set(j,newScore);
-//                        duplcated = true;
-//                    } else if (j == playerName.size() - 1 && !duplcated) {
-//                        playerName.add(players[i].getName());
-//                        playerScore.add(players[i].getPoints());
-//                        break;
-//                    }
-//                }
-//                if (playerName.size() == 0)
-//                    output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
-//            }
-//        }
-//        for (int j = 0; j < playerName.size(); j++) {
-//            output.write(playerName.get(j) + "," + playerScore.get(j) + '\n');
-//        }
-//        output.close();
+        ArrayList<String> playerName = new ArrayList<>();
+        ArrayList<Integer> playerScore = new ArrayList<>();
+        Scanner fileInput = new Scanner(file);
+        fileInput.useDelimiter(",|\n");
+
+        while (fileInput.hasNext()) {
+            playerName.add(fileInput.next());
+            playerScore.add(fileInput.nextInt());
+        }
+
+        fileInput.close();
+
+        System.out.println(playerName.size() + " playerName.size()");
+        java.io.PrintWriter output = new java.io.PrintWriter(file);
+        for (int i = 0; i < players.length; i++ ) {
+            if (players[i].getConnectionStatus() != ConnectionStatus.OFF) {
+                boolean duplcated = false;
+                for (int j = 0; j < playerName.size(); j++) {
+                    if (playerName.get(j).equals(players[i].getName())) {
+                        int newScore = playerScore.get(j) + players[i].getPoints();
+                        playerScore.set(j,newScore);
+                        duplcated = true;
+                    } else if (j == playerName.size() - 1 && !duplcated) {
+                        playerName.add(players[i].getName());
+                        playerScore.add(players[i].getPoints());
+                        break;
+                    }
+                }
+                if (playerName.size() == 0)
+                    output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
+            }
+        }
+        for (int j = 0; j < playerName.size(); j++) {
+            output.write(playerName.get(j) + "," + playerScore.get(j) + '\n');
+        }
+        output.close();
 
         load.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
         alertBox.setScene(new Scene(load));
