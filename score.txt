@@ -1,8 +1,0 @@
-Han,47
-Quang,20
-Bao,20
-Player 2,122
-Fuck,137
-This,92
-Player 0,86
-Player 3,29
