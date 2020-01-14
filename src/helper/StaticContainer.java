@@ -545,7 +545,7 @@ public class StaticContainer {
         }
     }
 
-    public  static void updateStatus(String context){
-        gameController.status.setText(context);
+    public static void updateStatus(String context){
+        gameController.activityLog.setText(context);
     }
 }

@@ -40,9 +40,6 @@ import static model.Sound.THEME;
  */
 
 public class GameController implements Initializable {
-    public Button button;
-
-    public TextField status;
     @FXML
     private BorderPane container;
     @FXML
@@ -65,7 +62,7 @@ public class GameController implements Initializable {
     @FXML public Label scoreLbYellow;
     @FXML public Label scoreLbGreen;
     @FXML public Label scoreLbRed;
-    @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
+    @FXML public TextField activityLog;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
