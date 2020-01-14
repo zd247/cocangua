@@ -13,7 +13,7 @@ Machine algorithm:
 While the turn is not done yet
 	For each piece in the Piece list of the nest
 		Take that piece 
-		Use dice 1 by 1 by the order, and save its value to "current dice value"
+		Use dice 1 by 1 by the order, and store its value to "current dice value", dice turn 1 store the dice 1's value, dice turn 2 store the dice 2's value
 		If the piece's step is lower than 48
 			If the piece both not able to move and able to kick with the first dice, and there is the first turn dice
 				If they can do 1 out of 2 action above with the second dice	
