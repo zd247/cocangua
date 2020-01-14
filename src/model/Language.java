@@ -33,6 +33,11 @@ public class Language {
         return Locale.getDefault()+"";
     }
 
+    public String getNewGame() {
+        return bundle.getString("newGame");
+    }
 
-
+    public String getQuit(){
+        return bundle.getString("quit");
+    }
 }

@@ -63,7 +63,12 @@ public class Player extends Pane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (!isClickedOn){
-                    playerDisplayVBox.getChildren().addAll(textField, toggler, dice);
+                    BorderPane containDice = new BorderPane();
+                    containDice.setPrefHeight(200);
+                    containDice.setPrefWidth(200);
+                    containDice.setRight(dice);
+                    playerDisplayVBox.setSpacing(30);
+                    playerDisplayVBox.getChildren().addAll(textField, toggler, containDice);
                     rollForGetTurn(dice);
                     isClickedOn = true;
                     numberOfPlayer++;

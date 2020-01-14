@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,12 +28,14 @@ import java.util.Scanner;
 import static helper.StaticContainer.*;
 import static helper.StaticContainer.numberOfPlayer;
 
-public class Main extends Application {
+public class Main extends Application implements Initializable{
 
     public Label notifier;
     static java.io.File file = new java.io.File("score.txt");
 
     public TextField winner;
+    public Button newGame;
+    public Button quit;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -91,7 +94,7 @@ public class Main extends Application {
                     if (players[i].isGetToHouse()){
                         try {
                             Sound.playSound(Sound.WIN);
-                            displayMessage(i);
+                            displayMessage();
                             turn = 2;
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -106,10 +109,9 @@ public class Main extends Application {
 
     /**
      * load the end UI
-     * @param player
      * @throws IOException
      */
-    private void displayMessage(int player) throws IOException {
+    private void displayMessage() throws IOException {
         alertBox = new Stage();
         alertBox.initModality(Modality.APPLICATION_MODAL);
         alertBox.setTitle("WIN");
@@ -118,48 +120,63 @@ public class Main extends Application {
         FXMLLoader end = new FXMLLoader(getClass().getResource("view/end.fxml"));
         Parent root = end.load();
 
-//        notifier.setText(players[player].getName() + " has reached to all of the house");
-
-        ArrayList<String> playerName = new ArrayList<>();
-        ArrayList<Integer> playerScore = new ArrayList<>();
-        Scanner fileInput = new Scanner(file);
-        fileInput.useDelimiter(",|\n");
-
-        while (fileInput.hasNext()) {
-            playerName.add(fileInput.next());
-            playerScore.add(fileInput.nextInt());
-        }
-
-        fileInput.close();
-
-        System.out.println(playerName.size() + " playerName.size()");
-        java.io.PrintWriter output = new java.io.PrintWriter(file);
-        for (int i = 0; i < players.length; i++ ) {
-            if (players[i].getConnectionStatus() != ConnectionStatus.OFF) {
-                boolean duplcated = false;
-                for (int j = 0; j < playerName.size(); j++) {
-                    if (playerName.get(j).equals(players[i].getName())) {
-                        int newScore = playerScore.get(j) + players[i].getPoints();
-                        playerScore.set(j,newScore);
-                        duplcated = true;
-                    } else if (j == playerName.size() - 1 && !duplcated) {
-                        playerName.add(players[i].getName());
-                        playerScore.add(players[i].getPoints());
-                        break;
-                    }
-                }
-                if (playerName.size() == 0)
-                    output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
-            }
-        }
-        for (int j = 0; j < playerName.size(); j++) {
-            output.write(playerName.get(j) + "," + playerScore.get(j) + '\n');
-        }
-        output.close();
+//        ArrayList<String> playerName = new ArrayList<>();
+//        ArrayList<Integer> playerScore = new ArrayList<>();
+//        Scanner fileInput = new Scanner(file);
+//        fileInput.useDelimiter(",|\n");
+//
+//        while (fileInput.hasNext()) {
+//            playerName.add(fileInput.next());
+//            playerScore.add(fileInput.nextInt());
+//        }
+//
+//        fileInput.close();
+//
+//        System.out.println(playerName.size() + " playerName.size()");
+//        java.io.PrintWriter output = new java.io.PrintWriter(file);
+//        for (int i = 0; i < players.length; i++ ) {
+//            if (players[i].getConnectionStatus() != ConnectionStatus.OFF) {
+//                boolean duplcated = false;
+//                for (int j = 0; j < playerName.size(); j++) {
+//                    if (playerName.get(j).equals(players[i].getName())) {
+//                        int newScore = playerScore.get(j) + players[i].getPoints();
+//                        playerScore.set(j,newScore);
+//                        duplcated = true;
+//                    } else if (j == playerName.size() - 1 && !duplcated) {
+//                        playerName.add(players[i].getName());
+//                        playerScore.add(players[i].getPoints());
+//                        break;
+//                    }
+//                }
+//                if (playerName.size() == 0)
+//                    output.write(players[i].getName() + "," + players[i].getPoints() + "\n");
+//            }
+//        }
+//        for (int j = 0; j < playerName.size(); j++) {
+//            output.write(playerName.get(j) + "," + playerScore.get(j) + '\n');
+//        }
+//        output.close();
 
         alertBox.setScene(new Scene(root));
         alertBox.setTitle("WIN");
         alertBox.show();
+    }
+
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        newGame.setText(language.getNewGame());
+        newGame.setText(language.getQuit());
+        String max_person = players[0].getName();
+        int max_score = players[0].getPoints();
+        for (int i = 0; i < players.length ; i++){
+            if (players[i].getPoints() > max_score){
+                max_person = players[i].getName();
+                max_score = players[i].getPoints();
+            }
+        }
+        winner.setText(max_person + " wins the game with " + max_score);
     }
 
     /**
@@ -186,4 +203,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }
