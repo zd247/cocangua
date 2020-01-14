@@ -29,9 +29,10 @@ import static helper.StaticContainer.*;
 import static helper.StaticContainer.numberOfPlayer;
 
 public class Main extends Application implements Initializable{
-
-    public Label notifier;
     static java.io.File file = new java.io.File("score.txt");
+
+    @FXML
+    public Label endGameLb;
 
     public TextField winner;
     public Button newGame;
@@ -114,11 +115,10 @@ public class Main extends Application implements Initializable{
     private void displayMessage() throws IOException {
         alertBox = new Stage();
         alertBox.initModality(Modality.APPLICATION_MODAL);
-        alertBox.setTitle("WIN");
         alertBox.setMinWidth(250);
 
         FXMLLoader end = new FXMLLoader(getClass().getResource("view/end.fxml"));
-        Parent root = end.load();
+        Parent load = end.load();
 
 //        ArrayList<String> playerName = new ArrayList<>();
 //        ArrayList<Integer> playerScore = new ArrayList<>();
@@ -157,17 +157,17 @@ public class Main extends Application implements Initializable{
 //        }
 //        output.close();
 
-        alertBox.setScene(new Scene(root));
-        alertBox.setTitle("WIN");
+        load.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
+        alertBox.setScene(new Scene(load));
+        alertBox.setTitle(language.getWinScreenTitle());
+        //endGameLb.setText(language.getEndGameLabel());
         alertBox.show();
     }
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         newGame.setText(language.getNewGame());
-        newGame.setText(language.getQuit());
+        quit.setText(language.getQuit());
         String max_person = players[0].getName();
         int max_score = players[0].getPoints();
         for (int i = 0; i < players.length ; i++){
@@ -176,7 +176,7 @@ public class Main extends Application implements Initializable{
                 max_score = players[i].getPoints();
             }
         }
-        winner.setText(max_person + " wins the game with " + max_score);
+        winner.setText(max_person + " " + language.getResultStatement() + " " + max_score);
     }
 
     /**

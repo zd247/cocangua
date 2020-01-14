@@ -1,7 +1,16 @@
 /* GUI STYLING */
 
+/* FOR GAME UI */
 .root {
     -fx-background-image: url("/images/envi.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+}
+
+/* FOR END SCREEN */
+.load {
+    -fx-background-image: url("/images/envi2.png");
     -fx-background-position: center center;
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover, auto;

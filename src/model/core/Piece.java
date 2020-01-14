@@ -12,7 +12,7 @@ import model.Sound;
 
 import static helper.Map.*;
 import static helper.StaticContainer.*;
-import static javafx.scene.paint.Color.WHITE;
+import static javafx.scene.paint.Color.*;
 
 
 public class Piece extends Circle {
@@ -56,8 +56,6 @@ public class Piece extends Circle {
         // Set piece appearance
         this.setFill(color);
         this.setRadius(RADIUS);
-        this.setStroke(WHITE);
-        this.setStrokeWidth(2);
 
         // Set move-related attributes
         this.currentPosition = -1; //inside nest status
@@ -433,7 +431,7 @@ public class Piece extends Circle {
      * @return
      */
     public boolean ableToDeploy(){
-        for (int i =0;i <4; i++){
+        for (int i = 0;i <4; i++){
             if (getNestById(nestId).getPieceList()[i].getCurrentPosition() == -1){
                 if (!getNestById(nestId).getPieceList()[i].isBlockedPiece(1)){
                     return true;
@@ -456,10 +454,13 @@ public class Piece extends Circle {
 
                 double x = getSpaceX(getStartPosition(nestId));
                 double y = getSpaceY(getStartPosition(nestId));
+
                 updatePieceMoving(x,y).play();    //move animation
                 Sound.playSound(Sound.DEPLOY);
+
                 currentPosition = getStartPosition(nestId) ;  //index at the start space
                 isDeployed = true;  //Piece had already move outside the nest
+
             }else {
                 //Move the piece in space
                 // move the piece to said location
@@ -468,6 +469,7 @@ public class Piece extends Circle {
                         currentPosition = -1;
                     double x = getSpaceX(currentPosition + 1);
                     double y = getSpaceY(currentPosition + 1);
+
                     seq.getChildren().addAll(updatePieceMoving(x,y), new PauseTransition(Duration.millis(100)));  //move animation
                     Sound.playSound(Sound.MOVE);
                 }
@@ -496,15 +498,16 @@ public class Piece extends Circle {
         }
     }
 
-    private TranslateTransition updatePieceMoving(double x, double y ){
+    // Actually move the Piece to target
+    private TranslateTransition updatePieceMoving(double x, double y) {
         TranslateTransition tt = new TranslateTransition(Duration.millis(100), this);
         tt.setToX(x - getLayoutX());
         tt.setToY(y - getLayoutY());
-        //set the piece null when get to house
+
+        // SET PIECE APPEARANCE WHEN GOT TO HOUSE
         if (step > 48){
-            setOpacity(0.5);
-            setStroke(WHITE);
-            setStrokeWidth(5);
+            setStroke(BLACK);
+            setStrokeWidth(4);
         }
         if (step == 48){
             currentPosition = getHouseArrival() - 1;
