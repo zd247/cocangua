@@ -54,7 +54,7 @@ public class Main extends Application implements Initializable{
                 for (int i = 0 ; i < players.length;i++){
                     if (players[i].isClickedOn()){
                         players[i].setConnectionStatus(players[i].getToggler().isSelected() ? StaticContainer.ConnectionStatus.BOT : StaticContainer.ConnectionStatus.PLAYER);
-                        players[i].setName(players[i].textField.getText());
+                        players[i].setName(players[i].getTextField().getText());
                         try {
                             players[i].checkExistedPlayer();
                         } catch (Exception e) {
@@ -103,6 +103,8 @@ public class Main extends Application implements Initializable{
                     if (players[i].isGetToHouse()){
                         try {
                             Sound.playSound(Sound.WIN);
+                            Sound.isMute = true;
+                            Sound.playSound(Sound.THEME);
                             displayMessage();
                             turn = 2;
                         } catch (IOException e) {

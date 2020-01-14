@@ -1,15 +1,20 @@
 package model.core;
 
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import helper.StaticContainer.*;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.net.*;
 import java.io.*;
@@ -30,11 +35,11 @@ public class Player extends Pane {
     private int getToHouse ;
 
     //player main menu display -- these are set first
-    boolean isClickedOn;
-    Text addText = new Text("Click on the pane to add new player...");
-    VBox playerDisplayVBox = new VBox();
-    public TextField textField = new TextField();
-    CheckBox toggler = new CheckBox("BOT");
+    private boolean isClickedOn;
+    private Text addText = new Text("Click on the pane to add new player...");
+    private VBox playerDisplayVBox = new VBox();
+    private TextField textField = new TextField();
+    private CheckBox toggler = new CheckBox("BOT");
     Dice dice = new Dice();
     boolean isRolled = false;
     int numOfFace = 0;
@@ -43,29 +48,37 @@ public class Player extends Pane {
 
 
     public Player (int nestId) {
+
         this.nestId = nestId;
         points = 0;
         this.connectionStatus = ConnectionStatus.OFF;
 
+        //Add to the player field before click
         this.getChildren().add(addText);
+        touchThis();
+
         addText.setLayoutX(70);
         addText.setLayoutY(50);
 
-        this.name = textField.getText(); //set name
         //Set default layout
-        this.getChildren().add(playerDisplayVBox);
         this.setBackground(new Background(new BackgroundFill(getColorByNestId(nestId), CornerRadii.EMPTY, Insets.EMPTY)));
         textField.setText("Player " + nestId);
 
-        numberOfPlayer = 0;
-        //Game menu set up
+        numberOfPlayer = 0; //number of player attends the game
+
         //Set default value when first clicked
         isClickedOn = false;
+
+        //Click on the player field
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (!isClickedOn){
+                    //When
+                    getChildren().clear();
+                    getChildren().add(playerDisplayVBox);
                     BorderPane containDice = new BorderPane();
+                    BorderPane.setAlignment(dice, Pos.CENTER);
                     containDice.setPrefHeight(200);
                     containDice.setPrefWidth(200);
                     containDice.setRight(dice);
@@ -73,13 +86,15 @@ public class Player extends Pane {
                     playerDisplayVBox.getChildren().addAll(textField, toggler, containDice);
                     rollForGetTurn(dice);
                     isClickedOn = true;
-                    numberOfPlayer++;
+                    numberOfPlayer++;   //increase number of player
                     //invisible at end of logic
                     addText.setVisible(false);
                    /* connectToServer(); // populate the csc
                     csc.sendNestId(nestId);*/
                 }
                 else {
+                    touchThis();
+                    getChildren().add(addText);
                     playerDisplayVBox.getChildren().clear();
                     isClickedOn = false;
                     numberOfPlayer--;
@@ -113,7 +128,9 @@ public class Player extends Pane {
     }
 
     public void setPointForTurn(int point){ pointForTurn = point;}
+
     public int getPointForTurn(){return pointForTurn;}
+
     // Player name
     public String getName() {
         return name;
@@ -161,6 +178,10 @@ public class Player extends Pane {
         this.getToHouse--;
     }
 
+    /**
+     * To set point if the player in the file
+     * @throws Exception
+     */
     public void checkExistedPlayer() throws Exception{
         java.io.File file = new java.io.File("score.txt");
         ArrayList<String> playerName = new ArrayList<>();
@@ -180,6 +201,25 @@ public class Player extends Pane {
                 break;
             }
         }
+    }
+
+    /**
+     * set the animation for making it nicely
+     */
+    private void touchThis(){
+        ImageView touchHand = new ImageView("images/touch.png");
+        touchHand.setFitWidth(150);
+        touchHand.setPreserveRatio(true);
+        touchHand.setLayoutX(100);
+        touchHand.setLayoutY(100);
+        getChildren().add(touchHand);
+        TranslateTransition upDown = new TranslateTransition();
+        upDown.setNode(touchHand);
+        upDown.setByY(50);
+        upDown.setDuration(Duration.seconds(1));
+        upDown.setCycleCount(Animation.INDEFINITE);
+        upDown.setAutoReverse(true);
+        upDown.play();
     }
 
     /**
