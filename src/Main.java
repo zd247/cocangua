@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import static helper.StaticContainer.*;
-import static helper.StaticContainer.numberOfPlayer;
+import static helper.LayoutContainer.*;
 
 public class Main extends Application implements Initializable{
 
