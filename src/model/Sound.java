@@ -29,7 +29,7 @@ public class Sound {
     public static MediaPlayer MOVE_AUDIO = new MediaPlayer(new Media(new File("data/audio/move.mp3").toURI().toString()));
     public static MediaPlayer DEPLOY_AUDIO = new MediaPlayer(new Media(new File("data/audio/deploy.wav").toURI().toString()));
     public static MediaPlayer BLOCK_AUDIO = new MediaPlayer(new Media(new File("data/audio/block.wav").toURI().toString()));
-    public static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("data/audio/kick.wav").toURI().toString()));
+    public static MediaPlayer KICK_AUDIO = new MediaPlayer(new Media(new File("data/audio/kick.mp3").toURI().toString()));
     public static MediaPlayer HOME_AUDIO = new MediaPlayer(new Media(new File("data/audio/home.wav").toURI().toString()));
     public static MediaPlayer ROLL_AUDIO = new MediaPlayer(new Media(new File("data/audio/roll.wav").toURI().toString()));
     public static MediaPlayer WIN_AUDIO = new MediaPlayer(new Media(new File("data/audio/win.mp3").toURI().toString()));

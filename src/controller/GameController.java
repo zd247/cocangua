@@ -101,7 +101,7 @@ public class GameController implements Initializable {
         // INITIAL MUST ROLL INDICATOR FOR FIRST ROUND
         nestMap.get(globalNestId +1).circle.setStroke(nestMustRollColor);
 
-        if (players[globalNestId + 1].getConnectionStatus() == ConnectionStatus.BOT){
+        if (players[globalNestId + 1].getConnectionStatus() == ConnectionStatus.BOT) {
             dice1.setDisable(true);
             dice2.setDisable(true);
             Timeline timeline = new Timeline();

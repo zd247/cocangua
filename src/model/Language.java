@@ -29,6 +29,14 @@ public class Language {
         return bundle.getString("addPlayerMessage");
     }
 
+    public String getWinScreenTitle() {
+        return bundle.getString("winScreenTitle");
+    }
+
+    public String getResultStatement() { return bundle.getString("winResult"); }
+
+    public String getEndGameLabel() { return bundle.getString("endGameLb"); }
+
     public String getLocale(){
         return Locale.getDefault()+"";
     }
