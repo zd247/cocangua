@@ -100,26 +100,26 @@ public class GameController implements Initializable {
 
         topBar.getChildren().addAll(dice1, dice2);
 
-        for (int i = 0; i < players.length;i++) {
+        for (int i = 0; i < players.length;i++) {               // Set the nest color to silver if there is an offline player
             if (players[i].getConnectionStatus() == ConnectionStatus.OFF) {
                 nestMap.get(i).setDisplayDisconnected();
             }
         }
         int checker = 0;
         for (int i =3; i >= 0; i--){
-            if (players[i].getPointForTurn() >= firstTurn){
+            if (players[i].getPointForTurn() >= firstTurn && players[i].getConnectionStatus() != ConnectionStatus.OFF){     // Get the first player's turn for whom has the highest value when rolling before starting game
                 firstTurn = players[i].getPointForTurn();
                 checker = i;
             }
         }
 
-        turn = 0;
+        turn = 0;           //reset the turn
         globalNestId = checker - 1;
 
         // INITIAL MUST ROLL INDICATOR FOR FIRST ROUND
         nestMap.get(globalNestId +1).circle.setStroke(nestMustRollColor);
 
-        if (players[globalNestId + 1].getConnectionStatus() == ConnectionStatus.BOT) {
+        if (players[globalNestId + 1].getConnectionStatus() == ConnectionStatus.BOT) {  // If there is a bot's turn
             dice1.setDisable(true);
             dice2.setDisable(true);
             Timeline timeline = new Timeline();
@@ -127,7 +127,7 @@ public class GameController implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     diceWork();
-                }
+                }           //Auto rolling
             });
             timeline.getKeyFrames().add(key);
             timeline.play();
@@ -142,6 +142,9 @@ public class GameController implements Initializable {
         updateName();
     }
 
+    /**
+     *    Turn on/off the sound
+      */
     @FXML
     private void setSound(ActionEvent event) {
         if (!Sound.isMute) {
@@ -153,6 +156,9 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Choosing language
+     */
     private void chooseLanguage(){
         changeChoiceBoxInGame(this);
         loadLanguage();
@@ -172,11 +178,17 @@ public class GameController implements Initializable {
         });
     }
 
+    /**
+     * Load language
+     */
     public void loadLanguage(){
         //change langauge of default
         gameController.activityLog.setText(language.getStartButton());
     }
 
+    /**
+     * update name if there is a not a offline player
+     */
      private void updateName(){
         nameLbBlue.setText(players[0].getName());
         nameLbYellow.setText(players[1].getName());

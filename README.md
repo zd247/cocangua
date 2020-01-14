@@ -83,6 +83,13 @@ Pseudo code fore turn dice logic:
    - Piece in home or at home arrival, it will use the dice has higher value (in case that dice is able to use to move piece).
 
 
+Pseudo code fore turn dice logic:
+- Use dice by dice
+   - If the first dice turn which use the first dice not able to move any piece and the second dice is possible, change to use the second dice first, then the next turn dice will use the value of dice 1 to move (if it is possible - this will be checked by auto checking).  
+   - Piece in nest will use the dice which has value of 6, and leave another one to the next turn
+   - Piece in home or at home arrival, it will use the dice has higher value (in case that dice is able to use to move piece).
+
+
 
 Pseudo code for Machine Player:
 Machine algorithm:

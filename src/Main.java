@@ -106,8 +106,6 @@ public class Main extends Application implements Initializable{
     }
 
 
-    /**===========================[Test code goes here]===========================*/
-
     /**
      * once all the piece of nest reach 6-5-4-3
      */
@@ -187,8 +185,6 @@ public class Main extends Application implements Initializable{
     public void quitGame(){
         System.exit(0);
     }
-
-    /**===========================[End of view.test code]===========================*/
 
 
     public static void main(String[] args) {

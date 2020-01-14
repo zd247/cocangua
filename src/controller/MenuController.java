@@ -79,6 +79,9 @@ public class MenuController implements Initializable {
         chooseLanguage();
     }
 
+    /**
+     * Choosing language
+     */
     private void chooseLanguage() {
         changeChoiceBoxInMenu(this);
 
@@ -98,6 +101,9 @@ public class MenuController implements Initializable {
         });
     }
 
+    /**
+     * Load the language
+     */
     public void loadLanguage(){
         TitleName.setText(language.getTitleName());
         startBtn.setText(language.getStartButton());
