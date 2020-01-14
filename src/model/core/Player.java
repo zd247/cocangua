@@ -155,7 +155,7 @@ public class Player extends Pane {
 
     public boolean isRolled(){ return rolled;}
 
-    public void resetCheck(){rolled = false;}
+    public void resetRolled(){rolled = false;}
 
     public void setPoints (int points) {
         this.points = points;
