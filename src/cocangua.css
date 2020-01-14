@@ -23,6 +23,10 @@
     -fx-fill: url("/images/stone.jpg");
 }
 
+#nest-disconnected > Circle {
+    -fx-stroke: GRAY;
+}
+
 HBox {
     -fx-background-image: url("/images/plank.png");
     -fx-background-repeat: no-repeat;

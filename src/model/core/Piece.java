@@ -12,6 +12,7 @@ import model.Sound;
 
 import static helper.Map.*;
 import static helper.StaticContainer.*;
+import static javafx.scene.paint.Color.WHITE;
 
 
 public class Piece extends Circle {
@@ -55,6 +56,8 @@ public class Piece extends Circle {
         // Set piece appearance
         this.setFill(color);
         this.setRadius(RADIUS);
+        this.setStroke(WHITE);
+        this.setStrokeWidth(2);
 
         // Set move-related attributes
         this.currentPosition = -1; //inside nest status
@@ -209,8 +212,10 @@ public class Piece extends Circle {
                 }
                 players[nestId].resetCheck();                               // Reset the roll
                 diceTurn = 0;
-                nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
-                nestMap.get(nextTurn).rect.setStrokeWidth(10);
+
+                // BOT MUST ROLL
+                nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
+
                 if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT) {              // Auto roll if the next one is a bot
                     Timeline timeline = new Timeline();
                     KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
@@ -497,7 +502,7 @@ public class Piece extends Circle {
         //set the piece null when get to house
         if (step > 48){
             setOpacity(0.5);
-            setStroke(Color.WHITE);
+            setStroke(WHITE);
             setStrokeWidth(5);
         }
         if (step == 48){

@@ -16,7 +16,6 @@ public class Dice extends ImageView {
     Image diceFace = new Image("images/dice1.png");
     int val;
 
-
     // Constructor
     public Dice() {
         setFitWidth(85);
@@ -34,9 +33,6 @@ public class Dice extends ImageView {
 
     }
 
-    public int getVal(){
-        return val;
-    }
     // Roll a dice and return rolled number
     public int roll() {
         Random rand = new Random();
@@ -65,4 +61,7 @@ public class Dice extends ImageView {
         return num;
     }
 
+    public int getVal(){
+        return val;
+    }
 }

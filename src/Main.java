@@ -111,15 +111,19 @@ public class Main extends Application {
 
         FXMLLoader end = new FXMLLoader(getClass().getResource("view/end.fxml"));
         Parent root = end.load();
+
 //        notifier.setText(players[player].getName() + " has reached to all of the house");
+
         ArrayList<String> playerName = new ArrayList<>();
         ArrayList<Integer> playerScore = new ArrayList<>();
         Scanner fileInput = new Scanner(file);
         fileInput.useDelimiter(",|\n");
+
         while (fileInput.hasNext()) {
             playerName.add(fileInput.next());
             playerScore.add(fileInput.nextInt());
         }
+
         fileInput.close();
 
         System.out.println(playerName.size() + " playerName.size()");

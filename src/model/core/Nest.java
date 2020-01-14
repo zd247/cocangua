@@ -6,14 +6,15 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import model.core.Piece;
 
-import static javafx.scene.paint.Color.GREY;
-import static javafx.scene.paint.Color.WHITE;
+import static javafx.scene.paint.Color.*;
 
 public class Nest extends StackPane {
     private int id;
     private Piece[] pieceList = new Piece[4];
     private Color color;
+
     public Rectangle rect = new Rectangle(NEST_SIZE, NEST_SIZE);
+    public Circle circle = new Circle(75);
 
     final public static double NEST_SIZE = 200;
 
@@ -49,8 +50,9 @@ public class Nest extends StackPane {
         rect.setFill(color);
 
         // Draw a circle of 75 radius
-        Circle circle = new Circle(75);
         circle.setFill(WHITE);
+        circle.setStroke(WHITE);
+        circle.setStrokeWidth(5);
 
         // Add 4 pieces to pieceList
         for (int pieceID = 0; pieceID < pieceList.length; pieceID++) {
@@ -76,5 +78,6 @@ public class Nest extends StackPane {
             piece.setFill(GREY);
             piece.setMouseTransparent(true);    // Disable mouse event
         }
+        this.circle.setDisable(true);
     }
 }

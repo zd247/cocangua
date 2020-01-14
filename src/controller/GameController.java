@@ -65,8 +65,6 @@ public class GameController implements Initializable {
     @FXML public Label scoreLbRed;
     @FXML private TextField activityLog;    // Update notifications (kick, block etc.)
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chooseLanguage();
@@ -89,8 +87,8 @@ public class GameController implements Initializable {
                 nestMap.get(i).setDisplayDisconnected();
             }
         }
-        int checker =0;
-        for (int i =3; i >=0; i--){
+        int checker = 0;
+        for (int i =3; i >= 0; i--){
             if (players[i].getPointForTurn() >= firstTurn){
                 firstTurn = players[i].getPointForTurn();
                 checker = i;
@@ -99,8 +97,10 @@ public class GameController implements Initializable {
 
         turn = 0;
         globalNestId = checker - 1;
-        nestMap.get(globalNestId +1).rect.setStroke(Color.SILVER);
-        nestMap.get(globalNestId + 1).rect.setStrokeWidth(10);
+
+        // INITIAL MUST ROLL INDICATOR FOR FIRST ROUND
+        nestMap.get(globalNestId +1).circle.setStroke(nestMustRollColor);
+
         if (players[globalNestId + 1].getConnectionStatus() == ConnectionStatus.BOT){
             dice1.setDisable(true);
             dice2.setDisable(true);

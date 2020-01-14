@@ -17,7 +17,8 @@ import model.core.*;
 
 import java.util.HashMap;
 
-import static javafx.scene.paint.Color.BLACK;
+import static javafx.scene.paint.Color.*;
+import static javafx.scene.paint.Color.GREENYELLOW;
 
 
 public class StaticContainer {
@@ -29,6 +30,11 @@ public class StaticContainer {
     // A map to store all nests with colors as their key
     public static HashMap<Integer, Nest> nestMap;
 
+    // Color indicators for turn
+    public static Color nestWaitingForTurnColor = WHITE;
+    public static Color nestMustRollColor = ORANGE;
+    public static Color nestMustMoveColor = GREENYELLOW;
+
     // Maps to store all houses
     public static HashMap<Integer, House> houseMap ;
 
@@ -37,7 +43,6 @@ public class StaticContainer {
     public static GameController gameController ;
 
     public static int POLLING_INTERVAL = 1000; //miliseconds
-
 
     public static MenuController menuController;
 
@@ -135,16 +140,23 @@ public class StaticContainer {
             for (int i = 0; i < players.length; i++) {          // Setting the nest highlight for indicating its turn
                 if (i != globalNestId) {
                     players[i].resetCheck();
-                    nestMap.get(i).rect.setStrokeWidth(0);
+
+                    // MUST ROLL INDICATOR
+                    //nestMap.get(i).circle.setStroke(nestMustRollColor);
+
                 } else {
                     players[i].rolled();
-                    nestMap.get(i).rect.setStroke(BLACK);
-                    nestMap.get(i).rect.setStrokeWidth(10);
+
+                    // MUST MOVE INDICATOR
+                    nestMap.get(i).circle.setStroke(nestMustMoveColor);
                 }
             }
             //check when clean board, reset turn counter
             if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {        // If it is impossible to move, skip this turn
-                nestMap.get(globalNestId).rect.setStrokeWidth(0);
+
+                // WAITING FOR TURN (DEFAULT) INDICATOR
+                nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
+
                 if (diceValue1 == diceValue2) {
                     globalNestId--;
                 }
@@ -158,9 +170,8 @@ public class StaticContainer {
                         nextTurn = 0;
                     }
                 }
-                // IS TURN, WAITING FOR INPUT
-                nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
-                nestMap.get(nextTurn).rect.setStrokeWidth(10);
+                // IS TURN, WAITING TO ROLL
+                nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
                 turn = 0;
             }
 
@@ -173,7 +184,10 @@ public class StaticContainer {
                         && !pieceInHouseCanMove(globalNestId,diceValue1)
                         && !pieceInHouseCanMove(globalNestId,diceValue2) ) {
                     players[globalNestId].resetCheck();
-                    nestMap.get(globalNestId).rect.setStrokeWidth(0);
+
+                    // WAITING FOR TURN (DEFAULT) INDICATOR
+                    nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
+
                     if (diceValue1 == diceValue2) {
                         globalNestId--;
                     }
@@ -187,8 +201,10 @@ public class StaticContainer {
                             nextTurn = 0;
                         }
                     }
-                    nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
-                    nestMap.get(nextTurn).rect.setStrokeWidth(10);
+
+                    // MUST ROLL INDICATOR
+                    nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
+
                     turn = 0;
                 }
 
@@ -283,7 +299,7 @@ public class StaticContainer {
         Piece piece;
         for (int i =0; i< 4; i++) {
             if(getNestById(nestId).getPieceList()[i].getCurrentPosition() != -1 && getNestById(nestId).getPieceList()[i].getStep() + moveAmount <= 48){
-                piece =getNestById(nestId).getPieceList()[i];
+                piece = getNestById(nestId).getPieceList()[i];
                 if (piece.ableToKick(moveAmount)){
                     return true;
                 }
@@ -338,7 +354,7 @@ public class StaticContainer {
         choiceBox.setItems(availableChoices);
         if (language.getLocale().contains("en"))
             choiceBox.setValue("English");//Set face of the choice box
-        else{
+        else {
             choiceBox.setValue("Tiếng Việt");
         }
 
@@ -360,11 +376,13 @@ public class StaticContainer {
                     }
                 }
             }
-        }while (diceTurn < 2);
+        } while (diceTurn < 2);
 
         //Reset all the things
-        nestMap.get(globalNestId).rect.setStrokeWidth(0);
+        nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
+
         players[globalNestId].resetCheck();
+
         if (diceValue1 == diceValue2) globalNestId--;
         int nextTurn = globalNestId + 1;
         if (nextTurn == 4){
@@ -376,8 +394,8 @@ public class StaticContainer {
                 nextTurn = 0;
             }
         }
-        nestMap.get(nextTurn).rect.setStroke(Color.SILVER);
-        nestMap.get(nextTurn).rect.setStrokeWidth(10);
+        // Must roll
+        nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
         diceTurn = 0;
         seq.play();
     }
