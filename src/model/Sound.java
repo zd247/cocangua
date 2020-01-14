@@ -65,7 +65,7 @@ public class Sound {
     public static void playSound(int soundID) {
         MediaPlayer sfx = null;
 
-        THEME_AUDIO.setCycleCount(MediaPlayer.INDEFINITE);
+        THEME_AUDIO.setCycleCount(MediaPlayer.INDEFINITE); //Only theme audio repeats
 
         switch (soundID) {
             case THEME: sfx = THEME_AUDIO; break;
@@ -85,7 +85,7 @@ public class Sound {
             }
             sfx.play();
         } else {
-            if (sfx == THEME_AUDIO) {
+            if (sfx == THEME_AUDIO) { //pause for theme audio and stop for other audios
                 sfx.pause();
             } else {
                 sfx.stop();
