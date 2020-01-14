@@ -57,14 +57,7 @@ public class StaticContainer {
     // Maps to store all houses
     public static HashMap<Integer, House> houseMap ;
 
-    public static Piece currentPiece = null;
-
-
-
-    public static int POLLING_INTERVAL = 1000; //miliseconds
-
     public static MenuController menuController;
-
 
     public static ObservableList<String> availableChoices = FXCollections.observableArrayList( "English","Tiếng Việt");
 
@@ -101,8 +94,29 @@ public class StaticContainer {
     }
 
 
-    //=========================================================================================
+    //======================[Static Functions]==============================
 
+    /**
+     * Draw the nest indicator
+     */
+    static void drawIndicator() {
+
+        for (int i = 0; i < players.length; i++) {          // Setting the nest highlight for indicating its turn
+            if (i != globalNestId) {
+                players[i].resetRolled();
+
+                // MUST ROLL INDICATOR
+                //nestMap.get(i).circle.setStroke(nestMustRollColor);
+
+            } else {
+                nestMap.get(i).circle.setStrokeWidth(10);
+                players[i].rolled();
+
+                // MUST MOVE INDICATOR
+                nestMap.get(i).circle.setStroke(nestMustMoveColor);
+            }
+        }
+    }
 
     /**
      * Dice get on mouse click handler, For rolling and getting the value of each dice, then handle the logic from there
@@ -128,24 +142,11 @@ public class StaticContainer {
                 }
             }
 
-            //start rolling
+            //start rolling, main logic starts here
             diceValue1 = dice1.roll();                      // roll dice 1 and get its value
             diceValue2 = dice2.roll();                      // roll dice 2 and get its value
+            drawIndicator();
 
-            //draw indicator
-            for (int i = 0; i < players.length; i++) {          // Setting the nest highlight for indicating its turn
-                if (i != globalNestId) {
-                    players[i].resetRolled();                   // Not allow another players use their piece
-                    // MUST ROLL INDICATOR
-                    //nestMap.get(i).circle.setStroke(nestMustRollColor);
-
-                } else {
-                    nestMap.get(i).circle.setStrokeWidth(10);
-                    players[i].rolled();
-                    // MUST MOVE INDICATOR
-                    nestMap.get(i).circle.setStroke(nestMustMoveColor);
-                }
-            }
             //check when clean board, reset turn counter
             if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {        // If it is impossible to move, skip this turn
                 gameController.activityLog.setText(language.getStatusNextTurn());
@@ -170,9 +171,9 @@ public class StaticContainer {
                 nestMap.get(nextTurn).circle.setStrokeWidth(10);
                 turn = 0;
             }
-
             else {
-                if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn)            // If it is impossible to move, kick or deploy, skip this turn
+                // If it is impossible to move, kick or deploy, skip this turn
+                if (!nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue1,diceTurn)
                         && !nestMap.get(globalNestId).getPieceList()[0].ableToMove(diceValue2,diceTurn)
                         && !canDeploy(globalNestId)
                         && !ableToKick(diceValue1,globalNestId)
@@ -206,55 +207,62 @@ public class StaticContainer {
                 System.out.println("--------------");
             }
 
-            //Bot's turn
-            if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 1){            // If there is a bot's turn
-                players[globalNestId].resetRolled();
-                botPlay();                              // Bot will play by itself
-                turn = 0;
-            }
+            handleBotLogic();
 
-            // Bot's auto roll function
-            Timeline timeline = new Timeline();
-            int nextTurn = globalNestId + 1;
+
+
+        }
+    }
+
+    static void handleBotLogic(){
+        if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 1){            // If there is a bot's turn
+            players[globalNestId].resetRolled();
+            botPlay();                              // Bot will play by itself
+            turn = 0;
+        }
+
+        Timeline timeline = new Timeline();
+        int nextTurn = globalNestId + 1;
+        if (nextTurn == 4){
+            nextTurn = 0;
+        }
+
+        while (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF){
+            nextTurn++;
             if (nextTurn == 4){
                 nextTurn = 0;
             }
-            while (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF){
-                nextTurn++;
-                if (nextTurn == 4){
-                    nextTurn = 0;
-                }
+        }
+
+        if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 0) {         //Whenever the next turn is a bot, it will auto roll, and disable the dices handler
+            dice1.setDisable(true);
+            dice2.setDisable(true);
+            if (pieceIsMoving){
+                KeyFrame key = new KeyFrame(Duration.millis(200 * (diceValue1 + diceValue2) + 400), new EventHandler<ActionEvent>() {
+                    //100 for translate time, 100 for pause and 400 for waiting between the dice
+                    @Override
+                    public void handle(ActionEvent event) {
+                        diceWork();                     // roll dice automatically after a fixed duration
+                    }
+                });
+                timeline.getKeyFrames().add(key);
             }
-            if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 0) {         //Whenever the next turn is a bot, it will auto roll, and disable the dices handler
-                dice1.setDisable(true);
-                dice2.setDisable(true);
-                if (pieceIsMoving){
-                    KeyFrame key = new KeyFrame(Duration.millis(200 * (diceValue1 + diceValue2) + 400), new EventHandler<ActionEvent>() {
-                        //100 for translate time, 100 for pause and 400 for waiting between the dice
-                        @Override
-                        public void handle(ActionEvent event) {
-                            diceWork();                     // roll dice automatically after a fixed duration
-                        }
-                    });
-                    timeline.getKeyFrames().add(key);
-                }
-                else
-                {
-                    KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
-                        //100 for translate time, 100 for pause and 400 for waiting between the dice
-                        @Override
-                        public void handle(ActionEvent event) {
-                            diceWork();                     // roll dice automatically after a fixed duration
-                        }
-                    });
-                    timeline.getKeyFrames().add(key);
-                }
-                timeline.play();
+            else
+            {
+                KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+                    //100 for translate time, 100 for pause and 400 for waiting between the dice
+                    @Override
+                    public void handle(ActionEvent event) {
+                        diceWork();                     // roll dice automatically after a fixed duration
+                    }
+                });
+                timeline.getKeyFrames().add(key);
             }
-            else if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.PLAYER){           // Otherwise, dices are allowed to click for rolling
-                dice1.setDisable(false);
-                dice2.setDisable(false);
-            }
+            timeline.play();
+        }
+        else if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.PLAYER){           // Otherwise, dices are allowed to click for rolling
+            dice1.setDisable(false);
+            dice2.setDisable(false);
         }
     }
 
