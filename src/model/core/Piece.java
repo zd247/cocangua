@@ -7,7 +7,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
-import helper.Map;
 import model.Sound;
 
 import static helper.Map.*;
@@ -209,7 +208,7 @@ public class Piece extends Circle {
                         nextTurn = 0;
                     }
                 }
-                players[nestId].resetCheck();                               // Reset the roll
+                players[nestId].resetRolled();                               // Reset the roll
                 diceTurn = 0;
 
                 // BOT MUST ROLL
