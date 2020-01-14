@@ -29,6 +29,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -77,6 +79,9 @@ public class MenuController implements Initializable {
         chooseLanguage();
     }
 
+    /**
+     * Choosing language
+     */
     private void chooseLanguage() {
         changeChoiceBoxInMenu(this);
 
@@ -96,6 +101,9 @@ public class MenuController implements Initializable {
         });
     }
 
+    /**
+     * Load the language
+     */
     public void loadLanguage(){
         TitleName.setText(language.getTitleName());
         startBtn.setText(language.getStartButton());

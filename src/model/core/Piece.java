@@ -171,7 +171,7 @@ public class Piece extends Circle {
     }
 
     /**
-     * Check whether it is able to kick (is used for checking in advance)
+     * Check whether it is able to kick (is used for checking in advance, called auto checking)
      */
 
     public boolean ableToKick(int moveAmount, int nestId){
@@ -212,7 +212,7 @@ public class Piece extends Circle {
             if (next > 47){
                 next = next - 48;
             }
-            if (spaceMap.get(next).getOccupancy() && !this.isBlockedPiece(moveAmount-1)) {
+            if (spaceMap.get(next).getOccupancy() && !this.isBlockedPiece(moveAmount-1)) {      // Check for the occupancy of the destination and whether there is a enemy or friend
                 return nestId != spaceMap.get(next).getPiece().getNestId();
             }
             return false;
@@ -225,7 +225,7 @@ public class Piece extends Circle {
      * @return is blocked by another or not
      */
     public boolean isBlockedPiece(int amount) {
-        if (this.currentPosition == -1) { // outside of nest
+        if (this.currentPosition == -1) { // insides of nest
             switch (nestId){
                 case 0:
                     return spaceMap.get(BLUE_START).getOccupancy();
@@ -239,7 +239,7 @@ public class Piece extends Circle {
         } else {
             int initial = this.currentPosition;
             if (spaceMap.get(initial).getPiece().getStep() + amount < 49) {
-                for (int i = 0; i < amount; i++, initial++) {
+                for (int i = 0; i < amount; i++, initial++) {           // Check step by step to indicating whether there is a piece or not
                     if (initial == 47) {
                         initial = -1;
                     }

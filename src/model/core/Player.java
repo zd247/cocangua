@@ -4,21 +4,17 @@ import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import helper.StaticContainer.*;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+
 
 import static helper.StaticContainer.*;
 
@@ -155,10 +151,12 @@ public class Player extends Pane {
         return this.connectionStatus;
     }
 
+    // If this player already rolled
     public void rolled(){rolled = true;}
 
     public boolean isRolled(){ return rolled;}
 
+    // If this player's turn is done
     public void resetRolled(){rolled = false;}
 
     public void setPoints (int points) {
