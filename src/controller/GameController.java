@@ -107,7 +107,7 @@ public class GameController implements Initializable {
         }
         int checker = 0;
         for (int i =3; i >= 0; i--){
-            if (players[i].getPointForTurn() >= firstTurn){
+            if (players[i].getPointForTurn() >= firstTurn && players[i].getConnectionStatus() != ConnectionStatus.OFF){
                 firstTurn = players[i].getPointForTurn();
                 checker = i;
             }

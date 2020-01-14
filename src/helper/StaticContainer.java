@@ -214,6 +214,9 @@ public class StaticContainer {
         }
     }
 
+    /**
+     * For checking whether there is a bot turn or not, and set the auto rolling for it
+     */
     static void handleBotLogic(){
         if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 1){            // If there is a bot's turn
             players[globalNestId].resetRolled();
