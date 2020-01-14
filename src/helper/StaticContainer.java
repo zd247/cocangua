@@ -156,7 +156,7 @@ public class StaticContainer {
             }
             //check when clean board, reset turn counter
             if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {        // If it is impossible to move, skip this turn
-
+                gameController.activityLog.setText("Next Turn!");
                 // WAITING FOR TURN (DEFAULT) INDICATOR
                 nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
 
@@ -207,6 +207,7 @@ public class StaticContainer {
 
                     // MUST ROLL INDICATOR
                     nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
+                    gameController.activityLog.setText("Next Turn!");
                     turn = 0;
                 }
 

@@ -18,6 +18,7 @@ import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.shape.Circle;
 import model.*;
@@ -62,7 +63,7 @@ public class GameController implements Initializable {
     @FXML public Label scoreLbYellow;
     @FXML public Label scoreLbGreen;
     @FXML public Label scoreLbRed;
-    @FXML public TextField activityLog;
+    @FXML public Text activityLog;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,7 +98,7 @@ public class GameController implements Initializable {
 
         turn = 0;
         globalNestId = checker - 1;
-
+        gameController.activityLog.setText("Start!");
         // INITIAL MUST ROLL INDICATOR FOR FIRST ROUND
         nestMap.get(globalNestId +1).circle.setStroke(nestMustRollColor);
 
