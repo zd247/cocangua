@@ -6,10 +6,11 @@ Assessment name: Final Project
 Team name: Team 5
 Team members: 
 - Tran Kim Bao: S3740819
-- Phan Quoc Binh
-- 
--
-=
+- Phan Quoc Binh: s3715271
+- Tran Mach So Han: s3750789
+- Nguyen Huu Duy: S3703336
+- Nguyen Minh Trang: s3751450
+
 
 1. INTRODUCTION
 One short paragraph to describe what this software is about.
@@ -22,10 +23,10 @@ Provide instructions on how to install and run the software.
 5. KNOWN BUGS
 List the unfixed bugs and the workarounds, if any.
 6. ACKNOWLEDGEMENT
-List the resources and help that you used to complete this project.Failing to do so might be considered as plagiarism.
+List the resources and help that you used to complete this project. Failing to do so might be considered as plagiarism.
 
 
-Pseudocode for Machine Player:
+Pseudo code for Machine Player:
 Machine algorithm:
 
 + How to win this game: 
@@ -47,23 +48,23 @@ try to let it move to the highest position if it is possible. Therefore, this ma
 				- If there is able to kick condition
 					- Check for the destination and put that enemy's piece to its nest
 				- If (there is not a piece which is not deployed yet) or (there is a piece (is not deployed yet) and the "current dice value" is 6 and there is the second dice turn) or (there is a 6 (dice 1 or 2) and the first dice turn)
-					- if there is a piece is not deployed yet
-						- if there is the first dice turn and the "current dice value"(store value of dice 1) is not 6 and the second dice is 6
-							- the "current dice value" will store the value of dice 2
+					- If there is a piece is not deployed yet
+						- If there is the first dice turn and the "current dice value"(store value of dice 1) is not 6 and the second dice is 6
+							- The "current dice value" will store the value of dice 2
 							- swap value of 2 dices (next turn dice will use the value of dice 1)
 					- If the piece's step + current dice value <= 48 (means not pass the home arrival)
 						- Move piece to its destination
-					- else the piece will not move
+					- Else the piece will not move
 				- If the piece cannot move, keep that current dice value for another piece in nest to move
 		- If the piece's step is higher than 47 and its step if lower than 55 which is maximum step of each piece and (the piece is not blocked with the current dice value or (piece is not blocked by using dice 2 and dice turn is 1))
 			- If there is the first dice turn and the piece is not blocked by dice2 and (the piece is blocked with dice 1 or dice2 > dice1)
-				- the "current dice value" will store the value of dice 2
+				- The "current dice value" will store the value of dice 2
 				- swap value of 2 dices (next turn dice will use the value of dice 1)
 			- move the piece
-		- If the piece can not move when it is at home.
+		- If the piece cannot move when it is at home.
 			- Keep that current dice value for another piece to move
-		- After moving the first dice turn, If there is no piece able to use the next dice's value (move, kick, deploy)
-			- this player's turn is done
-	- After a piece in nest is moved and successfully use a dice's value (no matter dice 1 or 2), break the for loops and start a loop again for moving the the same piece with the last dice (if it is available), otherwise, it will search for another piece in nest. 
+		- After moving the first dice turn, if there is no piece able to use the next dice's value (move, kick, deploy)
+			- This player's turn is done
+	- After a piece in nest is moved and successfully use a dice's value (no matter dice 1 or 2), break the for loop and start a loop again for moving the same piece with the last dice (if it is available), otherwise, it will search for another piece in nest. 
 - If this player's turn is done, reset the dice turn, move to the next turn, then auto roll if the next turn is a bot			
 					
