@@ -76,7 +76,7 @@ public class StaticContainer {
     public static int playerMoveAmount = 0;
     public static int diceValue1 = 0;
     public static int diceValue2 = 0;
-    public static boolean pieceIsMoving ;
+    public static boolean pieceIsMoving;
 
     public enum ConnectionStatus {
         PLAYER, BOT, OFF
@@ -114,7 +114,7 @@ public class StaticContainer {
 
 
     /**
-     * Dice get on mouse click handler, For rolling and getting the value of each dice
+     * Dice get on mouse click handler, For rolling and getting the value of each dice, then handle the logic from there
      */
     public static void diceWork(){
         pieceIsMoving = false;
@@ -292,7 +292,7 @@ public class StaticContainer {
 
 
     /**
-     * Check whether it is possible to deploy or not
+     * Check whether it is possible to deploy or not by looking at 2 dices value
      * @param nestID
      * @return
      */
@@ -346,6 +346,10 @@ public class StaticContainer {
     }
 
 
+    /**
+     * Updating points
+     * @param c
+     */
     public static void updatePoint(GameController c){
         gameController = c;
         c.scoreLbBlue.setText(players[0].getPoints()+"");
@@ -354,12 +358,19 @@ public class StaticContainer {
         c.scoreLbRed.setText(players[3].getPoints()+"");
     }
 
-
+    /**
+     *
+     * @param c
+     */
     public static void changeChoiceBoxInGame(GameController c){
         gameController = c;
         setChoiceBox(c.languageBox);
     }
 
+    /**
+     *
+     * @param c
+     */
     public static void changeChoiceBoxInMenu(MenuController c){
         language = new Language("en", "US");
         //Referene from the game controller
@@ -367,6 +378,10 @@ public class StaticContainer {
         setChoiceBox(c.languageBox);
     }
 
+    /**
+     *
+     * @param choiceBox
+     */
     private static void setChoiceBox(ChoiceBox<String> choiceBox){
         //To set settings for the choice box
         choiceBox.setItems(availableChoices);
@@ -548,7 +563,13 @@ public class StaticContainer {
         }
     }
 
-
+    /**
+     *
+     * @param namePlayer
+     * @param enemyName
+     * @param playerMoveAmount
+     * @param type
+     */
     public static void updateStatus(String namePlayer, String enemyName, int playerMoveAmount, int type){
         addIn = "";
         switch (type){
