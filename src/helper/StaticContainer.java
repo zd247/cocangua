@@ -64,6 +64,8 @@ public class StaticContainer {
 
     public static int numberOfPlayer;
 
+    public static Score score;
+
     //TURN LOGIC STATICS
     public static int firstTurn = 0;
     public static int turn = 0;

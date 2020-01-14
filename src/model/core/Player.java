@@ -40,13 +40,14 @@ public class Player extends Pane {
     private VBox playerDisplayVBox = new VBox();
     private TextField textField = new TextField();
     private CheckBox toggler = new CheckBox("BOT");
-    Dice dice = new Dice();
-    boolean isRolled = false;
-    int numOfFace = 0;
+    private Dice dice = new Dice();
 
     private ClientSideConnection csc;
 
-
+    /**
+     * Constructor for player
+     * @param nestId
+     */
     public Player (int nestId) {
 
         this.nestId = nestId;
@@ -74,14 +75,18 @@ public class Player extends Pane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (!isClickedOn){
-                    //When
+                    //When the pane is clicked, clear all the childer before adding more
                     getChildren().clear();
                     getChildren().add(playerDisplayVBox);
+
+                    //Create a pane to contain dice
                     BorderPane containDice = new BorderPane();
                     BorderPane.setAlignment(dice, Pos.CENTER);
                     containDice.setPrefHeight(200);
                     containDice.setPrefWidth(200);
                     containDice.setRight(dice);
+
+                    //
                     playerDisplayVBox.setSpacing(30);
                     playerDisplayVBox.getChildren().addAll(textField, toggler, containDice);
                     rollForGetTurn(dice);
@@ -105,11 +110,19 @@ public class Player extends Pane {
 
     }
 
+    /**
+     * roll to get the first move
+     * @param dice
+     */
     public void rollForGetTurn(Dice dice){
         players[nestId].setPointForTurn(dice.roll());
         dice.setDisable(true);
     }
 
+    /**
+     * get TextField in playerfield
+     * @return
+     */
     public TextField getTextField() {
         return textField;
     }
@@ -182,26 +195,6 @@ public class Player extends Pane {
      * To set point if the player in the file
      * @throws Exception
      */
-    public void checkExistedPlayer() throws Exception{
-        java.io.File file = new java.io.File("score.txt");
-        ArrayList<String> playerName = new ArrayList<>();
-        ArrayList<Integer> playerScore = new ArrayList<>();
-        Scanner fileInput = new Scanner(file);
-        fileInput.useDelimiter(",|\n");
-
-        while (fileInput.hasNext()) {
-            playerName.add(fileInput.next());
-            playerScore.add(fileInput.nextInt());
-        }
-        fileInput.close();
-
-        for (int i =0; i < playerName.size(); i++) {
-            if (name.equals(playerName.get(i))) {
-                points = playerScore.get(i);
-                break;
-            }
-        }
-    }
 
     /**
      * set the animation for making it nicely
