@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -33,9 +34,9 @@ import static helper.StaticContainer.numberOfPlayer;
 public class Main extends Application implements Initializable{
 
     public Label endGameLb;
-    public Text winner;
-    public Button newGame;
-    public Button quit;
+    public Button newGameBtn;
+    public Button quitBtn;
+    public Text winnerText;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -138,8 +139,8 @@ public class Main extends Application implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        newGame.setText(language.getNewGame());
-        quit.setText(language.getQuit());
+        newGameBtn.setText(language.getNewGame());
+        quitBtn.setText(language.getQuit());
         endGameLb.setText(language.getEndGameLabel());
 
         String max_person = players[0].getName();
@@ -150,7 +151,7 @@ public class Main extends Application implements Initializable{
                 max_score = players[i].getPoints();
             }
         }
-        winner.setText(max_person + " " + language.getResultStatement() + " " + max_score);
+        winnerText.setText(max_person + " " + language.getResultStatement() + " " + max_score);
     }
 
     /**

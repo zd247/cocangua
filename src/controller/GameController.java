@@ -98,7 +98,7 @@ public class GameController implements Initializable {
 
         turn = 0;
         globalNestId = checker - 1;
-        gameController.activityLog.setText("Start!");
+
         // INITIAL MUST ROLL INDICATOR FOR FIRST ROUND
         nestMap.get(globalNestId +1).circle.setStroke(nestMustRollColor);
 
@@ -139,6 +139,7 @@ public class GameController implements Initializable {
 
     private void chooseLanguage(){
         changeChoiceBoxInGame(this);
+        loadLanguage();
         languageBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -156,7 +157,26 @@ public class GameController implements Initializable {
     }
 
     public void loadLanguage(){
-
+        gameController.activityLog.setText(language.getStartButton());
+        //change langauge of default 
+        for (int i = 0; i< players.length; i++){
+            if (players[i].getConnectionStatus() == ConnectionStatus.OFF){
+                switch (i){
+                    case 0:
+                        nameLbBlue.setText(language.getDefault());
+                        break;
+                    case 1:
+                        nameLbYellow.setText(language.getDefault());
+                        break;
+                    case 2:
+                        nameLbGreen.setText(language.getDefault());
+                        break;
+                    case 3:
+                        nameLbRed.setText(language.getDefault());
+                        break;
+                }
+            }
+        }
     }
 
     private void updateName(){

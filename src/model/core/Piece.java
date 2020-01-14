@@ -155,14 +155,14 @@ public class Piece extends Circle {
                         if (this.step + playerMoveAmount <= 48) {
                             players[nestId].setPoints(players[nestId].getPoints() + this.movePiece(playerMoveAmount));
                             if (kicked == 1){
-                                updateStatus(players[nestId].getName() +" has kicked " + players[enemyId].getName());
+                                updateStatus(players[nestId].getName() , players[enemyId].getName(),0,1);
                             }
                             else{
                                 if (initialPosition == -1){
-                                    updateStatus(players[nestId].getName() + " has deployed!");
+                                    updateStatus(players[nestId].getName(),"",0,2);
                                 }
                                 else {
-                                    updateStatus(players[nestId].getName() + " has moved " + Integer.toString(playerMoveAmount) + " steps!");
+                                    updateStatus(players[nestId].getName() ,"",playerMoveAmount,3);
                                 }
                             }
                             if (initialPosition != -1) {
@@ -193,13 +193,13 @@ public class Piece extends Circle {
                 if (initialPosition >= 48) {                                                                                    // If this piece is inside home
                     houseMap.get(initialPosition).setOccupancy(false);
                     houseMap.get(initialPosition).setPiece(null);
-                    updateStatus(players[nestId].getName() + " has moved 1 step at home!");
+                    updateStatus(players[nestId].getName() ,"",0,4);
 
                 }
                 else if (initialPosition == this.getStartPosition(nestId) - 1){                                                 // Or it is standing on home path
                     spaceMap.get(initialPosition).setOccupancy(false);
                     spaceMap.get(initialPosition).setPiece(null);
-                    updateStatus(players[nestId].getName() + " has moved "+ Integer.toString(playerMoveAmount) + " steps to home!");
+                    updateStatus(players[nestId].getName() ,"", playerMoveAmount ,5);
                 }
                 houseMap.get(this.currentPosition).setOccupancy(true);
                 houseMap.get(this.currentPosition).setPiece(this);

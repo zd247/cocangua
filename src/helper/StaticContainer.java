@@ -66,6 +66,8 @@ public class StaticContainer {
 
     public static Score score;
 
+    public static String addIn;
+
     //TURN LOGIC STATICS
     public static int firstTurn = 0;
     public static int turn = 0;
@@ -156,7 +158,7 @@ public class StaticContainer {
             }
             //check when clean board, reset turn counter
             if (allAtHome(globalNestId) && diceValue1 != 6 && diceValue2 != 6) {        // If it is impossible to move, skip this turn
-                gameController.activityLog.setText("Next Turn!");
+                gameController.activityLog.setText(language.getStatusNextTurn());
                 // WAITING FOR TURN (DEFAULT) INDICATOR
                 nestMap.get(globalNestId).circle.setStroke(nestWaitingForTurnColor);
 
@@ -488,14 +490,14 @@ public class StaticContainer {
                     if (piece.getStep() + playerMoveAmount <= 48) {
                         players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
                         if (kicked == 1){
-                            updateStatus(players[globalNestId].getName() +" has kicked " + players[enemyId].getName());
+                            updateStatus(players[globalNestId].getName() ,players[enemyId].getName(),0,1);
                         }
                         else{
                             if (initialPosition == -1){
-                                updateStatus(players[globalNestId].getName() + " has deployed!");
+                                updateStatus(players[globalNestId].getName() ,"",0,2);
                             }
                             else {
-                                updateStatus(players[globalNestId].getName() + " has moved " + Integer.toString(playerMoveAmount) + " steps!");
+                                updateStatus(players[globalNestId].getName() ,"",playerMoveAmount,3);
                             }
                         }
                         if (initialPosition != -1) {
@@ -525,12 +527,12 @@ public class StaticContainer {
             if (initialPosition >= 48) {
                 houseMap.get(initialPosition).setOccupancy(false);
                 houseMap.get(initialPosition).setPiece(null);
-                updateStatus(players[globalNestId].getName() + " has moved 1 step at home!");
+                updateStatus(players[globalNestId].getName(),"",0,4);
             }
             else if (initialPosition == piece.getStartPosition(globalNestId) - 1){
                 spaceMap.get(initialPosition).setOccupancy(false);
                 spaceMap.get(initialPosition).setPiece(null);
-                updateStatus(players[globalNestId].getName() + " has moved "+ Integer.toString(playerMoveAmount) + " steps to home!");
+                updateStatus(players[globalNestId].getName(),"",playerMoveAmount,5);
 
             }
             houseMap.get(piece.getCurrentPosition()).setOccupancy(true);
@@ -546,7 +548,40 @@ public class StaticContainer {
         }
     }
 
-    public static void updateStatus(String context){
-        gameController.activityLog.setText(context);
+
+    public static void updateStatus(String namePlayer, String enemyName, int playerMoveAmount, int type){
+        addIn = "";
+        switch (type){
+            case 1:{
+                addIn = namePlayer + " " + language.getStatusKick() +" " + enemyName;
+                System.out.println("1");
+                break;
+            }
+            case 2:{
+                addIn = namePlayer + " " + language.getStatusDeployed();
+                System.out.println("2");
+                break;
+            }
+            case 3:{
+                addIn = namePlayer + " " + language.getStatusMove() + " " + Integer.toString(playerMoveAmount) + " " + language.getStatusSteps();
+                System.out.println("3");
+                break;
+            }
+            case 4:{
+                addIn = namePlayer + " " + language.getStatusAtHome();
+                System.out.println("4");
+                break;
+            }
+            case 5:{
+                addIn = namePlayer + " " + language.getStatusMove() + " " + Integer.toString(playerMoveAmount) + " " + language.getStatusToHome();
+                System.out.println("5");
+                break;
+            }
+            default:{
+                addIn = "";
+                break;
+            }
+        }
+        gameController.activityLog.setText(addIn);
     }
 }
