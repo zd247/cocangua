@@ -84,6 +84,4 @@ public class Language {
     public String getStatusToHome(){return  bundle.getString("toHome");}
 
     public String getStatusNextTurn(){return bundle.getString("nextTurn");}
-
-    public String getDefault(){return bundle.getString("default");}
 }

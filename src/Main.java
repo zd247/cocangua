@@ -72,7 +72,7 @@ public class Main extends Application implements Initializable{
                         players[i].setName(players[i].getTextField().getText());
                     }
                     else {
-                        players[i].setName("Default");
+                        players[i].setName("XXX");
                     }
                 }
                 try {

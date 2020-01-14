@@ -173,26 +173,8 @@ public class GameController implements Initializable {
     }
 
     public void loadLanguage(){
+        //change langauge of default
         gameController.activityLog.setText(language.getStartButton());
-        //change langauge of default 
-        for (int i = 0; i< players.length; i++){
-            if (players[i].getConnectionStatus() == ConnectionStatus.OFF){
-                switch (i){
-                    case 0:
-                        nameLbBlue.setText(language.getDefault());
-                        break;
-                    case 1:
-                        nameLbYellow.setText(language.getDefault());
-                        break;
-                    case 2:
-                        nameLbGreen.setText(language.getDefault());
-                        break;
-                    case 3:
-                        nameLbRed.setText(language.getDefault());
-                        break;
-                }
-            }
-        }
     }
 
      private void updateName(){
