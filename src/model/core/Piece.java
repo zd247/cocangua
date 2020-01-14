@@ -491,7 +491,7 @@ public class Piece extends Circle {
 
     public void setCurrentPosition(int position){
         currentPosition = position;
-    };
+    }
 
     public int getStep(){
         return step;
@@ -535,6 +535,5 @@ public class Piece extends Circle {
             players[nestId].increaseGetToHouse();    //increase by 1
         }
     }
-
 
 }

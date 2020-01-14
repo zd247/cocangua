@@ -1,6 +1,27 @@
+/*
+  RMIT University Vietnam
+  Course: INTE2512 Object-Oriented Programming
+  Semester: 2020A
+  Assessment: Final Project
+  Created date: 20/12/2019
+
+  By:
+  Phan Quoc Binh (3715271)
+  Tran Mach So Han (3750789)
+  Tran Kim Bao (3740819)
+  Nguyen Huu Duy (3703336)
+  Nguyen Minh Trang (3751450)
+
+  Last modified: 14/1/2019
+
+  By:
+  Nguyen Huu Duy (3703336)
+
+  Acknowledgement: see readme.md
+*/
+
 package controller;
 
-import helper.InputHandler;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
@@ -17,18 +38,14 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import javafx.scene.shape.Circle;
 import model.*;
 import helper.Map;
 import model.core.Dice;
 
-
 import static helper.StaticContainer.*;
 import static helper.LayoutContainer.*;
-
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -125,7 +142,6 @@ public class GameController implements Initializable {
         updateName();
     }
 
-
     @FXML
     private void setSound(ActionEvent event) {
         if (!Sound.isMute) {
@@ -179,7 +195,7 @@ public class GameController implements Initializable {
         }
     }
 
-    private void updateName(){
+     private void updateName(){
         nameLbBlue.setText(players[0].getName());
         nameLbYellow.setText(players[1].getName());
         nameLbGreen.setText(players[2].getName());
