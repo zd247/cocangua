@@ -123,8 +123,8 @@ public class StaticContainer {
             }
 
             //check for default case
-            if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == ConnectionStatus.OFF){         // Move turn until there is not the offline player
-                while ((players[globalNestId].getConnectionStatus() == ConnectionStatus.OFF)) {
+            if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF){         // Move turn until there is not the offline player
+                while ((players[globalNestId].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF)) {
                     globalNestId++;
                     if (globalNestId > (players.length - 1)) {
                         globalNestId = 0;
@@ -135,8 +135,6 @@ public class StaticContainer {
             //start rolling
             diceValue1 = dice1.roll();                      // roll dice 1 and get its value
             diceValue2 = dice2.roll();                      // roll dice 2 and get its value
-            System.out.println("Player" + globalNestId + " " + diceValue1);
-            System.out.println("Player" + globalNestId + " " + diceValue2);
 
             //draw indicator
             for (int i = 0; i < players.length; i++) {          // Setting the nest highlight for indicating its turn
@@ -166,7 +164,7 @@ public class StaticContainer {
                 if (nextTurn == 4){
                     nextTurn = 0;
                 }
-                while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
+                while (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF){
                     nextTurn++;
                     if (nextTurn == 4){
                         nextTurn = 0;
@@ -197,7 +195,7 @@ public class StaticContainer {
                     if (nextTurn == 4){
                         nextTurn = 0;
                     }
-                    while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
+                    while (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF){
                         nextTurn++;
                         if (nextTurn == 4){
                             nextTurn = 0;
@@ -212,7 +210,7 @@ public class StaticContainer {
 
                 System.out.println("--------------");
             }
-            if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == ConnectionStatus.BOT && turn == 1){            // If there is a bot's turn
+            if (globalNestId != -1 && players[globalNestId].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 1){            // If there is a bot's turn
                 players[globalNestId].resetCheck();
                 botPlay();                              // Bot will play by itself
                 turn = 0;
@@ -222,13 +220,13 @@ public class StaticContainer {
             if (nextTurn == 4){
                 nextTurn = 0;
             }
-            while (players[nextTurn].getConnectionStatus() == ConnectionStatus.OFF){
+            while (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.OFF){
                 nextTurn++;
                 if (nextTurn == 4){
                     nextTurn = 0;
                 }
             }
-            if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT && turn == 0) {         //Whenever the next turn is a bot, it will auto roll.
+            if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.BOT && turn == 0) {         //Whenever the next turn is a bot, it will auto roll.
                 dice1.setDisable(true);
                 dice2.setDisable(true);
                 if (pieceIsMoving){
@@ -254,7 +252,7 @@ public class StaticContainer {
                 }
                 timeline.play();
             }
-            else if (players[nextTurn].getConnectionStatus() == ConnectionStatus.PLAYER){
+            else if (players[nextTurn].getConnectionStatus() == StaticContainer.ConnectionStatus.PLAYER){
                 dice1.setDisable(false);
                 dice2.setDisable(false);
             }
@@ -372,14 +370,12 @@ public class StaticContainer {
         else {
             choiceBox.setValue("Tiếng Việt");
         }
-
     }
-
 
     /**
      * Bot play function
      */
-    private static void botPlay() {
+    public static void botPlay() {
         seq = new SequentialTransition();
         do {                                    // Play until 2 dices are used or there is no way to move
             int move = diceTurn;
@@ -387,6 +383,7 @@ public class StaticContainer {
                 if (getNestById(globalNestId).getPieceList()[i].getStep()< 54) {
                     botLogic(getNestById(globalNestId).getPieceList()[i]);
                     if (move != diceTurn) {
+                        updatePoint(gameController);
                         break;
                     }
                 }
@@ -421,108 +418,108 @@ public class StaticContainer {
      */
     public static void botLogic(Piece piece) {
         int initialPosition = piece.getCurrentPosition();
-            if (diceTurn == 0) { // turn 1
-                playerMoveAmount = diceValue1;
-                if (piece.getCurrentPosition() != -1)
-                    diceTurn = 1;
-            } else if (diceTurn == 1) { // turn 2
-                playerMoveAmount = diceValue2;
-                if (piece.getCurrentPosition() != -1) {
-                    diceTurn = 2; //reset
-                }
+        if (diceTurn == 0) { // turn 1
+            playerMoveAmount = diceValue1;
+            if (piece.getCurrentPosition() != -1)
+                diceTurn = 1;
+        } else if (diceTurn == 1) { // turn 2
+            playerMoveAmount = diceValue2;
+            if (piece.getCurrentPosition() != -1) {
+                diceTurn = 2; //reset
             }
-            if (piece.getStep() <= 47) {
-                // case 1: piece being blocked and
-                if (!piece.ableToMove(playerMoveAmount,diceTurn) && !piece.ableToKick(playerMoveAmount)
-                        && piece.getCurrentPosition() != -1 && diceTurn == 1) {
-                    if (piece.ableToMove(diceValue2,diceTurn) || piece.ableToKick(diceValue2)) {
-                        playerMoveAmount = diceValue2;
-                        diceValue2 = diceValue1;
-                        diceValue1 = playerMoveAmount;
-                    }
-                }
-                //case 2: not blocked or able to kick
-                if (!piece.isBlockedPiece(playerMoveAmount) || piece.ableToKick(playerMoveAmount)) {
-                    // case 2.1: check for when able to kick
-                    if (piece.ableToKick(playerMoveAmount)) {
-                        int next = 0;
-                        if (piece.getCurrentPosition() != -1 && piece.getStep() + playerMoveAmount <= 48) {
-                            next = piece.getCurrentPosition() + playerMoveAmount;
-                            if (next > 47) {
-                                next -= 48;
-                            }
-                            Piece kickedPiece = spaceMap.get(next).getPiece();
-                            piece.kick(kickedPiece);
-                            players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
-                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                            spaceMap.get(next).setPiece(null);
-                            spaceMap.get(next).setOccupancy(false);
-                        } else if (piece.getCurrentPosition() == -1 && (diceValue1 == 6 || diceValue2 == 6)){
-                            next = piece.getStartPosition(globalNestId);   //get the piece at start position
-                            Piece kickedPiece = spaceMap.get(next).getPiece();
-                            piece.kick(kickedPiece);
-                            players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
-                            players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
-                            spaceMap.get(next).setPiece(null);
-                            spaceMap.get(next).setOccupancy(false);
-                        }
-                    }
-                    //case 2.2: able to move
-                    if ((piece.getCurrentPosition() != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
-                        if (piece.getCurrentPosition() == -1) {
-                            if (playerMoveAmount != 6 && diceTurn == 0){
-                                playerMoveAmount = diceValue2;
-                                diceValue2 = diceValue1;
-                                diceValue1 = playerMoveAmount;
-                            }
-                            diceTurn ++;
-                        }
-
-                        if (piece.getStep() + playerMoveAmount <= 48) {
-                            players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
-                            if (initialPosition != -1) {
-                                spaceMap.get(initialPosition).setOccupancy(false);
-                                spaceMap.get(initialPosition).setPiece(null);
-                            }
-                            spaceMap.get(piece.getCurrentPosition()).setOccupancy(true);
-                            spaceMap.get(piece.getCurrentPosition()).setPiece(piece);
-                        }
-                        if (piece.getCurrentPosition() == initialPosition) {
-                            diceTurn--;
-                        }
-                    }
-                }
-                //case 3: piece is blocked on board
-                else if ((piece.isBlockedPiece(playerMoveAmount) && piece.getCurrentPosition() != -1)) {
-                    diceTurn--; //reset turn
-                }
-            }
-            else if ((!piece.blockHome(playerMoveAmount) || (!piece.blockHome(diceValue2) && diceTurn == 1 )) && piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
-                if (!piece.blockHome(diceValue2) && (diceValue1 < diceValue2 || piece.blockHome(diceValue1)) && diceTurn == 1) {
+        }
+        if (piece.getStep() <= 47) {
+            // case 1: piece being blocked and
+            if (!piece.ableToMove(playerMoveAmount,diceTurn) && !piece.ableToKick(playerMoveAmount)
+                    && piece.getCurrentPosition() != -1 && diceTurn == 1) {
+                if (piece.ableToMove(diceValue2,diceTurn) || piece.ableToKick(diceValue2)) {
                     playerMoveAmount = diceValue2;
                     diceValue2 = diceValue1;
                     diceValue1 = playerMoveAmount;
                 }
-                players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
-                if (initialPosition >= 48) {
-                    houseMap.get(initialPosition).setOccupancy(false);
-                    houseMap.get(initialPosition).setPiece(null);
-                }
-                else if (initialPosition == piece.getStartPosition(globalNestId) - 1){
-                    spaceMap.get(initialPosition).setOccupancy(false);
-                    spaceMap.get(initialPosition).setPiece(null);
-                }
-                houseMap.get(piece.getCurrentPosition()).setOccupancy(true);
-                houseMap.get(piece.getCurrentPosition()).setPiece(piece);
             }
-            if (piece.getCurrentPosition() == initialPosition && piece.getStep() >= 48) {
-                diceTurn--;
+            //case 2: not blocked or able to kick
+            if (!piece.isBlockedPiece(playerMoveAmount) || piece.ableToKick(playerMoveAmount)) {
+                // case 2.1: check for when able to kick
+                if (piece.ableToKick(playerMoveAmount)) {
+                    int next = 0;
+                    if (piece.getCurrentPosition() != -1 && piece.getStep() + playerMoveAmount <= 48) {
+                        next = piece.getCurrentPosition() + playerMoveAmount;
+                        if (next > 47) {
+                            next -= 48;
+                        }
+                        Piece kickedPiece = spaceMap.get(next).getPiece();
+                        piece.kick(kickedPiece);
+                        players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
+                        players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                        spaceMap.get(next).setPiece(null);
+                        spaceMap.get(next).setOccupancy(false);
+                    } else if (piece.getCurrentPosition() == -1 && (diceValue1 == 6 || diceValue2 == 6)){
+                        next = piece.getStartPosition(globalNestId);   //get the piece at start position
+                        Piece kickedPiece = spaceMap.get(next).getPiece();
+                        piece.kick(kickedPiece);
+                        players[globalNestId].setPoints(players[globalNestId].getPoints() + 2);
+                        players[kickedPiece.getNestId()].setPoints(players[kickedPiece.getNestId()].getPoints() - 2);
+                        spaceMap.get(next).setPiece(null);
+                        spaceMap.get(next).setOccupancy(false);
+                    }
+                }
+                //case 2.2: able to move
+                if ((piece.getCurrentPosition() != -1 || ((playerMoveAmount == 6 || diceValue2 == 6) && diceTurn == 0) || (playerMoveAmount == 6 && diceTurn == 1) )) {
+                    if (piece.getCurrentPosition() == -1) {
+                        if (playerMoveAmount != 6 && diceTurn == 0){
+                            playerMoveAmount = diceValue2;
+                            diceValue2 = diceValue1;
+                            diceValue1 = playerMoveAmount;
+                        }
+                        diceTurn ++;
+                    }
+
+                    if (piece.getStep() + playerMoveAmount <= 48) {
+                        players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
+                        if (initialPosition != -1) {
+                            spaceMap.get(initialPosition).setOccupancy(false);
+                            spaceMap.get(initialPosition).setPiece(null);
+                        }
+                        spaceMap.get(piece.getCurrentPosition()).setOccupancy(true);
+                        spaceMap.get(piece.getCurrentPosition()).setPiece(piece);
+                    }
+                    if (piece.getCurrentPosition() == initialPosition) {
+                        diceTurn--;
+                    }
+                }
             }
-            //case 4:
-            if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2,diceTurn)
-                    && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId) && piece.ableToDeploy())) {
-                diceTurn = 3;
+            //case 3: piece is blocked on board
+            else if ((piece.isBlockedPiece(playerMoveAmount) && piece.getCurrentPosition() != -1)) {
+                diceTurn--; //reset turn
             }
         }
+        else if ((!piece.blockHome(playerMoveAmount) || (!piece.blockHome(diceValue2) && diceTurn == 1 )) && piece.getStep() >= 48 && piece.getStep() < 48 + 6) {
+            if (!piece.blockHome(diceValue2) && (diceValue1 < diceValue2 || piece.blockHome(diceValue1)) && diceTurn == 1) {
+                playerMoveAmount = diceValue2;
+                diceValue2 = diceValue1;
+                diceValue1 = playerMoveAmount;
+            }
+            players[globalNestId].setPoints(players[globalNestId].getPoints() + piece.movePiece(playerMoveAmount));
+            if (initialPosition >= 48) {
+                houseMap.get(initialPosition).setOccupancy(false);
+                houseMap.get(initialPosition).setPiece(null);
+            }
+            else if (initialPosition == piece.getStartPosition(globalNestId) - 1){
+                spaceMap.get(initialPosition).setOccupancy(false);
+                spaceMap.get(initialPosition).setPiece(null);
+            }
+            houseMap.get(piece.getCurrentPosition()).setOccupancy(true);
+            houseMap.get(piece.getCurrentPosition()).setPiece(piece);
+        }
+        if (piece.getCurrentPosition() == initialPosition && piece.getStep() >= 48) {
+            diceTurn--;
+        }
+        //case 4:
+        if (piece.getCurrentPosition() != -1 && !piece.ableToMove(diceValue2,diceTurn)
+                && !piece.ableToKick(diceValue2,globalNestId) && diceTurn == 1 && !piece.ableToMoveInHome(diceValue2) && !(diceValue2 == 6 && !piece.noPieceAtHome(globalNestId) && piece.ableToDeploy())) {
+            diceTurn = 3;
+        }
+    }
 
 }
