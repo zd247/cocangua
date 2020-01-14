@@ -122,7 +122,6 @@ public class Player extends Pane {
         return addText;
     }
 
-
     public CheckBox getToggler() {
         return toggler;
     }
@@ -139,6 +138,7 @@ public class Player extends Pane {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -170,7 +170,6 @@ public class Player extends Pane {
     public int getPoints() {
         return this.points;
     }
-
 
     public Boolean isGetToHouse() {
         return getToHouse == 4;

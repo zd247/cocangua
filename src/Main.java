@@ -1,4 +1,26 @@
-import controller.GameController;
+/*
+  RMIT University Vietnam
+  Course: INTE2512 Object-Oriented Programming
+  Semester: 2020A
+  Assessment: Final Project
+  Created date: 20/12/2019
+
+  By:
+  Phan Quoc Binh (3715271)
+  Tran Mach So Han (3750789)
+  Tran Kim Bao (3740819)
+  Nguyen Huu Duy (3703336)
+  Nguyen Minh Trang (3751450)
+
+  Last modified: 14/1/2019
+
+  By:
+  Nguyen Huu Duy (3703336)
+
+  Acknowledgement: see readme.md
+*/
+
+
 import controller.MenuController;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -9,24 +31,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import helper.StaticContainer;
 import model.Score;
 import model.Sound;
-import model.core.Player;
-
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 import static helper.StaticContainer.*;
 import static helper.LayoutContainer.*;
