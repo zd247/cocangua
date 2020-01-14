@@ -1,4 +1,7 @@
 Han,38
 Quang,20
 Bao,20
-Player 2,16
+Player 2,52
+Fuck,62
+This,37
+Player 0,9

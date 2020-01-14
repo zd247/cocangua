@@ -8,16 +8,13 @@
     -fx-background-size: cover, auto;
 }
 
-/* FOR END SCREEN */
-.load {
-    -fx-background-image: url("/images/envi2.png");
-    -fx-background-position: center center;
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover, auto;
-}
-
 #map {
     -fx-background-color: rgba(255, 255, 255, .7);
+    -fx-background-radius: 20px;
+}
+
+#endGameFrame {
+    -fx-background-image: url("/images/cloudFrame.png");
     -fx-background-radius: 20px;
 }
 

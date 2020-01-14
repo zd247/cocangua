@@ -505,9 +505,10 @@ public class Piece extends Circle {
         tt.setToY(y - getLayoutY());
 
         // SET PIECE APPEARANCE WHEN GOT TO HOUSE
-        if (step > 48){
+        if (step >= 48){
             setStroke(BLACK);
             setStrokeWidth(4);
+            setOpacity(0.5);
         }
         if (step == 48){
             currentPosition = getHouseArrival() - 1;

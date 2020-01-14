@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import helper.StaticContainer;
@@ -31,10 +32,8 @@ import static helper.StaticContainer.numberOfPlayer;
 public class Main extends Application implements Initializable{
     static java.io.File file = new java.io.File("score.txt");
 
-    @FXML
     public Label endGameLb;
-
-    public TextField winner;
+    public Text winner;
     public Button newGame;
     public Button quit;
 
@@ -127,7 +126,7 @@ public class Main extends Application implements Initializable{
         alertBox.setMinWidth(250);
 
         FXMLLoader end = new FXMLLoader(getClass().getResource("view/end.fxml"));
-        Parent load = end.load();
+        Parent root = end.load();
 
         ArrayList<String> playerName = new ArrayList<>();
         ArrayList<Integer> playerScore = new ArrayList<>();
@@ -166,10 +165,9 @@ public class Main extends Application implements Initializable{
         }
         output.close();
 
-        load.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
-        alertBox.setScene(new Scene(load));
+        root.getStylesheets().add(getClass().getResource("cocangua.css").toExternalForm());
+        alertBox.setScene(new Scene(root));
         alertBox.setTitle(language.getWinScreenTitle());
-        //endGameLb.setText(language.getEndGameLabel());
         alertBox.show();
     }
 
@@ -177,6 +175,8 @@ public class Main extends Application implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         newGame.setText(language.getNewGame());
         quit.setText(language.getQuit());
+        endGameLb.setText(language.getEndGameLabel());
+
         String max_person = players[0].getName();
         int max_score = players[0].getPoints();
         for (int i = 0; i < players.length ; i++){

@@ -52,7 +52,7 @@ public class Nest extends StackPane {
         // Draw a circle of 75 radius
         circle.setFill(WHITE);
         circle.setStroke(WHITE);
-        circle.setStrokeWidth(5);
+        circle.setStrokeWidth(10);
 
         // Add 4 pieces to pieceList
         for (int pieceID = 0; pieceID < pieceList.length; pieceID++) {
