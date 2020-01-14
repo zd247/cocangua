@@ -200,7 +200,7 @@ public class StaticContainer {
                     // MUST ROLL INDICATOR
                     nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
                     nestMap.get(nextTurn).circle.setStrokeWidth(10);
-                    gameController.activityLog.setText("Next Turn!");
+                    gameController.activityLog.setText(language.getStatusNextTurn());
                     turn = 0;
                 }
 
