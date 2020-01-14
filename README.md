@@ -40,5 +40,6 @@ While the turn is not done yet
 			Keep that current dice value for another piece to move
 		After moving the first dice turn, If there is no piece able to use the next dice's value (move, kick, deploy)
 			this player's turn is done
+	After a piece in nest is moved and successfully use a dice's value (no matter dice 1 or 2), break the for loops and start a loop again for moving the the same piece with the last dice (if it is available), otherwise, it will search for another piece in nest. 
 If this player's turn is done, reset the dice turn, then auto roll if the next turn is a bot			
 					

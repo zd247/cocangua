@@ -145,6 +145,7 @@ public class StaticContainer {
                     //nestMap.get(i).circle.setStroke(nestMustRollColor);
 
                 } else {
+                    nestMap.get(i).circle.setStrokeWidth(10);
                     players[i].rolled();
 
                     // MUST MOVE INDICATOR
@@ -172,6 +173,7 @@ public class StaticContainer {
                 }
                 // IS TURN, WAITING TO ROLL
                 nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
+                nestMap.get(nextTurn).circle.setStrokeWidth(10);
                 turn = 0;
             }
 
@@ -408,6 +410,7 @@ public class StaticContainer {
         }
         // Must roll
         nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
+        nestMap.get(nextTurn).circle.setStrokeWidth(10);
         diceTurn = 0;
         seq.play();
     }

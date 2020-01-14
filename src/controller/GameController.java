@@ -67,6 +67,7 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Sound.isMute = false;
         chooseLanguage();
 
         // draw board

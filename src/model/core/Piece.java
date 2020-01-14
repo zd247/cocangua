@@ -214,7 +214,7 @@ public class Piece extends Circle {
 
                 // BOT MUST ROLL
                 nestMap.get(nextTurn).circle.setStroke(nestMustRollColor);
-
+                nestMap.get(nextTurn).circle.setStrokeWidth(10);
                 if (players[nextTurn].getConnectionStatus() == ConnectionStatus.BOT) {              // Auto roll if the next one is a bot
                     Timeline timeline = new Timeline();
                     KeyFrame key = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
@@ -505,9 +505,10 @@ public class Piece extends Circle {
         tt.setToY(y - getLayoutY());
 
         // SET PIECE APPEARANCE WHEN GOT TO HOUSE
-        if (step > 48){
+        if (step >= 48){
             setStroke(BLACK);
             setStrokeWidth(4);
+            setOpacity(0.5);
         }
         if (step == 48){
             currentPosition = getHouseArrival() - 1;
