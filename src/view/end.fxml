@@ -9,8 +9,8 @@
 
 <Pane fx:id="endScreen" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
    <children>
-      <Button fx:id="newGameBtn" layoutX="132.0" layoutY="245.0" mnemonicParsing="false" onMouseClicked="#loadNewGame" prefHeight="50.0" prefWidth="150.0" text="New Game" />
-      <Button fx:id="quitBtn" layoutX="319.0" layoutY="245.0" mnemonicParsing="false" onMouseClicked="#quitGame" prefHeight="50.0" prefWidth="150.0" text="Quit" />
+      <Button fx:id="newGameBtn" layoutX="132.0" layoutY="245.0" mnemonicParsing="false" onMouseClicked="#loadNewGame" prefHeight="50.0" prefWidth="150.0"/>
+      <Button fx:id="quitBtn" layoutX="319.0" layoutY="245.0" mnemonicParsing="false" onMouseClicked="#quitGame" prefHeight="50.0" prefWidth="150.0"/>
       <Pane fx:id="sunImage" layoutX="200.0" layoutY="24.0" prefHeight="200.0" prefWidth="200.0">
          <children>
             <Label fx:id="endGameLb" alignment="CENTER" contentDisplay="CENTER" layoutX="-4.0" layoutY="68.0" text="End Game" textAlignment="CENTER">

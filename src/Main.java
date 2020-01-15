@@ -151,8 +151,8 @@ public class Main extends Application implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        newGameBtn.setText(language.getNewGame());
-        quitBtn.setText(language.getQuit());
+//        newGameBtn.setText(language.getNewGame());
+//        quitBtn.setText(language.getQuit());
         endGameLb.setText(language.getEndGameLabel());
 
         String max_person = players[0].getName();
